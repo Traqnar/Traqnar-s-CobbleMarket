@@ -1,8 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
 const { spawn } = require('child_process');
+const { execSync } = require('child_process');
 const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
 
@@ -11,6 +12,8 @@ const API_HEALTH_PATH = '/api/showcases';
 
 let backendProcess = null;
 let mainWindow = null;
+let updateWindow = null;
+let updateWindowStatus = null;
 
 function isPackaged() {
   return app.isPackaged;
@@ -40,7 +43,10 @@ function createWindow() {
   const devServerUrl = 'http://localhost:4200';
 
   if (isPackaged()) {
-    win.loadURL(API_BASE_URL);
+    const cacheBustUrl = `${API_BASE_URL}/?v=${encodeURIComponent(app.getVersion())}`;
+    win.webContents.session.clearCache().catch(() => {}).finally(() => {
+      win.loadURL(cacheBustUrl);
+    });
     return;
   }
 
@@ -59,6 +65,223 @@ function sendUpdateStatus(status) {
     return;
   }
   mainWindow.webContents.send('app:update-status', status);
+}
+
+function getUpdateWindowHtml() {
+  return `<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mise a jour CobbleMarket</title>
+    <style>
+      :root {
+        --bg: #050b16;
+        --panel: #0b1426;
+        --line: #1e3a8a;
+        --text: #e2e8f0;
+        --muted: #93a4bf;
+        --accent: #3b82f6;
+        --accent2: #38bdf8;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 10% 0%, rgba(59,130,246,.24), transparent 45%),
+          radial-gradient(circle at 95% 95%, rgba(14,116,144,.28), transparent 40%),
+          var(--bg);
+        color: var(--text);
+        font-family: Segoe UI, Arial, sans-serif;
+      }
+      .wrap {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+      .panel {
+        width: 100%;
+        max-width: 520px;
+        border: 1px solid rgba(59, 130, 246, .45);
+        background: linear-gradient(180deg, rgba(11,20,38,.96), rgba(8,14,28,.97));
+        box-shadow: 0 16px 40px rgba(2, 6, 23, .55);
+        padding: 18px;
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border-radius: 999px;
+        border: 2px solid rgba(96, 165, 250, .28);
+        border-top-color: var(--accent2);
+        animation: spin .85s linear infinite;
+      }
+      .title {
+        font-weight: 800;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #bfdbfe;
+      }
+      .message {
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .sub {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .track {
+        margin-top: 12px;
+        width: 100%;
+        height: 6px;
+        border: 1px solid rgba(148, 163, 184, .4);
+        background: #08101f;
+        overflow: hidden;
+        position: relative;
+      }
+      .fill {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent2), var(--accent));
+        transition: width .2s ease;
+      }
+      .track.indeterminate .fill {
+        position: absolute;
+        width: 35%;
+        left: -35%;
+        animation: indeterminate 1.1s ease-in-out infinite;
+      }
+      .progress {
+        margin-top: 8px;
+        text-align: right;
+        font-size: 12px;
+        color: #cbd5e1;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes indeterminate { from { left: -35%; } to { left: 100%; } }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="panel">
+        <div class="head">
+          <span class="spinner"></span>
+          <span class="title">Mise a jour CobbleMarket</span>
+        </div>
+        <div class="message" id="msg">Preparation...</div>
+        <div class="sub" id="sub">Ne fermez pas l'application.</div>
+        <div class="track indeterminate" id="track"><div class="fill" id="fill"></div></div>
+        <div class="progress" id="progress">...</div>
+      </section>
+    </div>
+
+    <script>
+      const { ipcRenderer } = require('electron');
+      const msg = document.getElementById('msg');
+      const sub = document.getElementById('sub');
+      const progress = document.getElementById('progress');
+      const track = document.getElementById('track');
+      const fill = document.getElementById('fill');
+
+      const apply = (payload) => {
+        if (!payload) return;
+        const state = payload.state || 'checking';
+        msg.textContent = payload.message || 'Mise a jour en cours...';
+
+        if (state === 'downloading') {
+          const pct = Math.max(0, Math.min(100, Number(payload.progress || 0)));
+          track.classList.remove('indeterminate');
+          fill.style.width = pct.toFixed(1) + '%';
+          progress.textContent = pct.toFixed(1) + '%';
+          sub.textContent = 'Telechargement des fichiers de mise a jour...';
+          return;
+        }
+
+        track.classList.add('indeterminate');
+        fill.style.width = '0%';
+        progress.textContent = '...';
+
+        if (state === 'available' || state === 'checking') {
+          sub.textContent = 'Ne fermez pas l\\'application.';
+        } else if (state === 'downloaded') {
+          sub.textContent = 'Redemarrage automatique en cours...';
+        } else if (state === 'error') {
+          sub.textContent = payload.details || 'Erreur lors de la mise a jour.';
+        } else {
+          sub.textContent = '';
+        }
+      };
+
+      ipcRenderer.on('app:update-window-status', (_event, payload) => apply(payload));
+      ipcRenderer.on('app:update-window-init', (_event, payload) => apply(payload));
+    </script>
+  </body>
+</html>`;
+}
+
+function ensureUpdateWindow() {
+  if (updateWindow && !updateWindow.isDestroyed()) {
+    return updateWindow;
+  }
+
+  updateWindow = new BrowserWindow({
+    width: 520,
+    height: 300,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    autoHideMenuBar: true,
+    backgroundColor: '#050b16',
+    show: false,
+    title: 'Mise a jour CobbleMarket',
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
+  });
+
+  updateWindow.setMenuBarVisibility(false);
+  updateWindow.on('closed', () => {
+    updateWindow = null;
+  });
+
+  updateWindow.webContents.on('did-finish-load', () => {
+    if (updateWindowStatus) {
+      updateWindow.webContents.send('app:update-window-init', updateWindowStatus);
+    }
+  });
+
+  updateWindow.loadURL(`data:text/html;charset=UTF-8,${encodeURIComponent(getUpdateWindowHtml())}`);
+  updateWindow.once('ready-to-show', () => {
+    updateWindow?.show();
+  });
+
+  return updateWindow;
+}
+
+function closeUpdateWindow() {
+  if (updateWindow && !updateWindow.isDestroyed()) {
+    updateWindow.close();
+    updateWindow = null;
+  }
+}
+
+function sendUpdateWindowStatus(status) {
+  updateWindowStatus = status;
+  if (!updateWindow || updateWindow.isDestroyed()) {
+    return;
+  }
+  updateWindow.webContents.send('app:update-window-status', status);
 }
 
 function httpPing(url) {
@@ -94,9 +317,19 @@ async function waitForBackend(timeoutMs = 25000) {
 }
 
 async function ensureBackendStarted() {
-  const alreadyUp = await waitForBackend(1200);
-  if (alreadyUp) {
-    return;
+  // In packaged mode, force our bundled backend to avoid attaching to a stale
+  // external process already listening on 5148.
+  if (!isPackaged()) {
+    const alreadyUp = await waitForBackend(1200);
+    if (alreadyUp) {
+      return;
+    }
+  } else {
+    try {
+      execSync('taskkill /F /T /IM "CobblemonMarketApi.exe"', { stdio: 'ignore' });
+    } catch {
+      // ignore: process may not be running
+    }
   }
 
   const backendDir = isPackaged()
@@ -134,51 +367,88 @@ function setupAutoUpdater() {
   }
 
   autoUpdater.logger = log;
-  autoUpdater.autoDownload = true;
+  autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
-  sendUpdateStatus({ state: 'checking', message: 'Verification des mises a jour...' });
+  const checkingStatus = { state: 'checking', message: 'Verification des mises a jour...' };
+  sendUpdateStatus(checkingStatus);
+  sendUpdateWindowStatus(checkingStatus);
 
   autoUpdater.on('error', (err) => {
     log.error('AutoUpdater error:', err);
-    sendUpdateStatus({
+    const errorStatus = {
       state: 'error',
       message: "Echec de la verification des mises a jour.",
       details: err?.message ?? String(err),
-    });
+    };
+    sendUpdateStatus(errorStatus);
+    sendUpdateWindowStatus(errorStatus);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
   });
 
   autoUpdater.on('update-available', (info) => {
     log.info('Update available:', info?.version ?? 'unknown');
-    sendUpdateStatus({
+    const availableStatus = {
       state: 'available',
       version: info?.version ?? '',
-      message: `Nouvelle version ${info?.version ?? ''} detectee.`,
+      message: `Nouvelle version ${info?.version ?? ''} detectee. Telechargement...`,
+    };
+    sendUpdateStatus(availableStatus);
+    ensureUpdateWindow();
+    sendUpdateWindowStatus(availableStatus);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.hide();
+    }
+
+    autoUpdater.downloadUpdate().catch((err) => {
+      log.error('Unable to download update:', err);
+      const downloadErrorStatus = {
+        state: 'error',
+        message: "Impossible de telecharger la mise a jour.",
+        details: err?.message ?? String(err),
+      };
+      sendUpdateStatus(downloadErrorStatus);
+      sendUpdateWindowStatus(downloadErrorStatus);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.show();
+        mainWindow.focus();
+      }
     });
   });
 
   autoUpdater.on('update-not-available', () => {
     log.info('No update available.');
-    sendUpdateStatus({ state: 'idle', message: 'Application a jour.' });
+    const idleStatus = { state: 'idle', message: 'Application a jour.' };
+    sendUpdateStatus(idleStatus);
+    sendUpdateWindowStatus(idleStatus);
+    closeUpdateWindow();
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
     const percent = Number(progressObj?.percent ?? 0);
-    sendUpdateStatus({
+    const progressStatus = {
       state: 'downloading',
       progress: percent,
       bytesPerSecond: Number(progressObj?.bytesPerSecond ?? 0),
       transferred: Number(progressObj?.transferred ?? 0),
       total: Number(progressObj?.total ?? 0),
       message: `Telechargement de la mise a jour: ${percent.toFixed(1)}%`,
-    });
+    };
+    sendUpdateStatus(progressStatus);
+    sendUpdateWindowStatus(progressStatus);
   });
 
   autoUpdater.on('update-downloaded', (info) => {
-    sendUpdateStatus({
+    log.info('Update downloaded:', info?.version ?? 'unknown');
+    const downloadedStatus = {
       state: 'downloaded',
       version: info?.version ?? '',
       message: `Version ${info?.version ?? ''} prete. Installation...`,
-    });
+    };
+    sendUpdateStatus(downloadedStatus);
+    sendUpdateWindowStatus(downloadedStatus);
 
     setTimeout(() => {
       autoUpdater.quitAndInstall(true, true);
@@ -187,15 +457,22 @@ function setupAutoUpdater() {
 
   autoUpdater.checkForUpdatesAndNotify().catch((err) => {
     log.error('Unable to check for updates:', err);
-    sendUpdateStatus({
+    const checkErrorStatus = {
       state: 'error',
       message: "Impossible de verifier les mises a jour.",
       details: err?.message ?? String(err),
-    });
+    };
+    sendUpdateStatus(checkErrorStatus);
+    sendUpdateWindowStatus(checkErrorStatus);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
   });
 }
 
 app.whenReady().then(async () => {
+  ipcMain.handle('app:get-version', () => app.getVersion());
   await ensureBackendStarted();
   createWindow();
   setupAutoUpdater();

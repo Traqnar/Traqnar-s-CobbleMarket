@@ -4,6 +4,18 @@
   background: #0f172a;
 }
 
+.app-version-badge {
+  position: fixed;
+  left: 10px;
+  bottom: 8px;
+  z-index: 1100;
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.9);
+  background: rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.55);
+  padding: 3px 7px;
+}
+
 .main-nav {
   position: sticky;
   top: 0;

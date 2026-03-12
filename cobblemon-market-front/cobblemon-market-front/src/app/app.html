@@ -3,7 +3,7 @@
     routerLink="/showcase"
     routerLinkActive="is-active"
     [routerLinkActiveOptions]="{ exact: true }"
-  >Showcasesss</a>
+  >Showcases</a>
   <a
     routerLink="/pokemon"
     routerLinkActive="is-active"
@@ -37,3 +37,7 @@
 }
 
 <router-outlet></router-outlet>
+
+@if (appVersion) {
+  <div class="app-version-badge">v{{ appVersion }}</div>
+}

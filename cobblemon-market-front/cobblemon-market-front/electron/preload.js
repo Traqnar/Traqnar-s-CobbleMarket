@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronUpdates', {
+  getVersion: () => ipcRenderer.invoke('app:get-version'),
   onStatus: (callback) => {
     if (typeof callback !== 'function') {
       return () => {};

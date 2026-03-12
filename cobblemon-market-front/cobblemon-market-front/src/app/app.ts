@@ -8,6 +8,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   styleUrl: './app.css',
 })
 export class App implements OnInit, OnDestroy {
+  appVersion = '';
   updateState: 'idle' | 'checking' | 'available' | 'downloading' | 'downloaded' | 'error' = 'idle';
   updateMessage = '';
   updateProgress = 0;
@@ -17,6 +18,12 @@ export class App implements OnInit, OnDestroy {
     if (!window.electronUpdates?.onStatus) {
       return;
     }
+
+    window.electronUpdates.getVersion?.().then((version) => {
+      this.appVersion = version ?? '';
+    }).catch(() => {
+      this.appVersion = '';
+    });
 
     this.detachUpdateListener = window.electronUpdates.onStatus((status) => {
       this.updateState = (status?.state as typeof this.updateState) || 'idle';
