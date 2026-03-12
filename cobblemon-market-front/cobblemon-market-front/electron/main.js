@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
@@ -10,7 +10,7 @@ const API_BASE_URL = 'http://127.0.0.1:5148';
 const API_HEALTH_PATH = '/api/showcases';
 
 let backendProcess = null;
-let updateDialogOpen = false;
+let mainWindow = null;
 
 function isPackaged() {
   return app.isPackaged;
@@ -25,10 +25,17 @@ function createWindow() {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
   win.setMenuBarVisibility(false);
+  mainWindow = win;
+  win.on('closed', () => {
+    if (mainWindow === win) {
+      mainWindow = null;
+    }
+  });
 
   const devServerUrl = 'http://localhost:4200';
 
@@ -45,6 +52,13 @@ function createWindow() {
 
     win.loadURL(API_BASE_URL);
   });
+}
+
+function sendUpdateStatus(status) {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+  mainWindow.webContents.send('app:update-status', status);
 }
 
 function httpPing(url) {
@@ -122,44 +136,62 @@ function setupAutoUpdater() {
   autoUpdater.logger = log;
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;
+  sendUpdateStatus({ state: 'checking', message: 'Verification des mises a jour...' });
 
   autoUpdater.on('error', (err) => {
     log.error('AutoUpdater error:', err);
+    sendUpdateStatus({
+      state: 'error',
+      message: "Echec de la verification des mises a jour.",
+      details: err?.message ?? String(err),
+    });
   });
 
   autoUpdater.on('update-available', (info) => {
     log.info('Update available:', info?.version ?? 'unknown');
+    sendUpdateStatus({
+      state: 'available',
+      version: info?.version ?? '',
+      message: `Nouvelle version ${info?.version ?? ''} detectee.`,
+    });
   });
 
   autoUpdater.on('update-not-available', () => {
     log.info('No update available.');
+    sendUpdateStatus({ state: 'idle', message: 'Application a jour.' });
   });
 
-  autoUpdater.on('update-downloaded', async (info) => {
-    if (updateDialogOpen) {
-      return;
-    }
-
-    updateDialogOpen = true;
-    const result = await dialog.showMessageBox({
-      type: 'info',
-      title: 'Mise a jour disponible',
-      message: `Version ${info?.version ?? ''} telechargee.`,
-      detail: 'Redemarrer maintenant pour appliquer la mise a jour ?',
-      buttons: ['Redemarrer maintenant', 'Plus tard'],
-      defaultId: 0,
-      cancelId: 1,
-      noLink: true,
+  autoUpdater.on('download-progress', (progressObj) => {
+    const percent = Number(progressObj?.percent ?? 0);
+    sendUpdateStatus({
+      state: 'downloading',
+      progress: percent,
+      bytesPerSecond: Number(progressObj?.bytesPerSecond ?? 0),
+      transferred: Number(progressObj?.transferred ?? 0),
+      total: Number(progressObj?.total ?? 0),
+      message: `Telechargement de la mise a jour: ${percent.toFixed(1)}%`,
     });
-    updateDialogOpen = false;
+  });
 
-    if (result.response === 0) {
-      autoUpdater.quitAndInstall();
-    }
+  autoUpdater.on('update-downloaded', (info) => {
+    sendUpdateStatus({
+      state: 'downloaded',
+      version: info?.version ?? '',
+      message: `Version ${info?.version ?? ''} prete. Installation...`,
+    });
+
+    setTimeout(() => {
+      autoUpdater.quitAndInstall(true, true);
+    }, 1400);
   });
 
   autoUpdater.checkForUpdatesAndNotify().catch((err) => {
     log.error('Unable to check for updates:', err);
+    sendUpdateStatus({
+      state: 'error',
+      message: "Impossible de verifier les mises a jour.",
+      details: err?.message ?? String(err),
+    });
   });
 }
 

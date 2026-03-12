@@ -3,7 +3,7 @@
     routerLink="/showcase"
     routerLinkActive="is-active"
     [routerLinkActiveOptions]="{ exact: true }"
-  >Showcasessss</a>
+  >Showcasesss</a>
   <a
     routerLink="/pokemon"
     routerLinkActive="is-active"
@@ -16,5 +16,24 @@
   >Items</a>
 </nav>
 
-<router-outlet></router-outlet>
+@if (shouldShowUpdateBanner()) {
+  <section class="update-overlay">
+    <div class="update-overlay-head">
+      <span class="update-spinner"></span>
+      <span class="update-overlay-title">Mise a jour en cours</span>
+    </div>
+    <div class="update-overlay-text">{{ updateMessage }}</div>
+    @if (updateState === 'downloading') {
+      <div class="update-progress-track" aria-label="Progression du telechargement de la mise a jour">
+        <div class="update-progress-fill" [style.width.%]="updateProgress"></div>
+      </div>
+      <div class="update-progress-label">{{ updateProgress.toFixed(1) }}%</div>
+    } @else {
+      <div class="update-progress-track is-indeterminate" aria-hidden="true">
+        <div class="update-progress-fill"></div>
+      </div>
+    }
+  </section>
+}
 
+<router-outlet></router-outlet>
