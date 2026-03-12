@@ -766,7 +766,7 @@ export class Showcase implements OnInit, OnDestroy {
     ctx.fillStyle = '#94a3b8';
     ctx.font = '600 13px Segoe UI, Arial, sans-serif';
     ctx.fillText(
-      `${pokemon.isShiny ? 'Shiny' : 'Not shiny'} - ${this.getIvPercentageDisplay(pokemon.totalIvPercentage)}% IV`,
+      `${pokemon.isShiny ? 'Shiny' : 'Not shiny'} - ${pokemon.isRadiant ? 'Radiant' : 'Not radiant'} - ${this.getIvPercentageDisplay(pokemon.totalIvPercentage)}% IV`,
       centerX,
       metaY,
     );

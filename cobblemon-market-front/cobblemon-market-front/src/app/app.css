@@ -79,6 +79,7 @@
   margin-top: 10px;
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
 }
 
 .update-action-btn {
@@ -92,6 +93,21 @@
 }
 
 .update-action-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.update-later-btn {
+  border: 1px solid #475569;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 11px;
+  cursor: pointer;
+}
+
+.update-later-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }

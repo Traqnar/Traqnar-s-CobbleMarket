@@ -86,7 +86,14 @@
       class="export-pc-btn"
       [disabled]="isExportingPc"
       (click)="exportAllPc()">
-      {{ isExportingPc ? 'Export en cours...' : 'Exporter tout le PC' }}
+      {{ isExportingPc ? 'Import en cours...' : 'Importer PC' }}
+    </button>
+    <button
+      type="button"
+      class="delete-all-btn"
+      [disabled]="isDeletingAllListings"
+      (click)="deleteAllListings()">
+      {{ isDeletingAllListings ? 'Suppression...' : 'Supprimer tous les listings' }}
     </button>
   </div>
 
@@ -292,6 +299,11 @@
             <label for="isShiny">Shiny</label>
           </div>
 
+          <div class="form-row checkbox-row">
+            <input id="isRadiant" type="checkbox" formControlName="isRadiant" autocomplete="off" />
+            <label for="isRadiant">Radiant</label>
+          </div>
+
           <div class="form-row">
             <label for="customImageUrl">URL image personnalisee</label>
             <input id="customImageUrl" type="url" formControlName="customImageUrl" placeholder="https://..." autocomplete="off" />
@@ -372,6 +384,7 @@
         <div class="subline">
           {{ getPokemonDisplayName(pokemon) }} - Lv {{ pokemon.level }}
           <span *ngIf="pokemon.isShiny"> - Shiny</span>
+          <span *ngIf="pokemon.isRadiant"> - Radiant</span>
         </div>
 
         <div class="tags">

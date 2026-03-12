@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
 import { forkJoin, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
@@ -60,7 +60,9 @@ export class Pokemon implements OnInit {
   showDeleteConfirmModal = false;
   deleteConfirmMessage = '';
   pokemonPendingDelete: PokemonListing | null = null;
+  isDeleteAllConfirm = false;
   isExportingPc = false;
+  isDeletingAllListings = false;
 
   pokemonSuggestions: PokemonAutocomplete[] = [];
   showPokemonDropdown = false;
@@ -77,6 +79,9 @@ export class Pokemon implements OnInit {
   private abilitySearch$ = new Subject<string>();
   availableForms: string[] = [];
   private importEventsSubscription?: Subscription;
+  private importRefreshFallbackSubscription?: Subscription;
+  private importRefreshFallbackTimeout: ReturnType<typeof setTimeout> | null = null;
+  private awaitingPcImportCompletion = false;
 
   constructor(
     private pokemonListingService: PokemonListingService,
@@ -118,6 +123,7 @@ export class Pokemon implements OnInit {
 
   ngOnDestroy(): void {
     this.importEventsSubscription?.unsubscribe();
+    this.stopImportRefreshFallback();
     if (this.pokemonNameFilterSearchResetTimer) {
       clearTimeout(this.pokemonNameFilterSearchResetTimer);
       this.pokemonNameFilterSearchResetTimer = null;
@@ -127,6 +133,8 @@ export class Pokemon implements OnInit {
   private setupImportEvents(): void {
     this.pokemonImportEventsService.connect();
     this.importEventsSubscription = this.pokemonImportEventsService.importCompleted$.subscribe((event) => {
+      this.awaitingPcImportCompletion = false;
+      this.stopImportRefreshFallback();
       this.refreshListings();
       this.showcaseService.loadShowcases().subscribe();
 
@@ -348,6 +356,7 @@ export class Pokemon implements OnInit {
       ability: ['', [Validators.required, Validators.maxLength(50)]],
       gender: ['', [Validators.required, Validators.maxLength(20)]],
       isShiny: [false],
+      isRadiant: [false],
       customImageUrl: ['', [Validators.maxLength(500)]],
       hpIv: [0, [Validators.required, Validators.min(0), Validators.max(31)]],
       attackIv: [0, [Validators.required, Validators.min(0), Validators.max(31)]],
@@ -381,6 +390,7 @@ export class Pokemon implements OnInit {
       ability: pokemon.ability,
       gender: pokemon.gender,
       isShiny: pokemon.isShiny,
+      isRadiant: pokemon.isRadiant,
       customImageUrl: pokemon.customImageUrl ?? '',
       hpIv: pokemon.hpIv,
       attackIv: pokemon.attackIv,
@@ -442,6 +452,7 @@ export class Pokemon implements OnInit {
       ability: '',
       gender: '',
       isShiny: false,
+      isRadiant: false,
       customImageUrl: '',
       hpIv: 0,
       attackIv: 0,
@@ -478,6 +489,7 @@ export class Pokemon implements OnInit {
       isHiddenAbility: this.selectedAbilityIsHidden,
       gender: value.gender,
       isShiny: Boolean(value.isShiny),
+      isRadiant: Boolean(value.isRadiant),
       customImageUrl: value.customImageUrl?.trim() || undefined,
       hpIv: Number(value.hpIv),
       attackIv: Number(value.attackIv),
@@ -517,8 +529,19 @@ export class Pokemon implements OnInit {
   }
 
   deleteListing(pokemon: PokemonListing): void {
+    this.isDeleteAllConfirm = false;
     this.pokemonPendingDelete = pokemon;
     this.deleteConfirmMessage = `Supprimer le listing "${pokemon.title}" (${pokemon.pokemonName}) ?`;
+    this.showDeleteConfirmModal = true;
+  }
+
+  deleteAllListings(): void {
+    if (this.isDeletingAllListings) {
+      return;
+    }
+    this.isDeleteAllConfirm = true;
+    this.pokemonPendingDelete = null;
+    this.deleteConfirmMessage = 'Supprimer tous les Pokemon listings ?';
     this.showDeleteConfirmModal = true;
   }
 
@@ -567,10 +590,14 @@ export class Pokemon implements OnInit {
     this.minecraftService.exportAllPc().subscribe({
       next: () => {
         this.isExportingPc = false;
+        this.awaitingPcImportCompletion = true;
+        this.startImportRefreshFallback();
         this.toastService.success("Export PC lance. La liste se mettra a jour quand l'import sera termine.");
       },
       error: (err) => {
         this.isExportingPc = false;
+        this.awaitingPcImportCompletion = false;
+        this.stopImportRefreshFallback();
         const message =
           err?.error?.message ??
           err?.message ??
@@ -578,6 +605,34 @@ export class Pokemon implements OnInit {
         this.toastService.error(message);
       },
     });
+  }
+
+  private startImportRefreshFallback(): void {
+    this.stopImportRefreshFallback();
+
+    this.importRefreshFallbackSubscription = interval(2500).subscribe(() => {
+      if (!this.awaitingPcImportCompletion) {
+        this.stopImportRefreshFallback();
+        return;
+      }
+
+      this.refreshListings(false);
+      this.showcaseService.loadShowcases().subscribe();
+    });
+
+    this.importRefreshFallbackTimeout = setTimeout(() => {
+      this.awaitingPcImportCompletion = false;
+      this.stopImportRefreshFallback();
+    }, 120000);
+  }
+
+  private stopImportRefreshFallback(): void {
+    this.importRefreshFallbackSubscription?.unsubscribe();
+    this.importRefreshFallbackSubscription = undefined;
+    if (this.importRefreshFallbackTimeout) {
+      clearTimeout(this.importRefreshFallbackTimeout);
+      this.importRefreshFallbackTimeout = null;
+    }
   }
 
   private hasImportUuid(uuid: string | null | undefined): boolean {
@@ -591,9 +646,30 @@ export class Pokemon implements OnInit {
     this.showDeleteConfirmModal = false;
     this.pokemonPendingDelete = null;
     this.deleteConfirmMessage = '';
+    this.isDeleteAllConfirm = false;
   }
 
   confirmDeleteListing(): void {
+    if (this.isDeleteAllConfirm) {
+      this.closeDeleteConfirmModal();
+      this.isDeletingAllListings = true;
+      this.pokemonListingService.deleteAllGlobal().subscribe({
+        next: (result) => {
+          this.isDeletingAllListings = false;
+          const deletedCount = Number(result?.deletedCount ?? 0);
+          this.toastService.success(`${deletedCount} Pokemon supprimes.`);
+          this.showcaseService.loadShowcases().subscribe();
+          this.refreshListings();
+        },
+        error: (err) => {
+          this.isDeletingAllListings = false;
+          this.formError = err?.error?.message ?? err?.message ?? 'Erreur lors de la suppression globale.';
+          this.toastService.error(this.formError ?? 'Erreur lors de la suppression globale.');
+        },
+      });
+      return;
+    }
+
     if (!this.pokemonPendingDelete) {
       return;
     }
@@ -891,14 +967,16 @@ export class Pokemon implements OnInit {
     return this.ivHexagonOrder.map((k) => ivs[k]).join('/');
   }
 
-  private refreshListings(): void {
+  private refreshListings(showErrorToast = true): void {
     this.pokemonListingService.getAllGlobal().subscribe({
       next: (listings) => {
         this.pokemonListings = [...(listings ?? [])].sort((a, b) => b.id - a.id);
       },
       error: () => {
         this.pokemonListings = [];
-        this.toastService.error("Impossible de charger tous les Pokemon.");
+        if (showErrorToast) {
+          this.toastService.error("Impossible de charger tous les Pokemon.");
+        }
       },
     });
   }

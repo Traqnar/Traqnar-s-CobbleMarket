@@ -137,6 +137,7 @@ public class ShowcasesController : ControllerBase
             IsHiddenAbility = x.IsHiddenAbility,
             Gender = x.Gender,
             IsShiny = x.IsShiny,
+            IsRadiant = x.IsRadiant,
             DefaultImageUrl = x.DefaultImageUrl,
             CustomImageUrl = x.CustomImageUrl,
             HpIv = x.HpIv,

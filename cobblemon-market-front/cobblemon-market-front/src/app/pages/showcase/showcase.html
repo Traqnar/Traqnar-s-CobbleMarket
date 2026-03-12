@@ -76,7 +76,9 @@
               </div>
 
               <div class="subline">
-                {{ getPokemonDisplayName(pokemon) }} <span *ngIf="pokemon.isShiny">- Shiny</span>
+                {{ getPokemonDisplayName(pokemon) }}
+                <span *ngIf="pokemon.isShiny">- Shiny</span>
+                <span *ngIf="pokemon.isRadiant">- Radiant</span>
               </div>
 
               <div class="tags">
@@ -203,7 +205,7 @@
               <div class="modal-pokemon-text">
                 <div class="modal-pokemon-title">{{ pokemon.title }}</div>
                 <div class="modal-pokemon-meta">
-                  {{ getPokemonDisplayName(pokemon) }} - {{ pokemon.isShiny ? 'Shiny' : 'Not shiny' }} - {{ pokemon.ability }}{{ pokemon.isHiddenAbility ? ' (HA)' : '' }} - {{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV
+                  {{ getPokemonDisplayName(pokemon) }} - {{ pokemon.isShiny ? 'Shiny' : 'Not shiny' }} - {{ pokemon.isRadiant ? 'Radiant' : 'Not radiant' }} - {{ pokemon.ability }}{{ pokemon.isHiddenAbility ? ' (HA)' : '' }} - {{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV
                 </div>
               </div>
               <button

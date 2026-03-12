@@ -182,4 +182,18 @@ public class PokemonListingsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("/api/pokemon-listings")]
+    public async Task<IActionResult> DeleteAllGlobal()
+    {
+        var deletedCount = await _service.DeleteAllGlobalAsync();
+        return Ok(new { deletedCount });
+    }
+
+    [HttpPost("/api/pokemon-listings/delete-all")]
+    public async Task<IActionResult> DeleteAllGlobalPost()
+    {
+        var deletedCount = await _service.DeleteAllGlobalAsync();
+        return Ok(new { deletedCount });
+    }
 }

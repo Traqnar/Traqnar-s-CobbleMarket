@@ -30,6 +30,15 @@
       <div class="update-progress-label">{{ updateProgress.toFixed(1) }}%</div>
     } @else if (updateState === 'available' || updateState === 'downloaded' || updateState === 'error') {
       <div class="update-actions">
+        @if (updateState === 'available') {
+          <button
+            type="button"
+            class="update-later-btn"
+            [disabled]="updateActionBusy"
+            (click)="refuseUpdate()">
+            Refuser
+          </button>
+        }
         <button
           type="button"
           class="update-action-btn"

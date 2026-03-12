@@ -70,6 +70,7 @@ public class PokemonListingService : IPokemonListingService
             IsHiddenAbility = dto.IsHiddenAbility,
             Gender = dto.Gender,
             IsShiny = dto.IsShiny,
+            IsRadiant = dto.IsRadiant,
             DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, NormalizeForm(dto.Form), dto.IsShiny),
             CustomImageUrl = dto.CustomImageUrl,
             HpIv = dto.HpIv,
@@ -116,6 +117,7 @@ public class PokemonListingService : IPokemonListingService
             IsHiddenAbility = dto.IsHiddenAbility,
             Gender = dto.Gender,
             IsShiny = dto.IsShiny,
+            IsRadiant = dto.IsRadiant,
             DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, NormalizeForm(dto.Form), dto.IsShiny),
             CustomImageUrl = dto.CustomImageUrl,
             HpIv = dto.HpIv,
@@ -237,6 +239,7 @@ public class PokemonListingService : IPokemonListingService
 
             var level = Math.Clamp(pokemon.Level ?? 1, 1, 100);
             var isShiny = pokemon.Shiny ?? false;
+            var isRadiant = ResolveIsRadiantFromImport(pokemon);
             var englishName = catalogEntry.EnglishName;
             var form = NormalizeForm(pokemon.Form, pokemon.FormId, pokemon.Aspects);
             var title = BuildImportTitle(englishName, form, NormalizeNicknameFromImport(pokemon));
@@ -264,6 +267,7 @@ public class PokemonListingService : IPokemonListingService
                 IsHiddenAbility = isHiddenAbility,
                 Gender = NormalizeGender(pokemon.Gender),
                 IsShiny = isShiny,
+                IsRadiant = isRadiant,
                 DefaultImageUrl = await ResolvePokemonImageUrlAsync(catalogEntry.PokedexNumber, form, isShiny),
                 CustomImageUrl = null,
                 HpIv = hpIv,
@@ -369,6 +373,7 @@ public class PokemonListingService : IPokemonListingService
         listing.IsHiddenAbility = dto.IsHiddenAbility;
         listing.Gender = dto.Gender;
         listing.IsShiny = dto.IsShiny;
+        listing.IsRadiant = dto.IsRadiant;
         listing.DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, listing.Form, dto.IsShiny);
         listing.CustomImageUrl = dto.CustomImageUrl;
         listing.HpIv = dto.HpIv;
@@ -410,6 +415,7 @@ public class PokemonListingService : IPokemonListingService
         listing.IsHiddenAbility = dto.IsHiddenAbility;
         listing.Gender = dto.Gender;
         listing.IsShiny = dto.IsShiny;
+        listing.IsRadiant = dto.IsRadiant;
         listing.DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, listing.Form, dto.IsShiny);
         listing.CustomImageUrl = dto.CustomImageUrl;
         listing.HpIv = dto.HpIv;
@@ -459,6 +465,19 @@ public class PokemonListingService : IPokemonListingService
         return true;
     }
 
+    public async Task<int> DeleteAllGlobalAsync()
+    {
+        var count = await _context.PokemonListings.CountAsync();
+        if (count == 0)
+        {
+            return 0;
+        }
+
+        _context.PokemonListings.RemoveRange(_context.PokemonListings);
+        await _context.SaveChangesAsync();
+        return count;
+    }
+
     private static PokemonListingDto MapToDto(PokemonListing listing)
     {
         return new PokemonListingDto
@@ -477,6 +496,7 @@ public class PokemonListingService : IPokemonListingService
             IsHiddenAbility = listing.IsHiddenAbility,
             Gender = listing.Gender,
             IsShiny = listing.IsShiny,
+            IsRadiant = listing.IsRadiant,
             DefaultImageUrl = listing.DefaultImageUrl,
             CustomImageUrl = listing.CustomImageUrl,
             HpIv = listing.HpIv,
@@ -952,6 +972,25 @@ public class PokemonListingService : IPokemonListingService
         return element.HasValue ? TryParseJsonInt(element.Value) : null;
     }
 
+    private static bool? TryReadBoolFromExtra(ImportPcPokemonDto pokemon, params string[] keys)
+    {
+        var element = pokemon.TryGetExtraElement(keys);
+        if (!element.HasValue)
+        {
+            return null;
+        }
+
+        return element.Value.ValueKind switch
+        {
+            JsonValueKind.True => true,
+            JsonValueKind.False => false,
+            JsonValueKind.Number when element.Value.TryGetInt32(out var n) => n != 0,
+            JsonValueKind.String when bool.TryParse(element.Value.GetString(), out var b) => b,
+            JsonValueKind.String when int.TryParse(element.Value.GetString(), out var n) => n != 0,
+            _ => null
+        };
+    }
+
     private static int? TryReadStatFromStatsContainer(JsonElement? statsElement, string[] statAliases)
     {
         if (!statsElement.HasValue || statsElement.Value.ValueKind != JsonValueKind.Object)
@@ -1083,6 +1122,28 @@ public class PokemonListingService : IPokemonListingService
         }
 
         return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(cleaned);
+    }
+
+    private static bool ResolveIsRadiantFromImport(ImportPcPokemonDto pokemon)
+    {
+        if ((pokemon.Aspects ?? []).Any(x => !string.IsNullOrWhiteSpace(x) && x.Contains("radiant", StringComparison.OrdinalIgnoreCase)))
+        {
+            return true;
+        }
+
+        var flag = TryReadBoolFromExtra(pokemon, "isRadiant", "is_radiant", "radiant");
+        if (flag.HasValue)
+        {
+            return flag.Value;
+        }
+
+        var rawAspects = TryReadStringFromExtra(pokemon, "aspects", "aspect");
+        if (!string.IsNullOrWhiteSpace(rawAspects) && rawAspects.Contains("radiant", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private async Task<bool> ResolveIsHiddenAbilityAsync(

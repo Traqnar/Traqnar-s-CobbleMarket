@@ -42,6 +42,7 @@ namespace CobblemonMarketApi.Dtos.PokemonListings
         public string Gender { get; set; } = "";
 
         public bool IsShiny { get; set; }
+        public bool IsRadiant { get; set; }
 
         [Url]
         public string? CustomImageUrl { get; set; }

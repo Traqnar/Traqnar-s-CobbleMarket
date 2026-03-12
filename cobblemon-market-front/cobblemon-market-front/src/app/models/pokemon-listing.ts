@@ -14,6 +14,7 @@ export interface PokemonListing {
   isHiddenAbility: boolean;
   gender: string;
   isShiny: boolean;
+  isRadiant: boolean;
   defaultImageUrl: string;
   customImageUrl?: string | null;
   hpIv: number;
@@ -39,6 +40,7 @@ export interface CreatePokemonListing {
   isHiddenAbility?: boolean;
   gender: string;
   isShiny: boolean;
+  isRadiant?: boolean;
   customImageUrl?: string | null;
   hpIv: number;
   attackIv: number;

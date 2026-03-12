@@ -15,4 +15,5 @@ public interface IPokemonListingService
     Task<bool> UpdateAsync(int showcaseId, int id, UpdatePokemonListingDto dto);
     Task<bool> DeleteAsync(int showcaseId, int id);
     Task<bool> DeleteGlobalAsync(int id);
+    Task<int> DeleteAllGlobalAsync();
 }

@@ -48,4 +48,8 @@ export class PokemonListingService {
   deleteGlobal(id: number): Observable<void> {
     return this.http.delete<void>(`${this.globalApiUrl}/${id}`);
   }
+
+  deleteAllGlobal(): Observable<{ deletedCount: number }> {
+    return this.http.post<{ deletedCount: number }>(`${this.globalApiUrl}/delete-all`, {});
+  }
 }

@@ -13,6 +13,8 @@ export class App implements OnInit, OnDestroy {
   updateMessage = '';
   updateProgress = 0;
   updateActionBusy = false;
+  private currentAvailableVersion = '';
+  private refusedUpdateVersion = '';
   private detachUpdateListener: (() => void) | null = null;
 
   ngOnInit(): void {
@@ -30,6 +32,9 @@ export class App implements OnInit, OnDestroy {
       this.updateState = (status?.state as typeof this.updateState) || 'idle';
       this.updateMessage = status?.message ?? '';
       this.updateProgress = Math.max(0, Math.min(100, Number(status?.progress ?? 0)));
+      if (typeof status?.version === 'string' && status.version.trim()) {
+        this.currentAvailableVersion = status.version.trim();
+      }
     });
   }
 
@@ -39,6 +44,9 @@ export class App implements OnInit, OnDestroy {
   }
 
   shouldShowUpdateBanner(): boolean {
+    if (this.updateState === 'available' && this.isCurrentVersionRefused()) {
+      return false;
+    }
     return ['available', 'downloading', 'downloaded', 'error'].includes(this.updateState) && !!this.updateMessage;
   }
 
@@ -60,11 +68,23 @@ export class App implements OnInit, OnDestroy {
     }
 
     this.updateActionBusy = true;
+    this.refusedUpdateVersion = '';
     window.electronUpdates.performUpdateAction()
       .catch(() => undefined)
       .finally(() => {
         this.updateActionBusy = false;
       });
+  }
+
+  refuseUpdate(): void {
+    if (!this.currentAvailableVersion) {
+      return;
+    }
+    this.refusedUpdateVersion = this.currentAvailableVersion;
+  }
+
+  private isCurrentVersionRefused(): boolean {
+    return !!this.currentAvailableVersion && this.currentAvailableVersion === this.refusedUpdateVersion;
   }
 }
 

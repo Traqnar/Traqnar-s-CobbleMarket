@@ -17,6 +17,8 @@ let updateWindowStatus = null;
 let updaterState = 'idle';
 let isDownloadingUpdate = false;
 let isInstallingUpdate = false;
+let isCheckingForUpdates = false;
+let updateCheckInterval = null;
 
 function isPackaged() {
   return app.isPackaged;
@@ -372,10 +374,35 @@ function setupAutoUpdater() {
   autoUpdater.logger = log;
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
-  updaterState = 'checking';
-  const checkingStatus = { state: 'checking', message: 'Verification des mises a jour...' };
-  sendUpdateStatus(checkingStatus);
-  sendUpdateWindowStatus(checkingStatus);
+  const triggerUpdateCheck = async (announceChecking = false) => {
+    if (isCheckingForUpdates || isDownloadingUpdate || isInstallingUpdate) {
+      return;
+    }
+
+    isCheckingForUpdates = true;
+    if (announceChecking) {
+      updaterState = 'checking';
+      const checkingStatus = { state: 'checking', message: 'Verification des mises a jour...' };
+      sendUpdateStatus(checkingStatus);
+      sendUpdateWindowStatus(checkingStatus);
+    }
+
+    try {
+      await autoUpdater.checkForUpdates();
+    } catch (err) {
+      log.error('Unable to check for updates:', err);
+      updaterState = 'error';
+      const checkErrorStatus = {
+        state: 'error',
+        message: "Impossible de verifier les mises a jour.",
+        details: err?.message ?? String(err),
+      };
+      sendUpdateStatus(checkErrorStatus);
+      sendUpdateWindowStatus(checkErrorStatus);
+    } finally {
+      isCheckingForUpdates = false;
+    }
+  };
 
   autoUpdater.on('error', (err) => {
     log.error('AutoUpdater error:', err);
@@ -441,17 +468,10 @@ function setupAutoUpdater() {
     sendUpdateWindowStatus(downloadedStatus);
   });
 
-  autoUpdater.checkForUpdatesAndNotify().catch((err) => {
-    log.error('Unable to check for updates:', err);
-    updaterState = 'error';
-    const checkErrorStatus = {
-      state: 'error',
-      message: "Impossible de verifier les mises a jour.",
-      details: err?.message ?? String(err),
-    };
-    sendUpdateStatus(checkErrorStatus);
-    sendUpdateWindowStatus(checkErrorStatus);
-  });
+  triggerUpdateCheck(true);
+  updateCheckInterval = setInterval(() => {
+    triggerUpdateCheck(false);
+  }, 60 * 1000);
 }
 
 app.whenReady().then(async () => {
@@ -525,6 +545,10 @@ app.whenReady().then(async () => {
 });
 
 app.on('before-quit', () => {
+  if (updateCheckInterval) {
+    clearInterval(updateCheckInterval);
+    updateCheckInterval = null;
+  }
   stopBackendIfNeeded();
 });
 
