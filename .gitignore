@@ -12,6 +12,7 @@ Thumbs.db
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/mcp.json
+.vs/
 *.suo
 *.user
 *.userosscache
@@ -47,6 +48,14 @@ secrets.json
 *.sqlite
 *.sqlite3
 
+# Keep seed JSONs (important)
+!CobblemonMarketApi/DataSeed/
+!CobblemonMarketApi/DataSeed/*.json
+
+# Keep appsettings tracked (adapt if you add secrets later)
+!CobblemonMarketApi/appsettings.json
+!CobblemonMarketApi/appsettings.Development.json
+
 # =========================
 # Frontend (Angular)
 # =========================
@@ -72,8 +81,10 @@ secrets.json
 **/*.blockmap
 **/*.asar
 
-# Optional generated backend bundle copied into electron resources
+# Generated embedded backend binaries for Electron
 **/electron/backend-publish/
+# (the one that caused GitHub >100MB errors)
+**/electron/backend-publish/*.exe
 
 # Misc
 *.pid
