@@ -1,0 +1,231 @@
+<div class="showcase-layout">
+  <aside class="showcase-sidebar">
+    <div class="sidebar-header">
+      <h1>Showcases</h1>
+      <button type="button" class="new-showcase-btn" (click)="openCreateShowcaseModal()">+ New</button>
+    </div>
+
+    @if (showcases.length) {
+      <div class="showcase-list">
+        @for (showcase of showcases; track showcase.id) {
+          <button
+            type="button"
+            class="showcase-nav-item"
+            [class.is-active]="activeShowcase?.id === showcase.id"
+            (click)="selectShowcase(showcase.id)">
+            <div class="showcase-nav-name">{{ showcase.name }}</div>
+            <div class="showcase-nav-meta">
+              {{ showcase.pokemonListings.length }} Pokemon - {{ showcase.itemListings.length }} Items
+            </div>
+          </button>
+        }
+      </div>
+    } @else {
+      <p class="sidebar-empty">No showcase yet.</p>
+    }
+  </aside>
+
+  <section class="showcase-content">
+    @if (activeShowcase) {
+      <header class="content-header">
+        <div>
+          <h2>{{ activeShowcase.name }}</h2>
+          @if (activeShowcase.description) {
+            <p>{{ activeShowcase.description }}</p>
+          }
+        </div>
+
+        <div class="header-actions">
+          @if (canManageActiveShowcase()) {
+            <button class="clear-button" (click)="openAddPokemonModal()">Add Pokemon</button>
+            <button class="clear-button" (click)="renameActiveShowcase()">Rename</button>
+            <button class="danger-button" (click)="deleteActiveShowcase()">Delete showcase</button>
+          }
+          <button
+            class="export-button"
+            (click)="downloadShowcasePng()"
+            [disabled]="isGeneratingImage || !activeShowcase.pokemonListings.length">
+            {{ isGeneratingImage ? 'Generating...' : 'Download PNG' }}
+          </button>
+          <button
+            class="clear-button"
+            (click)="copyShowcaseToClipboard()"
+            [disabled]="isGeneratingImage || !activeShowcase.pokemonListings.length">
+            Copy showcase
+          </button>
+          <button class="clear-button" (click)="clearAll()">Clear all</button>
+        </div>
+      </header>
+
+      <p class="generate-error" *ngIf="generateError">{{ generateError }}</p>
+
+      @if (activeShowcase.pokemonListings.length) {
+        <h3>Pokemon</h3>
+        <div class="grid pokemon-grid" [class.is-compact]="activeShowcase.pokemonListings.length >= 10">
+          <article class="pokemon-card" [class.is-compact]="activeShowcase.pokemonListings.length >= 10" *ngFor="let pokemon of activeShowcase.pokemonListings">
+            <div class="pokemon-image-wrapper">
+              <img [src]="getPokemonImage(pokemon)" [alt]="getPokemonDisplayName(pokemon)">
+            </div>
+
+            <div class="content">
+              <div class="title-row">
+                <h4>{{ pokemon.title }}</h4>
+                <button class="remove remove-inline" (click)="removePokemon(pokemon.id)">
+                  Remove
+                </button>
+              </div>
+
+              <div class="subline">
+                {{ getPokemonDisplayName(pokemon) }} <span *ngIf="pokemon.isShiny">- Shiny</span>
+              </div>
+
+              <div class="tags">
+                <span>{{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV</span>
+                <span>{{ pokemon.nature }}</span>
+                <span>{{ pokemon.ability }}</span>
+                <span>Lv {{ pokemon.level }}</span>
+              </div>
+
+              <div class="iv-block">
+                <svg class="iv-hexagon" viewBox="-28 -28 156 156" aria-hidden="true">
+                  <polygon class="iv-hexagon-grid" points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="currentColor" stroke-width="1" />
+                  <path class="iv-hexagon-fill" [attr.d]="getIvRadarPath(getIvValues(pokemon))" />
+                  @for (pos of getIvHexagonLabelPositions(); track $index) {
+                    <text class="iv-hexagon-vertex-text" [attr.x]="pos.x" [attr.y]="pos.y" text-anchor="middle" dominant-baseline="middle">
+                      <tspan class="iv-hexagon-label" dy="-0.35em">{{ ivHexagonLabels[$index] }}</tspan>
+                      <tspan class="iv-hexagon-value" [attr.x]="pos.x" dy="0.7em" [attr.fill]="getIvValueColor(getIvValuesOrdered(getIvValues(pokemon))[$index])">{{ getIvValuesOrdered(getIvValues(pokemon))[$index] }}</tspan>
+                    </text>
+                  }
+                </svg>
+              </div>
+            </div>
+          </article>
+        </div>
+      }
+
+      @if (activeShowcase.itemListings.length) {
+        <h3>Items</h3>
+
+        <div class="grid items-grid">
+          <article class="item-card" *ngFor="let item of activeShowcase.itemListings">
+            <img [src]="item.imageUrl" [alt]="item.title">
+
+            <div class="content">
+              <h4>{{ item.title }}</h4>
+
+              <div class="price">{{ item.price }}</div>
+
+              <button class="remove" (click)="removeItem(item.id)">Remove</button>
+            </div>
+          </article>
+        </div>
+      }
+    } @else {
+      <div class="content-empty">
+        <p>Select a showcase on the left or create one.</p>
+        <button type="button" class="new-showcase-btn" (click)="openCreateShowcaseModal()">
+          Create showcase
+        </button>
+      </div>
+    }
+  </section>
+
+</div>
+
+@if (isAddPokemonModalOpen) {
+  <div class="modal-overlay" (mousedown)="closeAddPokemonModal()">
+    <section class="modal-card" (mousedown)="$event.stopPropagation()">
+      <header class="modal-header">
+        <h3>Add Existing Pokemon</h3>
+        <button type="button" class="clear-button" (click)="closeAddPokemonModal()">Close</button>
+      </header>
+
+      <div class="modal-filters">
+        <div class="filter-dropdown" tabindex="0" (blur)="closeAddPokemonNameDropdown()">
+          <button type="button" class="filter-dropdown-trigger" (click)="toggleAddPokemonNameDropdown()">
+            @if (getSelectedAddPokemonNameImage()) {
+              <img [src]="getSelectedAddPokemonNameImage()!" alt="" class="filter-dropdown-img" />
+            }
+            <span>{{ addPokemonNameFilter || 'All Pokemon' }}</span>
+          </button>
+          @if (showAddPokemonNameDropdown) {
+            <div class="filter-dropdown-menu">
+              <div class="filter-dropdown-search-wrap">
+                <input
+                  type="text"
+                  class="filter-dropdown-search"
+                  [value]="addPokemonNameFilterSearch"
+                  placeholder="Search Pokemon..."
+                  (input)="onAddPokemonNameFilterSearchInput($any($event.target).value)"
+                />
+              </div>
+              <button type="button" class="filter-dropdown-item" (click)="selectAddPokemonNameFilter('')">
+                <span>All Pokemon</span>
+              </button>
+              @for (opt of getAvailablePokemonNameOptionDetails(); track opt.name) {
+                <button type="button" class="filter-dropdown-item" (click)="selectAddPokemonNameFilter(opt.name)">
+                  <img [src]="opt.imageUrl" [alt]="opt.name" class="filter-dropdown-img" />
+                  <span>{{ opt.name }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+        <select class="modal-filter-select" [(ngModel)]="addPokemonAbilityFilter">
+          <option value="">All abilities</option>
+          @for (ability of getAvailableAbilityOptions(); track ability) {
+            <option [value]="ability">{{ ability }}</option>
+          }
+        </select>
+        <select class="modal-filter-select" [(ngModel)]="addPokemonIvSort">
+          <option value="desc">IV% High to low</option>
+          <option value="asc">IV% Low to high</option>
+        </select>
+      </div>
+
+      @if (isLoadingAllPokemons) {
+        <p class="modal-empty">Loading Pokemon...</p>
+      } @else if (getFilteredAvailablePokemons().length) {
+        <div class="modal-list">
+          @for (pokemon of getFilteredAvailablePokemons(); track pokemon.id) {
+            <article class="modal-pokemon-row">
+              <img [src]="getPokemonImage(pokemon)" [alt]="getPokemonDisplayName(pokemon)">
+              <div class="modal-pokemon-text">
+                <div class="modal-pokemon-title">{{ pokemon.title }}</div>
+                <div class="modal-pokemon-meta">
+                  {{ getPokemonDisplayName(pokemon) }} - {{ pokemon.isShiny ? 'Shiny' : 'Not shiny' }} - {{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV
+                </div>
+              </div>
+              <button
+                type="button"
+                class="export-button"
+                (click)="addExistingPokemonToActiveShowcase(pokemon)">
+                Add
+              </button>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="modal-empty">No Pokemon available to add.</p>
+      }
+    </section>
+  </div>
+}
+
+<app-showcase-create-modal
+  [open]="isShowcaseModalOpen"
+  [busy]="isCreatingShowcase"
+  (cancel)="closeCreateShowcaseModal()"
+  (submitCreate)="createShowcase($event)">
+</app-showcase-create-modal>
+
+<app-confirm-modal
+  [open]="showDeleteShowcaseConfirm"
+  [title]="'Supprimer la showcase'"
+  [message]="deleteShowcaseMessage"
+  [confirmLabel]="'Supprimer'"
+  [cancelLabel]="'Annuler'"
+  [danger]="true"
+  (confirmAction)="confirmDeleteActiveShowcase()"
+  (cancelAction)="closeDeleteShowcaseConfirm()">
+</app-confirm-modal>

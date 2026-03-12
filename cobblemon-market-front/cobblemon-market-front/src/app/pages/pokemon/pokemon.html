@@ -1,0 +1,472 @@
+<div class="pokemon-page">
+  <header class="page-header">
+    <div class="page-header-top">
+      <div>
+        <h1>Pokemon Listings</h1>
+        <p>Tous tes Pokemon (toutes showcases confondues). Tu peux les ajouter a la showcase de ton choix.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="list-filters">
+    <div
+      class="filter-dropdown"
+      tabindex="0"
+      (blur)="closePokemonNameFilterDropdown()"
+      (keydown)="onPokemonNameFilterDropdownKeydown($event)">
+      <button type="button" class="filter-dropdown-trigger" (click)="togglePokemonNameFilterDropdown()">
+        @if (getSelectedPokemonNameFilterImage()) {
+          <img [src]="getSelectedPokemonNameFilterImage()!" alt="" class="filter-dropdown-img" />
+        }
+        <span>{{ pokemonNameFilter || 'Tous les Pokemon' }}</span>
+      </button>
+      @if (showPokemonNameFilterDropdown) {
+        <div class="filter-dropdown-menu">
+          <button type="button" class="filter-dropdown-item" (click)="selectPokemonNameFilter('')">
+            <span>Tous les Pokemon</span>
+          </button>
+          @for (opt of getPokemonNameFilterOptionDetails(); track opt.name) {
+            <button type="button" class="filter-dropdown-item" (click)="selectPokemonNameFilter(opt.name)">
+              <img [src]="opt.imageUrl" [alt]="opt.name" class="filter-dropdown-img" />
+              <span>{{ opt.name }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+    <select
+      class="list-filter-select"
+      [value]="pokemonAbilityFilter"
+      (change)="pokemonAbilityFilter = $any($event.target).value">
+      <option value="">Tous les talents</option>
+      @for (ability of getPokemonAbilityFilterOptions(); track ability) {
+        <option [value]="ability">{{ ability }}</option>
+      }
+    </select>
+    <select
+      class="list-filter-select"
+      [value]="pokemonIvSort"
+      (change)="pokemonIvSort = $any($event.target).value">
+      <option value="desc">IV% du plus haut au plus bas</option>
+      <option value="asc">IV% du plus bas au plus haut</option>
+    </select>
+  </div>
+
+  <div class="perfect-iv-filter-bar">
+    <span class="perfect-iv-filter-title">Filtre 31 IV</span>
+    <div class="perfect-iv-chip-list">
+      @for (option of perfectIvCountFilterOptions; track option.value) {
+        <button
+          type="button"
+          class="perfect-iv-chip"
+          [class.is-active]="isPokemonPerfectIvFilterSelected(option.value)"
+          [class.tier-all]="getPerfectIvFilterClass(option.count) === 'tier-all'"
+          [class.tier-low]="getPerfectIvFilterClass(option.count) === 'tier-low'"
+          [class.tier-mid]="getPerfectIvFilterClass(option.count) === 'tier-mid'"
+          [class.tier-high]="getPerfectIvFilterClass(option.count) === 'tier-high'"
+          [class.tier-elite]="getPerfectIvFilterClass(option.count) === 'tier-elite'"
+          (click)="setPokemonPerfectIvCountFilter(option.value)">
+          {{ option.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="page-actions">
+    <button
+      type="button"
+      class="export-pc-btn"
+      [disabled]="isExportingPc"
+      (click)="exportAllPc()">
+      {{ isExportingPc ? 'Export en cours...' : 'Exporter tout le PC' }}
+    </button>
+  </div>
+
+  @if (showAddForm) {
+    <div class="form-overlay" (mousedown)="onFormOverlayMouseDown($event)">
+      <div class="form-modal">
+        <div class="form-modal-header">
+          <h2>{{ isEditMode() ? 'Modifier le Pokemon' : 'Nouveau Pokemon' }}</h2>
+          <button type="button" class="close-btn" (click)="closeAddForm()" aria-label="Fermer">&times;</button>
+        </div>
+
+        <form [formGroup]="addForm" (ngSubmit)="submitAddForm()" class="add-pokemon-form" autocomplete="off">
+          @if (formError) {
+            <p class="form-error">{{ formError }}</p>
+          }
+
+          <div class="form-row">
+            <label for="title">Titre *</label>
+            <input id="title" type="text" formControlName="title" placeholder="Ex: Pikachu 6IV" autocomplete="off" />
+            @if (addForm.get('title')?.invalid && addForm.get('title')?.touched) {
+              <span class="field-error">Titre requis (max 100 caracteres)</span>
+            }
+          </div>
+
+          <div class="form-row autocomplete-wrapper">
+            <label for="pokemonName">Nom du Pokemon *</label>
+            <div class="autocomplete-input-wrap">
+              <input
+                id="pokemonName"
+                type="text"
+                formControlName="pokemonName"
+                autocomplete="off"
+                placeholder="Ex: Pikachu ou Dracaufeu"
+                (input)="onPokemonNameInput($any($event.target).value)"
+                (focus)="onPokemonNameFocus()"
+                (blur)="onPokemonNameBlur()"
+              />
+              @if (showPokemonDropdown && pokemonSuggestions.length) {
+                <ul class="autocomplete-dropdown" role="listbox">
+                  @for (p of pokemonSuggestions; track p.pokedexNumber) {
+                    <li
+                      role="option"
+                      class="autocomplete-item"
+                      (mousedown)="selectPokemonSuggestion(p); $event.preventDefault()"
+                    >
+                      @if (p.imageUrl) {
+                        <img [src]="p.imageUrl" [alt]="p.englishName" class="autocomplete-item-img" />
+                      }
+                      <span class="autocomplete-item-text">{{ getPokemonSuggestionLabel(p) }}</span>
+                      <span class="autocomplete-item-num">#{{ p.pokedexNumber }}</span>
+                    </li>
+                  }
+                </ul>
+              }
+              @if (selectedPokemonPreview) {
+                <div class="pokemon-selected-preview">
+                  <div class="pokemon-selected-check">?</div>
+                  <img
+                    class="pokemon-selected-img"
+                    [src]="selectedPokemonPreview.imageUrl"
+                    [alt]="selectedPokemonPreview.englishName"
+                  />
+                  <div class="pokemon-selected-text">
+                    {{ getPokemonSuggestionLabel(selectedPokemonPreview) }}
+                  </div>
+                </div>
+              }
+            </div>
+            @if (addForm.get('pokemonName')?.invalid && addForm.get('pokemonName')?.touched) {
+              <span class="field-error">Nom requis (max 50 caracteres)</span>
+            }
+          </div>
+
+          <div class="form-row two-cols">
+            <div>
+              <label for="pokedexNumber">No Pokedex *</label>
+              <input id="pokedexNumber" type="number" formControlName="pokedexNumber" min="1" max="9999" autocomplete="off" />
+            </div>
+            <div>
+              <label for="form">Forme</label>
+              <input
+                id="form"
+                type="text"
+                formControlName="form"
+                placeholder="Ex: Hisui"
+                autocomplete="off"
+              />
+              @if (availableForms.length) {
+                <div class="form-chip-list">
+                  @for (formOption of availableForms; track formOption) {
+                    <button
+                      type="button"
+                      class="form-chip"
+                      [class.is-selected]="getSelectedForm() === formOption"
+                      (click)="selectForm(formOption)">
+                      {{ formOption }}
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="form-row two-cols">
+            <div>
+              <label for="level">Niveau *</label>
+              <input id="level" type="number" formControlName="level" min="1" max="100" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="price">Prix *</label>
+            <input id="price" type="number" formControlName="price" min="0" autocomplete="off" />
+          </div>
+
+          <div class="form-row">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" rows="2" placeholder="Optionnel (max 500 caracteres)" autocomplete="off"></textarea>
+          </div>
+
+          <div class="form-row two-cols">
+            <div class="autocomplete-wrapper">
+              <label for="nature">Nature *</label>
+              <div class="autocomplete-input-wrap">
+                <input
+                  id="nature"
+                  type="text"
+                  formControlName="nature"
+                  autocomplete="off"
+                  placeholder="Ex: Timid"
+                  (input)="onNatureInput($any($event.target).value)"
+                  (focus)="onNatureFocus()"
+                  (blur)="onNatureBlur()"
+                />
+
+                @if (showNatureDropdown && natureSuggestions.length) {
+                  <ul class="autocomplete-dropdown" role="listbox">
+                    @for (nature of natureSuggestions; track nature) {
+                      <li
+                        role="option"
+                        class="autocomplete-item"
+                        (mousedown)="selectNatureSuggestion(nature); $event.preventDefault()"
+                      >
+                        <span class="autocomplete-item-text">{{ nature }}</span>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+
+              @if (addForm.get('nature')?.invalid && addForm.get('nature')?.touched) {
+                <span class="field-error">Nature requise</span>
+              }
+            </div>
+
+            <div class="autocomplete-wrapper">
+              <label for="ability">Capacite *</label>
+              <div class="autocomplete-input-wrap">
+                <input
+                  id="ability"
+                  type="text"
+                  formControlName="ability"
+                  autocomplete="off"
+                  placeholder="Ex: Static"
+                  (input)="onAbilityInput($any($event.target).value)"
+                  (focus)="onAbilityFocus()"
+                  (blur)="onAbilityBlur()"
+                />
+
+                @if (showAbilityDropdown && abilitySuggestions.length) {
+                  <ul class="autocomplete-dropdown" role="listbox">
+                    @for (ability of abilitySuggestions; track ability) {
+                      <li
+                        role="option"
+                        class="autocomplete-item"
+                        (mousedown)="selectAbilitySuggestion(ability); $event.preventDefault()"
+                      >
+                        <span class="autocomplete-item-text">{{ ability }}</span>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+
+              @if (addForm.get('ability')?.invalid && addForm.get('ability')?.touched) {
+                <span class="field-error">Capacite requise</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="gender">Genre *</label>
+            <select id="gender" formControlName="gender" autocomplete="off">
+              <option value="">-- Choisir --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+          </div>
+
+          <div class="form-row checkbox-row">
+            <input id="isShiny" type="checkbox" formControlName="isShiny" autocomplete="off" />
+            <label for="isShiny">Shiny</label>
+          </div>
+
+          <div class="form-row">
+            <label for="customImageUrl">URL image personnalisee</label>
+            <input id="customImageUrl" type="url" formControlName="customImageUrl" placeholder="https://..." autocomplete="off" />
+          </div>
+
+          <fieldset class="iv-section">
+            <legend>IVs (0-31)</legend>
+            <div class="iv-section-inner">
+              <div class="iv-hexagon-wrap">
+                <svg class="iv-hexagon iv-hexagon-form" viewBox="-28 -28 156 156" aria-hidden="true">
+                  <polygon class="iv-hexagon-grid" points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="currentColor" stroke-width="1" />
+                  <path class="iv-hexagon-fill" [attr.d]="getIvRadarPath(getFormIvValues())" />
+                  @for (pos of getIvHexagonLabelPositions(); track $index) {
+                    <text class="iv-hexagon-vertex-text" [attr.x]="pos.x" [attr.y]="pos.y" text-anchor="middle" dominant-baseline="middle">
+                      <tspan class="iv-hexagon-label" dy="-0.35em">{{ ivHexagonLabels[$index] }}</tspan>
+                      <tspan class="iv-hexagon-value" [attr.x]="pos.x" dy="0.7em" [attr.fill]="getIvValueColor(getIvValuesOrdered(getFormIvValues())[$index])">{{ getIvValuesOrdered(getFormIvValues())[$index] }}</tspan>
+                    </text>
+                  }
+                </svg>
+              </div>
+              <div class="iv-total-live">
+                <div class="iv-total-live-label">IV Total</div>
+                <div class="iv-total-live-value">{{ getIvPercentage(getFormIvValues()) }}%</div>
+                <div class="iv-total-live-sub">{{ getIvTotal(getFormIvValues()) }} / 186</div>
+              </div>
+              <div class="iv-inputs-compact">
+                <div class="iv-input-cell">
+                  <label for="hpIv">HP</label>
+                  <input id="hpIv" type="number" formControlName="hpIv" min="0" max="31" autocomplete="off" />
+                </div>
+                <div class="iv-input-cell">
+                  <label for="attackIv">Atk</label>
+                  <input id="attackIv" type="number" formControlName="attackIv" min="0" max="31" autocomplete="off" />
+                </div>
+                <div class="iv-input-cell">
+                  <label for="defenseIv">Def</label>
+                  <input id="defenseIv" type="number" formControlName="defenseIv" min="0" max="31" autocomplete="off" />
+                </div>
+                <div class="iv-input-cell">
+                  <label for="specialAttackIv">SpA</label>
+                  <input id="specialAttackIv" type="number" formControlName="specialAttackIv" min="0" max="31" autocomplete="off" />
+                </div>
+                <div class="iv-input-cell">
+                  <label for="specialDefenseIv">SpD</label>
+                  <input id="specialDefenseIv" type="number" formControlName="specialDefenseIv" min="0" max="31" autocomplete="off" />
+                </div>
+                <div class="iv-input-cell">
+                  <label for="speedIv">Spe</label>
+                  <input id="speedIv" type="number" formControlName="speedIv" min="0" max="31" autocomplete="off" />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="closeAddForm()">Annuler</button>
+            <button type="submit" class="submit-btn" [disabled]="addForm.invalid">
+              {{ isEditMode() ? 'Mettre a jour' : 'Creer' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <div class="card-grid">
+    <article class="pokemon-card" *ngFor="let pokemon of getFilteredPokemonListings()">
+      <div class="pokemon-image-wrapper">
+        <img [src]="getPokemonImage(pokemon)" [alt]="getPokemonDisplayName(pokemon)" />
+      </div>
+
+      <div class="card-content">
+        <div class="card-top">
+          <h3>{{ pokemon.title }}</h3>
+          <div class="price">{{ pokemon.price }}</div>
+        </div>
+
+        <div class="subline">
+          {{ getPokemonDisplayName(pokemon) }} - Lv {{ pokemon.level }}
+          <span *ngIf="pokemon.isShiny"> - Shiny</span>
+        </div>
+
+        <div class="tags">
+          <span>{{ pokemon.nature }}</span>
+          <span>{{ pokemon.ability }}</span>
+          <span>{{ pokemon.gender }}</span>
+          <span>{{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV</span>
+          <span
+            class="perfect-iv-badge"
+            [class.tier-low]="getPerfectIvCount(pokemon) <= 2"
+            [class.tier-mid]="getPerfectIvCount(pokemon) >= 3 && getPerfectIvCount(pokemon) <= 4"
+            [class.tier-high]="getPerfectIvCount(pokemon) === 5"
+            [class.tier-elite]="getPerfectIvCount(pokemon) === 6">
+            x31: {{ getPerfectIvCount(pokemon) }}/6
+          </span>
+        </div>
+
+        <div class="iv-block">
+          <svg class="iv-hexagon" viewBox="-28 -28 156 156" aria-hidden="true">
+            <polygon class="iv-hexagon-grid" points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="currentColor" stroke-width="1" />
+            <path class="iv-hexagon-fill" [attr.d]="getIvRadarPath(getIvValues(pokemon))" />
+            @for (pos of getIvHexagonLabelPositions(); track $index) {
+              <text class="iv-hexagon-vertex-text" [attr.x]="pos.x" [attr.y]="pos.y" text-anchor="middle" dominant-baseline="middle">
+                <tspan class="iv-hexagon-label" dy="-0.35em">{{ ivHexagonLabels[$index] }}</tspan>
+                <tspan class="iv-hexagon-value" [attr.x]="pos.x" dy="0.7em" [attr.fill]="getIvValueColor(getIvValuesOrdered(getIvValues(pokemon))[$index])">{{ getIvValuesOrdered(getIvValues(pokemon))[$index] }}</tspan>
+              </text>
+            }
+          </svg>
+        </div>
+
+        <p class="description" *ngIf="pokemon.description">
+          {{ pokemon.description }}
+        </p>
+
+        <div class="card-actions">
+          <button class="add-button" type="button" (click)="openAssignShowcaseModal(pokemon)">
+            Add to showcase
+          </button>
+          <button class="edit-button" type="button" (click)="openEditForm(pokemon)">Modifier</button>
+          <button class="delete-button" type="button" (click)="deleteListing(pokemon)">Supprimer</button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <button type="button" class="add-pokemon-btn" (click)="openAddForm()" aria-label="Ajouter un Pokemon">
+    <span class="add-pokemon-btn-icon">+</span>
+    <span class="add-pokemon-btn-label">Ajouter</span>
+  </button>
+
+  @if (showAssignShowcaseModal) {
+    <div class="form-overlay" (mousedown)="closeAssignShowcaseModal()">
+      <div class="form-modal assign-showcase-modal" (mousedown)="$event.stopPropagation()">
+        <div class="form-modal-header">
+          <h2>Ajouter a une showcase</h2>
+          <button type="button" class="close-btn" (click)="closeAssignShowcaseModal()" aria-label="Fermer">&times;</button>
+        </div>
+        <div class="assign-showcase-content">
+          <p class="assign-text">Choisis une showcase existante, ou cree-en une nouvelle.</p>
+          <div class="assign-list">
+            @for (showcase of getAssignableShowcases(); track showcase.id) {
+              <button
+                type="button"
+                class="assign-item"
+                [class.is-selected]="selectedShowcaseIdForAssign === showcase.id"
+                (click)="selectedShowcaseIdForAssign = showcase.id">
+                <span>{{ showcase.name }}</span>
+                <small>{{ showcase.pokemonListings.length }} Pokemon</small>
+              </button>
+            }
+          </div>
+
+          @if (showcaseActionError) {
+            <p class="form-error">{{ showcaseActionError }}</p>
+          }
+
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="openCreateShowcaseModal()">Creer une showcase</button>
+            <button type="button" class="submit-btn" (click)="confirmAssignToShowcase()" [disabled]="!selectedShowcaseIdForAssign">
+              Ajouter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
+
+<app-showcase-create-modal
+  [open]="showCreateShowcaseModal"
+  [busy]="isCreatingShowcase"
+  (cancel)="closeCreateShowcaseModal()"
+  (submitCreate)="createShowcase($event)">
+</app-showcase-create-modal>
+
+<app-confirm-modal
+  [open]="showDeleteConfirmModal"
+  [title]="'Supprimer le Pokemon'"
+  [message]="deleteConfirmMessage"
+  [confirmLabel]="'Supprimer'"
+  [cancelLabel]="'Annuler'"
+  [danger]="true"
+  (confirmAction)="confirmDeleteListing()"
+  (cancelAction)="closeDeleteConfirmModal()">
+</app-confirm-modal>

@@ -1,0 +1,20 @@
+<nav class="main-nav">
+  <a
+    routerLink="/showcase"
+    routerLinkActive="is-active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >Showcase</a>
+  <a
+    routerLink="/pokemon"
+    routerLinkActive="is-active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >Pokemon</a>
+  <a
+    routerLink="/items"
+    routerLinkActive="is-active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >Items</a>
+</nav>
+
+<router-outlet></router-outlet>
+

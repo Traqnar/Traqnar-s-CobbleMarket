@@ -1,0 +1,2898 @@
+[
+  {
+    "pokedexNumber": 3,
+    "formKey": "gmax",
+    "apiName": "venusaur-gmax",
+    "displayName": "Venusaur (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10195.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10195.png"
+  },
+  {
+    "pokedexNumber": 3,
+    "formKey": "mega",
+    "apiName": "venusaur-mega",
+    "displayName": "Venusaur (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10033.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10033.png"
+  },
+  {
+    "pokedexNumber": 6,
+    "formKey": "gmax",
+    "apiName": "charizard-gmax",
+    "displayName": "Charizard (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10196.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10196.png"
+  },
+  {
+    "pokedexNumber": 6,
+    "formKey": "mega-x",
+    "apiName": "charizard-mega-x",
+    "displayName": "Charizard (Mega X)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10034.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10034.png"
+  },
+  {
+    "pokedexNumber": 6,
+    "formKey": "mega-y",
+    "apiName": "charizard-mega-y",
+    "displayName": "Charizard (Mega Y)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10035.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10035.png"
+  },
+  {
+    "pokedexNumber": 9,
+    "formKey": "gmax",
+    "apiName": "blastoise-gmax",
+    "displayName": "Blastoise (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10197.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10197.png"
+  },
+  {
+    "pokedexNumber": 9,
+    "formKey": "mega",
+    "apiName": "blastoise-mega",
+    "displayName": "Blastoise (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10036.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10036.png"
+  },
+  {
+    "pokedexNumber": 12,
+    "formKey": "gmax",
+    "apiName": "butterfree-gmax",
+    "displayName": "Butterfree (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10198.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10198.png"
+  },
+  {
+    "pokedexNumber": 15,
+    "formKey": "mega",
+    "apiName": "beedrill-mega",
+    "displayName": "Beedrill (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10090.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10090.png"
+  },
+  {
+    "pokedexNumber": 18,
+    "formKey": "mega",
+    "apiName": "pidgeot-mega",
+    "displayName": "Pidgeot (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10073.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10073.png"
+  },
+  {
+    "pokedexNumber": 19,
+    "formKey": "alola",
+    "apiName": "rattata-alola",
+    "displayName": "Rattata (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10091.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10091.png"
+  },
+  {
+    "pokedexNumber": 20,
+    "formKey": "alola",
+    "apiName": "raticate-alola",
+    "displayName": "Raticate (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10092.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10092.png"
+  },
+  {
+    "pokedexNumber": 20,
+    "formKey": "totem-alola",
+    "apiName": "raticate-totem-alola",
+    "displayName": "Raticate (Totem Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10093.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10093.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "alola-cap",
+    "apiName": "pikachu-alola-cap",
+    "displayName": "Pikachu (Alola Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10099.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10099.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "belle",
+    "apiName": "pikachu-belle",
+    "displayName": "Pikachu (Belle)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10081.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10081.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "cosplay",
+    "apiName": "pikachu-cosplay",
+    "displayName": "Pikachu (Cosplay)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10085.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10085.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "gmax",
+    "apiName": "pikachu-gmax",
+    "displayName": "Pikachu (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10199.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10199.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "hoenn-cap",
+    "apiName": "pikachu-hoenn-cap",
+    "displayName": "Pikachu (Hoenn Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10095.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10095.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "kalos-cap",
+    "apiName": "pikachu-kalos-cap",
+    "displayName": "Pikachu (Kalos Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10098.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10098.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "libre",
+    "apiName": "pikachu-libre",
+    "displayName": "Pikachu (Libre)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10084.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10084.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "original-cap",
+    "apiName": "pikachu-original-cap",
+    "displayName": "Pikachu (Original Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10094.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10094.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "partner-cap",
+    "apiName": "pikachu-partner-cap",
+    "displayName": "Pikachu (Partner Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10148.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10148.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "phd",
+    "apiName": "pikachu-phd",
+    "displayName": "Pikachu (Phd)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10083.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10083.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "pop-star",
+    "apiName": "pikachu-pop-star",
+    "displayName": "Pikachu (Pop Star)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10082.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10082.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "rock-star",
+    "apiName": "pikachu-rock-star",
+    "displayName": "Pikachu (Rock Star)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10080.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10080.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "sinnoh-cap",
+    "apiName": "pikachu-sinnoh-cap",
+    "displayName": "Pikachu (Sinnoh Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10096.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10096.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "starter",
+    "apiName": "pikachu-starter",
+    "displayName": "Pikachu (Starter)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "unova-cap",
+    "apiName": "pikachu-unova-cap",
+    "displayName": "Pikachu (Unova Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10097.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/25-unova-cap.png"
+  },
+  {
+    "pokedexNumber": 25,
+    "formKey": "world-cap",
+    "apiName": "pikachu-world-cap",
+    "displayName": "Pikachu (World Cap)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10160.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10160.png"
+  },
+  {
+    "pokedexNumber": 26,
+    "formKey": "alola",
+    "apiName": "raichu-alola",
+    "displayName": "Raichu (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10100.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10100.png"
+  },
+  {
+    "pokedexNumber": 26,
+    "formKey": "mega-x",
+    "apiName": "raichu-mega-x",
+    "displayName": "Raichu (Mega X)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 26,
+    "formKey": "mega-y",
+    "apiName": "raichu-mega-y",
+    "displayName": "Raichu (Mega Y)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 27,
+    "formKey": "alola",
+    "apiName": "sandshrew-alola",
+    "displayName": "Sandshrew (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10101.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10101.png"
+  },
+  {
+    "pokedexNumber": 28,
+    "formKey": "alola",
+    "apiName": "sandslash-alola",
+    "displayName": "Sandslash (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10102.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10102.png"
+  },
+  {
+    "pokedexNumber": 36,
+    "formKey": "mega",
+    "apiName": "clefable-mega",
+    "displayName": "Clefable (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 37,
+    "formKey": "alola",
+    "apiName": "vulpix-alola",
+    "displayName": "Vulpix (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10103.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10103.png"
+  },
+  {
+    "pokedexNumber": 38,
+    "formKey": "alola",
+    "apiName": "ninetales-alola",
+    "displayName": "Ninetales (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10104.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10104.png"
+  },
+  {
+    "pokedexNumber": 50,
+    "formKey": "alola",
+    "apiName": "diglett-alola",
+    "displayName": "Diglett (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10105.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10105.png"
+  },
+  {
+    "pokedexNumber": 51,
+    "formKey": "alola",
+    "apiName": "dugtrio-alola",
+    "displayName": "Dugtrio (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10106.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10106.png"
+  },
+  {
+    "pokedexNumber": 52,
+    "formKey": "alola",
+    "apiName": "meowth-alola",
+    "displayName": "Meowth (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10107.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10107.png"
+  },
+  {
+    "pokedexNumber": 52,
+    "formKey": "galar",
+    "apiName": "meowth-galar",
+    "displayName": "Meowth (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10161.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10161.png"
+  },
+  {
+    "pokedexNumber": 52,
+    "formKey": "gmax",
+    "apiName": "meowth-gmax",
+    "displayName": "Meowth (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10200.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10200.png"
+  },
+  {
+    "pokedexNumber": 53,
+    "formKey": "alola",
+    "apiName": "persian-alola",
+    "displayName": "Persian (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10108.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10108.png"
+  },
+  {
+    "pokedexNumber": 58,
+    "formKey": "hisui",
+    "apiName": "growlithe-hisui",
+    "displayName": "Growlithe (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10229.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10229.png"
+  },
+  {
+    "pokedexNumber": 59,
+    "formKey": "hisui",
+    "apiName": "arcanine-hisui",
+    "displayName": "Arcanine (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10230.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10230.png"
+  },
+  {
+    "pokedexNumber": 65,
+    "formKey": "mega",
+    "apiName": "alakazam-mega",
+    "displayName": "Alakazam (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10037.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10037.png"
+  },
+  {
+    "pokedexNumber": 68,
+    "formKey": "gmax",
+    "apiName": "machamp-gmax",
+    "displayName": "Machamp (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10201.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10201.png"
+  },
+  {
+    "pokedexNumber": 71,
+    "formKey": "mega",
+    "apiName": "victreebel-mega",
+    "displayName": "Victreebel (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10279.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10279.png"
+  },
+  {
+    "pokedexNumber": 74,
+    "formKey": "alola",
+    "apiName": "geodude-alola",
+    "displayName": "Geodude (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10109.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10109.png"
+  },
+  {
+    "pokedexNumber": 75,
+    "formKey": "alola",
+    "apiName": "graveler-alola",
+    "displayName": "Graveler (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10110.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10110.png"
+  },
+  {
+    "pokedexNumber": 76,
+    "formKey": "alola",
+    "apiName": "golem-alola",
+    "displayName": "Golem (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10111.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10111.png"
+  },
+  {
+    "pokedexNumber": 77,
+    "formKey": "galar",
+    "apiName": "ponyta-galar",
+    "displayName": "Ponyta (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10162.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10162.png"
+  },
+  {
+    "pokedexNumber": 78,
+    "formKey": "galar",
+    "apiName": "rapidash-galar",
+    "displayName": "Rapidash (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10163.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10163.png"
+  },
+  {
+    "pokedexNumber": 79,
+    "formKey": "galar",
+    "apiName": "slowpoke-galar",
+    "displayName": "Slowpoke (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10164.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10164.png"
+  },
+  {
+    "pokedexNumber": 80,
+    "formKey": "galar",
+    "apiName": "slowbro-galar",
+    "displayName": "Slowbro (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10165.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10165.png"
+  },
+  {
+    "pokedexNumber": 80,
+    "formKey": "mega",
+    "apiName": "slowbro-mega",
+    "displayName": "Slowbro (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10071.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10071.png"
+  },
+  {
+    "pokedexNumber": 83,
+    "formKey": "galar",
+    "apiName": "farfetchd-galar",
+    "displayName": "Farfetchd (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10166.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10166.png"
+  },
+  {
+    "pokedexNumber": 88,
+    "formKey": "alola",
+    "apiName": "grimer-alola",
+    "displayName": "Grimer (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10112.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10112.png"
+  },
+  {
+    "pokedexNumber": 89,
+    "formKey": "alola",
+    "apiName": "muk-alola",
+    "displayName": "Muk (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10113.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10113.png"
+  },
+  {
+    "pokedexNumber": 94,
+    "formKey": "gmax",
+    "apiName": "gengar-gmax",
+    "displayName": "Gengar (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10202.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10202.png"
+  },
+  {
+    "pokedexNumber": 94,
+    "formKey": "mega",
+    "apiName": "gengar-mega",
+    "displayName": "Gengar (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10038.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10038.png"
+  },
+  {
+    "pokedexNumber": 99,
+    "formKey": "gmax",
+    "apiName": "kingler-gmax",
+    "displayName": "Kingler (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10203.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10203.png"
+  },
+  {
+    "pokedexNumber": 100,
+    "formKey": "hisui",
+    "apiName": "voltorb-hisui",
+    "displayName": "Voltorb (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10231.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10231.png"
+  },
+  {
+    "pokedexNumber": 101,
+    "formKey": "hisui",
+    "apiName": "electrode-hisui",
+    "displayName": "Electrode (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10232.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10232.png"
+  },
+  {
+    "pokedexNumber": 103,
+    "formKey": "alola",
+    "apiName": "exeggutor-alola",
+    "displayName": "Exeggutor (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10114.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10114.png"
+  },
+  {
+    "pokedexNumber": 105,
+    "formKey": "alola",
+    "apiName": "marowak-alola",
+    "displayName": "Marowak (Alola)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10115.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10115.png"
+  },
+  {
+    "pokedexNumber": 105,
+    "formKey": "totem",
+    "apiName": "marowak-totem",
+    "displayName": "Marowak (Totem)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10149.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10149.png"
+  },
+  {
+    "pokedexNumber": 110,
+    "formKey": "galar",
+    "apiName": "weezing-galar",
+    "displayName": "Weezing (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10167.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10167.png"
+  },
+  {
+    "pokedexNumber": 115,
+    "formKey": "mega",
+    "apiName": "kangaskhan-mega",
+    "displayName": "Kangaskhan (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10039.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10039.png"
+  },
+  {
+    "pokedexNumber": 121,
+    "formKey": "mega",
+    "apiName": "starmie-mega",
+    "displayName": "Starmie (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 122,
+    "formKey": "galar",
+    "apiName": "mr-mime-galar",
+    "displayName": "Mr Mime (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10168.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10168.png"
+  },
+  {
+    "pokedexNumber": 127,
+    "formKey": "mega",
+    "apiName": "pinsir-mega",
+    "displayName": "Pinsir (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10040.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10040.png"
+  },
+  {
+    "pokedexNumber": 128,
+    "formKey": "paldea-aqua-breed",
+    "apiName": "tauros-paldea-aqua-breed",
+    "displayName": "Tauros (Paldea Aqua Breed)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10252.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10252.png"
+  },
+  {
+    "pokedexNumber": 128,
+    "formKey": "paldea-blaze-breed",
+    "apiName": "tauros-paldea-blaze-breed",
+    "displayName": "Tauros (Paldea Blaze Breed)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10251.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10251.png"
+  },
+  {
+    "pokedexNumber": 128,
+    "formKey": "paldea-combat-breed",
+    "apiName": "tauros-paldea-combat-breed",
+    "displayName": "Tauros (Paldea Combat Breed)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10250.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10250.png"
+  },
+  {
+    "pokedexNumber": 130,
+    "formKey": "mega",
+    "apiName": "gyarados-mega",
+    "displayName": "Gyarados (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10041.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10041.png"
+  },
+  {
+    "pokedexNumber": 131,
+    "formKey": "gmax",
+    "apiName": "lapras-gmax",
+    "displayName": "Lapras (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10204.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10204.png"
+  },
+  {
+    "pokedexNumber": 133,
+    "formKey": "gmax",
+    "apiName": "eevee-gmax",
+    "displayName": "Eevee (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10205.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10205.png"
+  },
+  {
+    "pokedexNumber": 133,
+    "formKey": "starter",
+    "apiName": "eevee-starter",
+    "displayName": "Eevee (Starter)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 142,
+    "formKey": "mega",
+    "apiName": "aerodactyl-mega",
+    "displayName": "Aerodactyl (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10042.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10042.png"
+  },
+  {
+    "pokedexNumber": 143,
+    "formKey": "gmax",
+    "apiName": "snorlax-gmax",
+    "displayName": "Snorlax (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10206.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10206.png"
+  },
+  {
+    "pokedexNumber": 144,
+    "formKey": "galar",
+    "apiName": "articuno-galar",
+    "displayName": "Articuno (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10169.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10169.png"
+  },
+  {
+    "pokedexNumber": 145,
+    "formKey": "galar",
+    "apiName": "zapdos-galar",
+    "displayName": "Zapdos (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10170.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10170.png"
+  },
+  {
+    "pokedexNumber": 146,
+    "formKey": "galar",
+    "apiName": "moltres-galar",
+    "displayName": "Moltres (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10171.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10171.png"
+  },
+  {
+    "pokedexNumber": 149,
+    "formKey": "mega",
+    "apiName": "dragonite-mega",
+    "displayName": "Dragonite (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10281.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10281.png"
+  },
+  {
+    "pokedexNumber": 150,
+    "formKey": "mega-x",
+    "apiName": "mewtwo-mega-x",
+    "displayName": "Mewtwo (Mega X)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10043.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10043.png"
+  },
+  {
+    "pokedexNumber": 150,
+    "formKey": "mega-y",
+    "apiName": "mewtwo-mega-y",
+    "displayName": "Mewtwo (Mega Y)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10044.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10044.png"
+  },
+  {
+    "pokedexNumber": 154,
+    "formKey": "mega",
+    "apiName": "meganium-mega",
+    "displayName": "Meganium (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 157,
+    "formKey": "hisui",
+    "apiName": "typhlosion-hisui",
+    "displayName": "Typhlosion (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10233.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10233.png"
+  },
+  {
+    "pokedexNumber": 160,
+    "formKey": "mega",
+    "apiName": "feraligatr-mega",
+    "displayName": "Feraligatr (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 181,
+    "formKey": "mega",
+    "apiName": "ampharos-mega",
+    "displayName": "Ampharos (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10045.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10045.png"
+  },
+  {
+    "pokedexNumber": 194,
+    "formKey": "paldea",
+    "apiName": "wooper-paldea",
+    "displayName": "Wooper (Paldea)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10253.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10253.png"
+  },
+  {
+    "pokedexNumber": 199,
+    "formKey": "galar",
+    "apiName": "slowking-galar",
+    "displayName": "Slowking (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10172.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10172.png"
+  },
+  {
+    "pokedexNumber": 208,
+    "formKey": "mega",
+    "apiName": "steelix-mega",
+    "displayName": "Steelix (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10072.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10072.png"
+  },
+  {
+    "pokedexNumber": 211,
+    "formKey": "hisui",
+    "apiName": "qwilfish-hisui",
+    "displayName": "Qwilfish (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10234.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10234.png"
+  },
+  {
+    "pokedexNumber": 212,
+    "formKey": "mega",
+    "apiName": "scizor-mega",
+    "displayName": "Scizor (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10046.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10046.png"
+  },
+  {
+    "pokedexNumber": 214,
+    "formKey": "mega",
+    "apiName": "heracross-mega",
+    "displayName": "Heracross (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10047.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10047.png"
+  },
+  {
+    "pokedexNumber": 215,
+    "formKey": "hisui",
+    "apiName": "sneasel-hisui",
+    "displayName": "Sneasel (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10235.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10235.png"
+  },
+  {
+    "pokedexNumber": 222,
+    "formKey": "galar",
+    "apiName": "corsola-galar",
+    "displayName": "Corsola (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10173.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10173.png"
+  },
+  {
+    "pokedexNumber": 227,
+    "formKey": "mega",
+    "apiName": "skarmory-mega",
+    "displayName": "Skarmory (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 229,
+    "formKey": "mega",
+    "apiName": "houndoom-mega",
+    "displayName": "Houndoom (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10048.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10048.png"
+  },
+  {
+    "pokedexNumber": 248,
+    "formKey": "mega",
+    "apiName": "tyranitar-mega",
+    "displayName": "Tyranitar (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10049.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10049.png"
+  },
+  {
+    "pokedexNumber": 254,
+    "formKey": "mega",
+    "apiName": "sceptile-mega",
+    "displayName": "Sceptile (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10065.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10065.png"
+  },
+  {
+    "pokedexNumber": 257,
+    "formKey": "mega",
+    "apiName": "blaziken-mega",
+    "displayName": "Blaziken (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10050.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10050.png"
+  },
+  {
+    "pokedexNumber": 260,
+    "formKey": "mega",
+    "apiName": "swampert-mega",
+    "displayName": "Swampert (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10064.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10064.png"
+  },
+  {
+    "pokedexNumber": 263,
+    "formKey": "galar",
+    "apiName": "zigzagoon-galar",
+    "displayName": "Zigzagoon (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10174.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10174.png"
+  },
+  {
+    "pokedexNumber": 264,
+    "formKey": "galar",
+    "apiName": "linoone-galar",
+    "displayName": "Linoone (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10175.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10175.png"
+  },
+  {
+    "pokedexNumber": 282,
+    "formKey": "mega",
+    "apiName": "gardevoir-mega",
+    "displayName": "Gardevoir (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10051.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10051.png"
+  },
+  {
+    "pokedexNumber": 302,
+    "formKey": "mega",
+    "apiName": "sableye-mega",
+    "displayName": "Sableye (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10066.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10066.png"
+  },
+  {
+    "pokedexNumber": 303,
+    "formKey": "mega",
+    "apiName": "mawile-mega",
+    "displayName": "Mawile (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10052.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10052.png"
+  },
+  {
+    "pokedexNumber": 306,
+    "formKey": "mega",
+    "apiName": "aggron-mega",
+    "displayName": "Aggron (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10053.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10053.png"
+  },
+  {
+    "pokedexNumber": 308,
+    "formKey": "mega",
+    "apiName": "medicham-mega",
+    "displayName": "Medicham (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10054.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10054.png"
+  },
+  {
+    "pokedexNumber": 310,
+    "formKey": "mega",
+    "apiName": "manectric-mega",
+    "displayName": "Manectric (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10055.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10055.png"
+  },
+  {
+    "pokedexNumber": 319,
+    "formKey": "mega",
+    "apiName": "sharpedo-mega",
+    "displayName": "Sharpedo (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10070.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10070.png"
+  },
+  {
+    "pokedexNumber": 323,
+    "formKey": "mega",
+    "apiName": "camerupt-mega",
+    "displayName": "Camerupt (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10087.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10087.png"
+  },
+  {
+    "pokedexNumber": 334,
+    "formKey": "mega",
+    "apiName": "altaria-mega",
+    "displayName": "Altaria (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10067.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10067.png"
+  },
+  {
+    "pokedexNumber": 351,
+    "formKey": "rainy",
+    "apiName": "castform-rainy",
+    "displayName": "Castform (Rainy)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10014.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10014.png"
+  },
+  {
+    "pokedexNumber": 351,
+    "formKey": "snowy",
+    "apiName": "castform-snowy",
+    "displayName": "Castform (Snowy)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10015.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10015.png"
+  },
+  {
+    "pokedexNumber": 351,
+    "formKey": "sunny",
+    "apiName": "castform-sunny",
+    "displayName": "Castform (Sunny)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10013.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10013.png"
+  },
+  {
+    "pokedexNumber": 354,
+    "formKey": "mega",
+    "apiName": "banette-mega",
+    "displayName": "Banette (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10056.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10056.png"
+  },
+  {
+    "pokedexNumber": 358,
+    "formKey": "mega",
+    "apiName": "chimecho-mega",
+    "displayName": "Chimecho (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 359,
+    "formKey": "mega",
+    "apiName": "absol-mega",
+    "displayName": "Absol (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10057.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10057.png"
+  },
+  {
+    "pokedexNumber": 359,
+    "formKey": "mega-z",
+    "apiName": "absol-mega-z",
+    "displayName": "Absol (Mega Z)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 362,
+    "formKey": "mega",
+    "apiName": "glalie-mega",
+    "displayName": "Glalie (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10074.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10074.png"
+  },
+  {
+    "pokedexNumber": 373,
+    "formKey": "mega",
+    "apiName": "salamence-mega",
+    "displayName": "Salamence (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10089.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10089.png"
+  },
+  {
+    "pokedexNumber": 376,
+    "formKey": "mega",
+    "apiName": "metagross-mega",
+    "displayName": "Metagross (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10076.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10076.png"
+  },
+  {
+    "pokedexNumber": 380,
+    "formKey": "mega",
+    "apiName": "latias-mega",
+    "displayName": "Latias (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10062.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10062.png"
+  },
+  {
+    "pokedexNumber": 381,
+    "formKey": "mega",
+    "apiName": "latios-mega",
+    "displayName": "Latios (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10063.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10063.png"
+  },
+  {
+    "pokedexNumber": 382,
+    "formKey": "primal",
+    "apiName": "kyogre-primal",
+    "displayName": "Kyogre (Primal)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10077.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10077.png"
+  },
+  {
+    "pokedexNumber": 383,
+    "formKey": "primal",
+    "apiName": "groudon-primal",
+    "displayName": "Groudon (Primal)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10078.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10078.png"
+  },
+  {
+    "pokedexNumber": 384,
+    "formKey": "mega",
+    "apiName": "rayquaza-mega",
+    "displayName": "Rayquaza (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10079.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10079.png"
+  },
+  {
+    "pokedexNumber": 386,
+    "formKey": "attack",
+    "apiName": "deoxys-attack",
+    "displayName": "Deoxys (Attack)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10001.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10001.png"
+  },
+  {
+    "pokedexNumber": 386,
+    "formKey": "defense",
+    "apiName": "deoxys-defense",
+    "displayName": "Deoxys (Defense)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10002.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10002.png"
+  },
+  {
+    "pokedexNumber": 386,
+    "formKey": "normal",
+    "apiName": "deoxys-normal",
+    "displayName": "Deoxys (Normal)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/386.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/386.png"
+  },
+  {
+    "pokedexNumber": 386,
+    "formKey": "speed",
+    "apiName": "deoxys-speed",
+    "displayName": "Deoxys (Speed)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10003.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10003.png"
+  },
+  {
+    "pokedexNumber": 398,
+    "formKey": "mega",
+    "apiName": "staraptor-mega",
+    "displayName": "Staraptor (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 413,
+    "formKey": "plant",
+    "apiName": "wormadam-plant",
+    "displayName": "Wormadam (Plant)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/413.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/413.png"
+  },
+  {
+    "pokedexNumber": 413,
+    "formKey": "sandy",
+    "apiName": "wormadam-sandy",
+    "displayName": "Wormadam (Sandy)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10004.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10004.png"
+  },
+  {
+    "pokedexNumber": 413,
+    "formKey": "trash",
+    "apiName": "wormadam-trash",
+    "displayName": "Wormadam (Trash)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10005.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10005.png"
+  },
+  {
+    "pokedexNumber": 428,
+    "formKey": "mega",
+    "apiName": "lopunny-mega",
+    "displayName": "Lopunny (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10088.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10088.png"
+  },
+  {
+    "pokedexNumber": 445,
+    "formKey": "mega",
+    "apiName": "garchomp-mega",
+    "displayName": "Garchomp (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10058.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10058.png"
+  },
+  {
+    "pokedexNumber": 445,
+    "formKey": "mega-z",
+    "apiName": "garchomp-mega-z",
+    "displayName": "Garchomp (Mega Z)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 448,
+    "formKey": "mega",
+    "apiName": "lucario-mega",
+    "displayName": "Lucario (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10059.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10059.png"
+  },
+  {
+    "pokedexNumber": 448,
+    "formKey": "mega-z",
+    "apiName": "lucario-mega-z",
+    "displayName": "Lucario (Mega Z)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 460,
+    "formKey": "mega",
+    "apiName": "abomasnow-mega",
+    "displayName": "Abomasnow (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10060.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10060.png"
+  },
+  {
+    "pokedexNumber": 475,
+    "formKey": "mega",
+    "apiName": "gallade-mega",
+    "displayName": "Gallade (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10068.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10068.png"
+  },
+  {
+    "pokedexNumber": 478,
+    "formKey": "mega",
+    "apiName": "froslass-mega",
+    "displayName": "Froslass (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 479,
+    "formKey": "fan",
+    "apiName": "rotom-fan",
+    "displayName": "Rotom (Fan)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10011.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10011.png"
+  },
+  {
+    "pokedexNumber": 479,
+    "formKey": "frost",
+    "apiName": "rotom-frost",
+    "displayName": "Rotom (Frost)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10010.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10010.png"
+  },
+  {
+    "pokedexNumber": 479,
+    "formKey": "heat",
+    "apiName": "rotom-heat",
+    "displayName": "Rotom (Heat)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10008.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10008.png"
+  },
+  {
+    "pokedexNumber": 479,
+    "formKey": "mow",
+    "apiName": "rotom-mow",
+    "displayName": "Rotom (Mow)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10012.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10012.png"
+  },
+  {
+    "pokedexNumber": 479,
+    "formKey": "wash",
+    "apiName": "rotom-wash",
+    "displayName": "Rotom (Wash)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10009.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10009.png"
+  },
+  {
+    "pokedexNumber": 483,
+    "formKey": "origin",
+    "apiName": "dialga-origin",
+    "displayName": "Dialga (Origin)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10245.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10245.png"
+  },
+  {
+    "pokedexNumber": 484,
+    "formKey": "origin",
+    "apiName": "palkia-origin",
+    "displayName": "Palkia (Origin)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10246.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10246.png"
+  },
+  {
+    "pokedexNumber": 485,
+    "formKey": "mega",
+    "apiName": "heatran-mega",
+    "displayName": "Heatran (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 487,
+    "formKey": "altered",
+    "apiName": "giratina-altered",
+    "displayName": "Giratina (Altered)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/487.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/487.png"
+  },
+  {
+    "pokedexNumber": 487,
+    "formKey": "origin",
+    "apiName": "giratina-origin",
+    "displayName": "Giratina (Origin)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10007.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10007.png"
+  },
+  {
+    "pokedexNumber": 491,
+    "formKey": "mega",
+    "apiName": "darkrai-mega",
+    "displayName": "Darkrai (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 492,
+    "formKey": "land",
+    "apiName": "shaymin-land",
+    "displayName": "Shaymin (Land)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/492.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/492.png"
+  },
+  {
+    "pokedexNumber": 492,
+    "formKey": "sky",
+    "apiName": "shaymin-sky",
+    "displayName": "Shaymin (Sky)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10006.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10006.png"
+  },
+  {
+    "pokedexNumber": 500,
+    "formKey": "mega",
+    "apiName": "emboar-mega",
+    "displayName": "Emboar (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 503,
+    "formKey": "hisui",
+    "apiName": "samurott-hisui",
+    "displayName": "Samurott (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10236.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10236.png"
+  },
+  {
+    "pokedexNumber": 530,
+    "formKey": "mega",
+    "apiName": "excadrill-mega",
+    "displayName": "Excadrill (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 531,
+    "formKey": "mega",
+    "apiName": "audino-mega",
+    "displayName": "Audino (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10069.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10069.png"
+  },
+  {
+    "pokedexNumber": 545,
+    "formKey": "mega",
+    "apiName": "scolipede-mega",
+    "displayName": "Scolipede (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 549,
+    "formKey": "hisui",
+    "apiName": "lilligant-hisui",
+    "displayName": "Lilligant (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10237.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10237.png"
+  },
+  {
+    "pokedexNumber": 550,
+    "formKey": "blue-striped",
+    "apiName": "basculin-blue-striped",
+    "displayName": "Basculin (Blue Striped)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10016.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10016.png"
+  },
+  {
+    "pokedexNumber": 550,
+    "formKey": "red-striped",
+    "apiName": "basculin-red-striped",
+    "displayName": "Basculin (Red Striped)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/550.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/550.png"
+  },
+  {
+    "pokedexNumber": 550,
+    "formKey": "white-striped",
+    "apiName": "basculin-white-striped",
+    "displayName": "Basculin (White Striped)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10247.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10247.png"
+  },
+  {
+    "pokedexNumber": 554,
+    "formKey": "galar",
+    "apiName": "darumaka-galar",
+    "displayName": "Darumaka (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10176.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10176.png"
+  },
+  {
+    "pokedexNumber": 555,
+    "formKey": "galar-standard",
+    "apiName": "darmanitan-galar-standard",
+    "displayName": "Darmanitan (Galar Standard)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10177.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10177.png"
+  },
+  {
+    "pokedexNumber": 555,
+    "formKey": "galar-zen",
+    "apiName": "darmanitan-galar-zen",
+    "displayName": "Darmanitan (Galar Zen)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10178.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10178.png"
+  },
+  {
+    "pokedexNumber": 555,
+    "formKey": "standard",
+    "apiName": "darmanitan-standard",
+    "displayName": "Darmanitan (Standard)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/555.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/555.png"
+  },
+  {
+    "pokedexNumber": 555,
+    "formKey": "zen",
+    "apiName": "darmanitan-zen",
+    "displayName": "Darmanitan (Zen)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10017.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10017.png"
+  },
+  {
+    "pokedexNumber": 560,
+    "formKey": "mega",
+    "apiName": "scrafty-mega",
+    "displayName": "Scrafty (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 562,
+    "formKey": "galar",
+    "apiName": "yamask-galar",
+    "displayName": "Yamask (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10179.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10179.png"
+  },
+  {
+    "pokedexNumber": 569,
+    "formKey": "gmax",
+    "apiName": "garbodor-gmax",
+    "displayName": "Garbodor (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10207.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10207.png"
+  },
+  {
+    "pokedexNumber": 570,
+    "formKey": "hisui",
+    "apiName": "zorua-hisui",
+    "displayName": "Zorua (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10238.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10238.png"
+  },
+  {
+    "pokedexNumber": 571,
+    "formKey": "hisui",
+    "apiName": "zoroark-hisui",
+    "displayName": "Zoroark (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10239.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10239.png"
+  },
+  {
+    "pokedexNumber": 592,
+    "formKey": "male",
+    "apiName": "frillish-male",
+    "displayName": "Frillish (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/592.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/592.png"
+  },
+  {
+    "pokedexNumber": 593,
+    "formKey": "male",
+    "apiName": "jellicent-male",
+    "displayName": "Jellicent (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/593.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/593.png"
+  },
+  {
+    "pokedexNumber": 604,
+    "formKey": "mega",
+    "apiName": "eelektross-mega",
+    "displayName": "Eelektross (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 609,
+    "formKey": "mega",
+    "apiName": "chandelure-mega",
+    "displayName": "Chandelure (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 618,
+    "formKey": "galar",
+    "apiName": "stunfisk-galar",
+    "displayName": "Stunfisk (Galar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10180.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10180.png"
+  },
+  {
+    "pokedexNumber": 623,
+    "formKey": "mega",
+    "apiName": "golurk-mega",
+    "displayName": "Golurk (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 628,
+    "formKey": "hisui",
+    "apiName": "braviary-hisui",
+    "displayName": "Braviary (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10240.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10240.png"
+  },
+  {
+    "pokedexNumber": 641,
+    "formKey": "incarnate",
+    "apiName": "tornadus-incarnate",
+    "displayName": "Tornadus (Incarnate)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/641.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/641.png"
+  },
+  {
+    "pokedexNumber": 641,
+    "formKey": "therian",
+    "apiName": "tornadus-therian",
+    "displayName": "Tornadus (Therian)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10019.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10019.png"
+  },
+  {
+    "pokedexNumber": 642,
+    "formKey": "incarnate",
+    "apiName": "thundurus-incarnate",
+    "displayName": "Thundurus (Incarnate)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/642.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/642.png"
+  },
+  {
+    "pokedexNumber": 642,
+    "formKey": "therian",
+    "apiName": "thundurus-therian",
+    "displayName": "Thundurus (Therian)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10020.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10020.png"
+  },
+  {
+    "pokedexNumber": 645,
+    "formKey": "incarnate",
+    "apiName": "landorus-incarnate",
+    "displayName": "Landorus (Incarnate)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/645.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/645.png"
+  },
+  {
+    "pokedexNumber": 645,
+    "formKey": "therian",
+    "apiName": "landorus-therian",
+    "displayName": "Landorus (Therian)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10021.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10021.png"
+  },
+  {
+    "pokedexNumber": 646,
+    "formKey": "black",
+    "apiName": "kyurem-black",
+    "displayName": "Kyurem (Black)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10022.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10022.png"
+  },
+  {
+    "pokedexNumber": 646,
+    "formKey": "white",
+    "apiName": "kyurem-white",
+    "displayName": "Kyurem (White)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10023.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10023.png"
+  },
+  {
+    "pokedexNumber": 647,
+    "formKey": "ordinary",
+    "apiName": "keldeo-ordinary",
+    "displayName": "Keldeo (Ordinary)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/647.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/647.png"
+  },
+  {
+    "pokedexNumber": 647,
+    "formKey": "resolute",
+    "apiName": "keldeo-resolute",
+    "displayName": "Keldeo (Resolute)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10024.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10024.png"
+  },
+  {
+    "pokedexNumber": 648,
+    "formKey": "aria",
+    "apiName": "meloetta-aria",
+    "displayName": "Meloetta (Aria)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/648.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/648.png"
+  },
+  {
+    "pokedexNumber": 648,
+    "formKey": "pirouette",
+    "apiName": "meloetta-pirouette",
+    "displayName": "Meloetta (Pirouette)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10018.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10018.png"
+  },
+  {
+    "pokedexNumber": 652,
+    "formKey": "mega",
+    "apiName": "chesnaught-mega",
+    "displayName": "Chesnaught (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 655,
+    "formKey": "mega",
+    "apiName": "delphox-mega",
+    "displayName": "Delphox (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 658,
+    "formKey": "ash",
+    "apiName": "greninja-ash",
+    "displayName": "Greninja (Ash)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10117.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10117.png"
+  },
+  {
+    "pokedexNumber": 658,
+    "formKey": "battle-bond",
+    "apiName": "greninja-battle-bond",
+    "displayName": "Greninja (Battle Bond)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10116.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10116.png"
+  },
+  {
+    "pokedexNumber": 658,
+    "formKey": "mega",
+    "apiName": "greninja-mega",
+    "displayName": "Greninja (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 668,
+    "formKey": "male",
+    "apiName": "pyroar-male",
+    "displayName": "Pyroar (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/668.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/668.png"
+  },
+  {
+    "pokedexNumber": 668,
+    "formKey": "mega",
+    "apiName": "pyroar-mega",
+    "displayName": "Pyroar (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 670,
+    "formKey": "eternal",
+    "apiName": "floette-eternal",
+    "displayName": "Floette (Eternal)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10061.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10061.png"
+  },
+  {
+    "pokedexNumber": 670,
+    "formKey": "mega",
+    "apiName": "floette-mega",
+    "displayName": "Floette (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 678,
+    "formKey": "female",
+    "apiName": "meowstic-female",
+    "displayName": "Meowstic (Female)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10025.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10025.png"
+  },
+  {
+    "pokedexNumber": 678,
+    "formKey": "male",
+    "apiName": "meowstic-male",
+    "displayName": "Meowstic (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/678.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/678.png"
+  },
+  {
+    "pokedexNumber": 678,
+    "formKey": "mega",
+    "apiName": "meowstic-mega",
+    "displayName": "Meowstic (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 681,
+    "formKey": "blade",
+    "apiName": "aegislash-blade",
+    "displayName": "Aegislash (Blade)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10026.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10026.png"
+  },
+  {
+    "pokedexNumber": 681,
+    "formKey": "shield",
+    "apiName": "aegislash-shield",
+    "displayName": "Aegislash (Shield)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/681.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/681.png"
+  },
+  {
+    "pokedexNumber": 687,
+    "formKey": "mega",
+    "apiName": "malamar-mega",
+    "displayName": "Malamar (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 689,
+    "formKey": "mega",
+    "apiName": "barbaracle-mega",
+    "displayName": "Barbaracle (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 691,
+    "formKey": "mega",
+    "apiName": "dragalge-mega",
+    "displayName": "Dragalge (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 701,
+    "formKey": "mega",
+    "apiName": "hawlucha-mega",
+    "displayName": "Hawlucha (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 705,
+    "formKey": "hisui",
+    "apiName": "sliggoo-hisui",
+    "displayName": "Sliggoo (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10241.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10241.png"
+  },
+  {
+    "pokedexNumber": 706,
+    "formKey": "hisui",
+    "apiName": "goodra-hisui",
+    "displayName": "Goodra (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10242.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10242.png"
+  },
+  {
+    "pokedexNumber": 710,
+    "formKey": "average",
+    "apiName": "pumpkaboo-average",
+    "displayName": "Pumpkaboo (Average)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/710.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/710.png"
+  },
+  {
+    "pokedexNumber": 710,
+    "formKey": "large",
+    "apiName": "pumpkaboo-large",
+    "displayName": "Pumpkaboo (Large)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10028.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/710-large.png"
+  },
+  {
+    "pokedexNumber": 710,
+    "formKey": "small",
+    "apiName": "pumpkaboo-small",
+    "displayName": "Pumpkaboo (Small)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10027.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/710-small.png"
+  },
+  {
+    "pokedexNumber": 710,
+    "formKey": "super",
+    "apiName": "pumpkaboo-super",
+    "displayName": "Pumpkaboo (Super)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10029.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/710-super.png"
+  },
+  {
+    "pokedexNumber": 711,
+    "formKey": "average",
+    "apiName": "gourgeist-average",
+    "displayName": "Gourgeist (Average)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/711.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/711.png"
+  },
+  {
+    "pokedexNumber": 711,
+    "formKey": "large",
+    "apiName": "gourgeist-large",
+    "displayName": "Gourgeist (Large)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10031.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/711-large.png"
+  },
+  {
+    "pokedexNumber": 711,
+    "formKey": "small",
+    "apiName": "gourgeist-small",
+    "displayName": "Gourgeist (Small)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10030.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/711-small.png"
+  },
+  {
+    "pokedexNumber": 711,
+    "formKey": "super",
+    "apiName": "gourgeist-super",
+    "displayName": "Gourgeist (Super)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10032.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/711-super.png"
+  },
+  {
+    "pokedexNumber": 713,
+    "formKey": "hisui",
+    "apiName": "avalugg-hisui",
+    "displayName": "Avalugg (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10243.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10243.png"
+  },
+  {
+    "pokedexNumber": 718,
+    "formKey": "10",
+    "apiName": "zygarde-10",
+    "displayName": "Zygarde (10)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10181.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10181.png"
+  },
+  {
+    "pokedexNumber": 718,
+    "formKey": "10-power-construct",
+    "apiName": "zygarde-10-power-construct",
+    "displayName": "Zygarde (10 Power Construct)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10118.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10118.png"
+  },
+  {
+    "pokedexNumber": 718,
+    "formKey": "50",
+    "apiName": "zygarde-50",
+    "displayName": "Zygarde (50)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/718.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/718.png"
+  },
+  {
+    "pokedexNumber": 718,
+    "formKey": "50-power-construct",
+    "apiName": "zygarde-50-power-construct",
+    "displayName": "Zygarde (50 Power Construct)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10119.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10119.png"
+  },
+  {
+    "pokedexNumber": 718,
+    "formKey": "complete",
+    "apiName": "zygarde-complete",
+    "displayName": "Zygarde (Complete)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10120.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10120.png"
+  },
+  {
+    "pokedexNumber": 718,
+    "formKey": "mega",
+    "apiName": "zygarde-mega",
+    "displayName": "Zygarde (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 719,
+    "formKey": "mega",
+    "apiName": "diancie-mega",
+    "displayName": "Diancie (Mega)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10075.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10075.png"
+  },
+  {
+    "pokedexNumber": 720,
+    "formKey": "unbound",
+    "apiName": "hoopa-unbound",
+    "displayName": "Hoopa (Unbound)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10086.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10086.png"
+  },
+  {
+    "pokedexNumber": 724,
+    "formKey": "hisui",
+    "apiName": "decidueye-hisui",
+    "displayName": "Decidueye (Hisui)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10244.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10244.png"
+  },
+  {
+    "pokedexNumber": 735,
+    "formKey": "totem",
+    "apiName": "gumshoos-totem",
+    "displayName": "Gumshoos (Totem)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10121.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/735-totem.png"
+  },
+  {
+    "pokedexNumber": 738,
+    "formKey": "totem",
+    "apiName": "vikavolt-totem",
+    "displayName": "Vikavolt (Totem)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10122.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/738-totem.png"
+  },
+  {
+    "pokedexNumber": 740,
+    "formKey": "mega",
+    "apiName": "crabominable-mega",
+    "displayName": "Crabominable (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 741,
+    "formKey": "baile",
+    "apiName": "oricorio-baile",
+    "displayName": "Oricorio (Baile)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/741.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/741.png"
+  },
+  {
+    "pokedexNumber": 741,
+    "formKey": "pau",
+    "apiName": "oricorio-pau",
+    "displayName": "Oricorio (Pau)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10124.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10124.png"
+  },
+  {
+    "pokedexNumber": 741,
+    "formKey": "pom-pom",
+    "apiName": "oricorio-pom-pom",
+    "displayName": "Oricorio (Pom Pom)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10123.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10123.png"
+  },
+  {
+    "pokedexNumber": 741,
+    "formKey": "sensu",
+    "apiName": "oricorio-sensu",
+    "displayName": "Oricorio (Sensu)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10125.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10125.png"
+  },
+  {
+    "pokedexNumber": 743,
+    "formKey": "totem",
+    "apiName": "ribombee-totem",
+    "displayName": "Ribombee (Totem)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10150.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/743-totem.png"
+  },
+  {
+    "pokedexNumber": 744,
+    "formKey": "own-tempo",
+    "apiName": "rockruff-own-tempo",
+    "displayName": "Rockruff (Own Tempo)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10151.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/744-own-tempo.png"
+  },
+  {
+    "pokedexNumber": 745,
+    "formKey": "dusk",
+    "apiName": "lycanroc-dusk",
+    "displayName": "Lycanroc (Dusk)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10152.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10152.png"
+  },
+  {
+    "pokedexNumber": 745,
+    "formKey": "midday",
+    "apiName": "lycanroc-midday",
+    "displayName": "Lycanroc (Midday)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/745.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/745.png"
+  },
+  {
+    "pokedexNumber": 745,
+    "formKey": "midnight",
+    "apiName": "lycanroc-midnight",
+    "displayName": "Lycanroc (Midnight)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10126.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10126.png"
+  },
+  {
+    "pokedexNumber": 746,
+    "formKey": "school",
+    "apiName": "wishiwashi-school",
+    "displayName": "Wishiwashi (School)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10127.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10127.png"
+  },
+  {
+    "pokedexNumber": 746,
+    "formKey": "solo",
+    "apiName": "wishiwashi-solo",
+    "displayName": "Wishiwashi (Solo)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/746.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/746.png"
+  },
+  {
+    "pokedexNumber": 752,
+    "formKey": "totem",
+    "apiName": "araquanid-totem",
+    "displayName": "Araquanid (Totem)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 754,
+    "formKey": "totem",
+    "apiName": "lurantis-totem",
+    "displayName": "Lurantis (Totem)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 758,
+    "formKey": "totem",
+    "apiName": "salazzle-totem",
+    "displayName": "Salazzle (Totem)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 768,
+    "formKey": "mega",
+    "apiName": "golisopod-mega",
+    "displayName": "Golisopod (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "blue",
+    "apiName": "minior-blue",
+    "displayName": "Minior (Blue)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10140.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10140.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "blue-meteor",
+    "apiName": "minior-blue-meteor",
+    "displayName": "Minior (Blue Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10133.png",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "green",
+    "apiName": "minior-green",
+    "displayName": "Minior (Green)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10139.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10139.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "green-meteor",
+    "apiName": "minior-green-meteor",
+    "displayName": "Minior (Green Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10132.png",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "indigo",
+    "apiName": "minior-indigo",
+    "displayName": "Minior (Indigo)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10141.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10141.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "indigo-meteor",
+    "apiName": "minior-indigo-meteor",
+    "displayName": "Minior (Indigo Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10134.png",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "orange",
+    "apiName": "minior-orange",
+    "displayName": "Minior (Orange)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10137.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10137.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "orange-meteor",
+    "apiName": "minior-orange-meteor",
+    "displayName": "Minior (Orange Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10130.png",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "red",
+    "apiName": "minior-red",
+    "displayName": "Minior (Red)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10136.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10136.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "red-meteor",
+    "apiName": "minior-red-meteor",
+    "displayName": "Minior (Red Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/774.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/774.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "violet",
+    "apiName": "minior-violet",
+    "displayName": "Minior (Violet)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10142.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10142.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "violet-meteor",
+    "apiName": "minior-violet-meteor",
+    "displayName": "Minior (Violet Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10135.png",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "yellow",
+    "apiName": "minior-yellow",
+    "displayName": "Minior (Yellow)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10138.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10138.png"
+  },
+  {
+    "pokedexNumber": 774,
+    "formKey": "yellow-meteor",
+    "apiName": "minior-yellow-meteor",
+    "displayName": "Minior (Yellow Meteor)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10131.png",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 777,
+    "formKey": "totem",
+    "apiName": "togedemaru-totem",
+    "displayName": "Togedemaru (Totem)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 778,
+    "formKey": "busted",
+    "apiName": "mimikyu-busted",
+    "displayName": "Mimikyu (Busted)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10143.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10143.png"
+  },
+  {
+    "pokedexNumber": 778,
+    "formKey": "disguised",
+    "apiName": "mimikyu-disguised",
+    "displayName": "Mimikyu (Disguised)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/778.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/778.png"
+  },
+  {
+    "pokedexNumber": 778,
+    "formKey": "totem-busted",
+    "apiName": "mimikyu-totem-busted",
+    "displayName": "Mimikyu (Totem Busted)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10145.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/778-totem-busted.png"
+  },
+  {
+    "pokedexNumber": 778,
+    "formKey": "totem-disguised",
+    "apiName": "mimikyu-totem-disguised",
+    "displayName": "Mimikyu (Totem Disguised)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10144.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/778-totem-disguised.png"
+  },
+  {
+    "pokedexNumber": 780,
+    "formKey": "mega",
+    "apiName": "drampa-mega",
+    "displayName": "Drampa (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 784,
+    "formKey": "totem",
+    "apiName": "kommo-o-totem",
+    "displayName": "Kommo O (Totem)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 800,
+    "formKey": "dawn",
+    "apiName": "necrozma-dawn",
+    "displayName": "Necrozma (Dawn)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10156.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10156.png"
+  },
+  {
+    "pokedexNumber": 800,
+    "formKey": "dusk",
+    "apiName": "necrozma-dusk",
+    "displayName": "Necrozma (Dusk)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10155.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10155.png"
+  },
+  {
+    "pokedexNumber": 800,
+    "formKey": "ultra",
+    "apiName": "necrozma-ultra",
+    "displayName": "Necrozma (Ultra)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10157.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10157.png"
+  },
+  {
+    "pokedexNumber": 801,
+    "formKey": "mega",
+    "apiName": "magearna-mega",
+    "displayName": "Magearna (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 801,
+    "formKey": "original",
+    "apiName": "magearna-original",
+    "displayName": "Magearna (Original)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10147.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10147.png"
+  },
+  {
+    "pokedexNumber": 801,
+    "formKey": "original-mega",
+    "apiName": "magearna-original-mega",
+    "displayName": "Magearna (Original Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 807,
+    "formKey": "mega",
+    "apiName": "zeraora-mega",
+    "displayName": "Zeraora (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 809,
+    "formKey": "gmax",
+    "apiName": "melmetal-gmax",
+    "displayName": "Melmetal (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10208.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10208.png"
+  },
+  {
+    "pokedexNumber": 812,
+    "formKey": "gmax",
+    "apiName": "rillaboom-gmax",
+    "displayName": "Rillaboom (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10209.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10209.png"
+  },
+  {
+    "pokedexNumber": 815,
+    "formKey": "gmax",
+    "apiName": "cinderace-gmax",
+    "displayName": "Cinderace (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10210.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10210.png"
+  },
+  {
+    "pokedexNumber": 818,
+    "formKey": "gmax",
+    "apiName": "inteleon-gmax",
+    "displayName": "Inteleon (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10211.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10211.png"
+  },
+  {
+    "pokedexNumber": 823,
+    "formKey": "gmax",
+    "apiName": "corviknight-gmax",
+    "displayName": "Corviknight (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10212.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10212.png"
+  },
+  {
+    "pokedexNumber": 826,
+    "formKey": "gmax",
+    "apiName": "orbeetle-gmax",
+    "displayName": "Orbeetle (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10213.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10213.png"
+  },
+  {
+    "pokedexNumber": 834,
+    "formKey": "gmax",
+    "apiName": "drednaw-gmax",
+    "displayName": "Drednaw (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10214.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10214.png"
+  },
+  {
+    "pokedexNumber": 839,
+    "formKey": "gmax",
+    "apiName": "coalossal-gmax",
+    "displayName": "Coalossal (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10215.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10215.png"
+  },
+  {
+    "pokedexNumber": 841,
+    "formKey": "gmax",
+    "apiName": "flapple-gmax",
+    "displayName": "Flapple (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10216.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10216.png"
+  },
+  {
+    "pokedexNumber": 842,
+    "formKey": "gmax",
+    "apiName": "appletun-gmax",
+    "displayName": "Appletun (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10217.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10217.png"
+  },
+  {
+    "pokedexNumber": 844,
+    "formKey": "gmax",
+    "apiName": "sandaconda-gmax",
+    "displayName": "Sandaconda (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10218.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10218.png"
+  },
+  {
+    "pokedexNumber": 845,
+    "formKey": "gorging",
+    "apiName": "cramorant-gorging",
+    "displayName": "Cramorant (Gorging)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10183.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10183.png"
+  },
+  {
+    "pokedexNumber": 845,
+    "formKey": "gulping",
+    "apiName": "cramorant-gulping",
+    "displayName": "Cramorant (Gulping)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10182.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10182.png"
+  },
+  {
+    "pokedexNumber": 849,
+    "formKey": "amped",
+    "apiName": "toxtricity-amped",
+    "displayName": "Toxtricity (Amped)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/849.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/849.png"
+  },
+  {
+    "pokedexNumber": 849,
+    "formKey": "amped-gmax",
+    "apiName": "toxtricity-amped-gmax",
+    "displayName": "Toxtricity (Amped Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10219.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10219.png"
+  },
+  {
+    "pokedexNumber": 849,
+    "formKey": "low-key",
+    "apiName": "toxtricity-low-key",
+    "displayName": "Toxtricity (Low Key)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10184.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10184.png"
+  },
+  {
+    "pokedexNumber": 849,
+    "formKey": "low-key-gmax",
+    "apiName": "toxtricity-low-key-gmax",
+    "displayName": "Toxtricity (Low Key Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10228.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10228.png"
+  },
+  {
+    "pokedexNumber": 851,
+    "formKey": "gmax",
+    "apiName": "centiskorch-gmax",
+    "displayName": "Centiskorch (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10220.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10220.png"
+  },
+  {
+    "pokedexNumber": 858,
+    "formKey": "gmax",
+    "apiName": "hatterene-gmax",
+    "displayName": "Hatterene (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10221.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10221.png"
+  },
+  {
+    "pokedexNumber": 861,
+    "formKey": "gmax",
+    "apiName": "grimmsnarl-gmax",
+    "displayName": "Grimmsnarl (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10222.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10222.png"
+  },
+  {
+    "pokedexNumber": 869,
+    "formKey": "gmax",
+    "apiName": "alcremie-gmax",
+    "displayName": "Alcremie (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10223.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10223.png"
+  },
+  {
+    "pokedexNumber": 870,
+    "formKey": "mega",
+    "apiName": "falinks-mega",
+    "displayName": "Falinks (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 875,
+    "formKey": "ice",
+    "apiName": "eiscue-ice",
+    "displayName": "Eiscue (Ice)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/875.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/875.png"
+  },
+  {
+    "pokedexNumber": 875,
+    "formKey": "noice",
+    "apiName": "eiscue-noice",
+    "displayName": "Eiscue (Noice)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10185.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10185.png"
+  },
+  {
+    "pokedexNumber": 876,
+    "formKey": "female",
+    "apiName": "indeedee-female",
+    "displayName": "Indeedee (Female)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10186.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10186.png"
+  },
+  {
+    "pokedexNumber": 876,
+    "formKey": "male",
+    "apiName": "indeedee-male",
+    "displayName": "Indeedee (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/876.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/876.png"
+  },
+  {
+    "pokedexNumber": 877,
+    "formKey": "full-belly",
+    "apiName": "morpeko-full-belly",
+    "displayName": "Morpeko (Full Belly)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/877.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/877.png"
+  },
+  {
+    "pokedexNumber": 877,
+    "formKey": "hangry",
+    "apiName": "morpeko-hangry",
+    "displayName": "Morpeko (Hangry)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10187.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10187.png"
+  },
+  {
+    "pokedexNumber": 879,
+    "formKey": "gmax",
+    "apiName": "copperajah-gmax",
+    "displayName": "Copperajah (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10224.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10224.png"
+  },
+  {
+    "pokedexNumber": 884,
+    "formKey": "gmax",
+    "apiName": "duraludon-gmax",
+    "displayName": "Duraludon (Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10225.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10225.png"
+  },
+  {
+    "pokedexNumber": 888,
+    "formKey": "crowned",
+    "apiName": "zacian-crowned",
+    "displayName": "Zacian (Crowned)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10188.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10188.png"
+  },
+  {
+    "pokedexNumber": 889,
+    "formKey": "crowned",
+    "apiName": "zamazenta-crowned",
+    "displayName": "Zamazenta (Crowned)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10189.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10189.png"
+  },
+  {
+    "pokedexNumber": 890,
+    "formKey": "eternamax",
+    "apiName": "eternatus-eternamax",
+    "displayName": "Eternatus (Eternamax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10190.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10190.png"
+  },
+  {
+    "pokedexNumber": 892,
+    "formKey": "rapid-strike",
+    "apiName": "urshifu-rapid-strike",
+    "displayName": "Urshifu (Rapid Strike)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10191.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10191.png"
+  },
+  {
+    "pokedexNumber": 892,
+    "formKey": "rapid-strike-gmax",
+    "apiName": "urshifu-rapid-strike-gmax",
+    "displayName": "Urshifu (Rapid Strike Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10227.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10227.png"
+  },
+  {
+    "pokedexNumber": 892,
+    "formKey": "single-strike",
+    "apiName": "urshifu-single-strike",
+    "displayName": "Urshifu (Single Strike)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/892.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/892.png"
+  },
+  {
+    "pokedexNumber": 892,
+    "formKey": "single-strike-gmax",
+    "apiName": "urshifu-single-strike-gmax",
+    "displayName": "Urshifu (Single Strike Gmax)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10226.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10226.png"
+  },
+  {
+    "pokedexNumber": 893,
+    "formKey": "dada",
+    "apiName": "zarude-dada",
+    "displayName": "Zarude (Dada)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10192.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10192.png"
+  },
+  {
+    "pokedexNumber": 898,
+    "formKey": "ice",
+    "apiName": "calyrex-ice",
+    "displayName": "Calyrex (Ice)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10193.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10193.png"
+  },
+  {
+    "pokedexNumber": 898,
+    "formKey": "shadow",
+    "apiName": "calyrex-shadow",
+    "displayName": "Calyrex (Shadow)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10194.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10194.png"
+  },
+  {
+    "pokedexNumber": 901,
+    "formKey": "bloodmoon",
+    "apiName": "ursaluna-bloodmoon",
+    "displayName": "Ursaluna (Bloodmoon)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10272.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10272.png"
+  },
+  {
+    "pokedexNumber": 902,
+    "formKey": "female",
+    "apiName": "basculegion-female",
+    "displayName": "Basculegion (Female)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10248.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10248.png"
+  },
+  {
+    "pokedexNumber": 902,
+    "formKey": "male",
+    "apiName": "basculegion-male",
+    "displayName": "Basculegion (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/902.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/902.png"
+  },
+  {
+    "pokedexNumber": 905,
+    "formKey": "incarnate",
+    "apiName": "enamorus-incarnate",
+    "displayName": "Enamorus (Incarnate)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/905.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/905.png"
+  },
+  {
+    "pokedexNumber": 905,
+    "formKey": "therian",
+    "apiName": "enamorus-therian",
+    "displayName": "Enamorus (Therian)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10249.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10249.png"
+  },
+  {
+    "pokedexNumber": 916,
+    "formKey": "female",
+    "apiName": "oinkologne-female",
+    "displayName": "Oinkologne (Female)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10254.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10254.png"
+  },
+  {
+    "pokedexNumber": 916,
+    "formKey": "male",
+    "apiName": "oinkologne-male",
+    "displayName": "Oinkologne (Male)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/916.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/916.png"
+  },
+  {
+    "pokedexNumber": 925,
+    "formKey": "family-of-four",
+    "apiName": "maushold-family-of-four",
+    "displayName": "Maushold (Family Of Four)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/925.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/925.png"
+  },
+  {
+    "pokedexNumber": 925,
+    "formKey": "family-of-three",
+    "apiName": "maushold-family-of-three",
+    "displayName": "Maushold (Family Of Three)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10257.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10257.png"
+  },
+  {
+    "pokedexNumber": 931,
+    "formKey": "blue-plumage",
+    "apiName": "squawkabilly-blue-plumage",
+    "displayName": "Squawkabilly (Blue Plumage)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10260.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10260.png"
+  },
+  {
+    "pokedexNumber": 931,
+    "formKey": "green-plumage",
+    "apiName": "squawkabilly-green-plumage",
+    "displayName": "Squawkabilly (Green Plumage)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/931.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/931.png"
+  },
+  {
+    "pokedexNumber": 931,
+    "formKey": "white-plumage",
+    "apiName": "squawkabilly-white-plumage",
+    "displayName": "Squawkabilly (White Plumage)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10262.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10262.png"
+  },
+  {
+    "pokedexNumber": 931,
+    "formKey": "yellow-plumage",
+    "apiName": "squawkabilly-yellow-plumage",
+    "displayName": "Squawkabilly (Yellow Plumage)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10261.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10261.png"
+  },
+  {
+    "pokedexNumber": 952,
+    "formKey": "mega",
+    "apiName": "scovillain-mega",
+    "displayName": "Scovillain (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 964,
+    "formKey": "hero",
+    "apiName": "palafin-hero",
+    "displayName": "Palafin (Hero)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10256.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10256.png"
+  },
+  {
+    "pokedexNumber": 964,
+    "formKey": "zero",
+    "apiName": "palafin-zero",
+    "displayName": "Palafin (Zero)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/964.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/964.png"
+  },
+  {
+    "pokedexNumber": 970,
+    "formKey": "mega",
+    "apiName": "glimmora-mega",
+    "displayName": "Glimmora (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 978,
+    "formKey": "curly",
+    "apiName": "tatsugiri-curly",
+    "displayName": "Tatsugiri (Curly)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/978.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/978.png"
+  },
+  {
+    "pokedexNumber": 978,
+    "formKey": "curly-mega",
+    "apiName": "tatsugiri-curly-mega",
+    "displayName": "Tatsugiri (Curly Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 978,
+    "formKey": "droopy",
+    "apiName": "tatsugiri-droopy",
+    "displayName": "Tatsugiri (Droopy)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10258.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10258.png"
+  },
+  {
+    "pokedexNumber": 978,
+    "formKey": "droopy-mega",
+    "apiName": "tatsugiri-droopy-mega",
+    "displayName": "Tatsugiri (Droopy Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 978,
+    "formKey": "stretchy",
+    "apiName": "tatsugiri-stretchy",
+    "displayName": "Tatsugiri (Stretchy)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10259.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10259.png"
+  },
+  {
+    "pokedexNumber": 978,
+    "formKey": "stretchy-mega",
+    "apiName": "tatsugiri-stretchy-mega",
+    "displayName": "Tatsugiri (Stretchy Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 982,
+    "formKey": "three-segment",
+    "apiName": "dudunsparce-three-segment",
+    "displayName": "Dudunsparce (Three Segment)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10255.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10255.png"
+  },
+  {
+    "pokedexNumber": 982,
+    "formKey": "two-segment",
+    "apiName": "dudunsparce-two-segment",
+    "displayName": "Dudunsparce (Two Segment)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/982.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/982.png"
+  },
+  {
+    "pokedexNumber": 998,
+    "formKey": "mega",
+    "apiName": "baxcalibur-mega",
+    "displayName": "Baxcalibur (Mega)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 999,
+    "formKey": "roaming",
+    "apiName": "gimmighoul-roaming",
+    "displayName": "Gimmighoul (Roaming)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10263.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10263.png"
+  },
+  {
+    "pokedexNumber": 1007,
+    "formKey": "gliding-build",
+    "apiName": "koraidon-gliding-build",
+    "displayName": "Koraidon (Gliding Build)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1007,
+    "formKey": "limited-build",
+    "apiName": "koraidon-limited-build",
+    "displayName": "Koraidon (Limited Build)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1007,
+    "formKey": "sprinting-build",
+    "apiName": "koraidon-sprinting-build",
+    "displayName": "Koraidon (Sprinting Build)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1007,
+    "formKey": "swimming-build",
+    "apiName": "koraidon-swimming-build",
+    "displayName": "Koraidon (Swimming Build)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1008,
+    "formKey": "aquatic-mode",
+    "apiName": "miraidon-aquatic-mode",
+    "displayName": "Miraidon (Aquatic Mode)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1008,
+    "formKey": "drive-mode",
+    "apiName": "miraidon-drive-mode",
+    "displayName": "Miraidon (Drive Mode)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1008,
+    "formKey": "glide-mode",
+    "apiName": "miraidon-glide-mode",
+    "displayName": "Miraidon (Glide Mode)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1008,
+    "formKey": "low-power-mode",
+    "apiName": "miraidon-low-power-mode",
+    "displayName": "Miraidon (Low Power Mode)",
+    "defaultImageUrl": "",
+    "shinyImageUrl": null
+  },
+  {
+    "pokedexNumber": 1017,
+    "formKey": "cornerstone-mask",
+    "apiName": "ogerpon-cornerstone-mask",
+    "displayName": "Ogerpon (Cornerstone Mask)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10275.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10275.png"
+  },
+  {
+    "pokedexNumber": 1017,
+    "formKey": "hearthflame-mask",
+    "apiName": "ogerpon-hearthflame-mask",
+    "displayName": "Ogerpon (Hearthflame Mask)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10274.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10274.png"
+  },
+  {
+    "pokedexNumber": 1017,
+    "formKey": "wellspring-mask",
+    "apiName": "ogerpon-wellspring-mask",
+    "displayName": "Ogerpon (Wellspring Mask)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10273.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10273.png"
+  },
+  {
+    "pokedexNumber": 1024,
+    "formKey": "stellar",
+    "apiName": "terapagos-stellar",
+    "displayName": "Terapagos (Stellar)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10277.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10277.png"
+  },
+  {
+    "pokedexNumber": 1024,
+    "formKey": "terastal",
+    "apiName": "terapagos-terastal",
+    "displayName": "Terapagos (Terastal)",
+    "defaultImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10276.png",
+    "shinyImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10276.png"
+  }
+]

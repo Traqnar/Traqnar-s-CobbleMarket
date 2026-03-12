@@ -1,0 +1,82 @@
+{
+  "name": "cobblemon-market-front",
+  "version": "1.0.6",
+  "author": "TRAQNAR",
+  "description": "CobbleMarket desktop app",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "electron": "electron .",
+    "build:backend": "node scripts/prepare-electron-backend.cjs",
+    "pack:prepare": "cmd /c npm run build && npm run build:backend",
+    "dist:portable": "cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win portable\"",
+    "dist:folder": "cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win dir\"",
+    "dist:setup": "cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win nsis\"",
+    "test": "ng test"
+  },
+  "private": true,
+  "packageManager": "npm@11.9.0",
+  "dependencies": {
+    "@angular/animations": "^21.2.1",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "ngx-toastr": "^20.0.5",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "^0.16.1"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.1",
+    "@angular/cli": "^21.2.1",
+    "@angular/compiler-cli": "^21.2.0",
+    "electron": "^40.8.0",
+    "electron-builder": "^26.8.1",
+    "jsdom": "^28.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
+  },
+  "main": "electron/main.js",
+  "build": {
+    "appId": "com.traqnar.cobblemarket",
+    "productName": "TRAQNAR&co CobbleMarket",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "signAndEditExecutable": false,
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "artifactName": "${productName}-Setup-${version}.${ext}",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "TRAQNAR&co CobbleMarket"
+    },
+    "files": [
+      "electron/main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/backend-publish",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  }
+}

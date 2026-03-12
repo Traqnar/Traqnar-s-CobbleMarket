@@ -1,0 +1,80 @@
+# ===== Monorepo: CobbleMarket (Backend .NET + Frontend Angular/Electron) =====
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / Editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env / Secrets
+.env
+.env.*
+!.env.example
+secrets.json
+
+# =========================
+# Backend (.NET)
+# =========================
+**/bin/
+**/obj/
+**/TestResults/
+*.nupkg
+*.snupkg
+
+# Local DB / runtime data
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# =========================
+# Frontend (Angular)
+# =========================
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+**/tmp/
+**/out-tsc/
+**/.sass-cache/
+**/.history/
+**/testem.log
+**/connect.lock
+**/libpeerconnection.log
+
+# =========================
+# Electron / Packaging
+# =========================
+**/release/
+**/win-unpacked/
+**/builder-debug.yml
+**/builder-effective-config.yaml
+**/*.blockmap
+**/*.asar
+
+# Optional generated backend bundle copied into electron resources
+**/electron/backend-publish/
+
+# Misc
+*.pid
+*.seed

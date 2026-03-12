@@ -1,0 +1,6 @@
+@CobblemonMarketApi_HostAddress = http://localhost:5148
+
+GET {{CobblemonMarketApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

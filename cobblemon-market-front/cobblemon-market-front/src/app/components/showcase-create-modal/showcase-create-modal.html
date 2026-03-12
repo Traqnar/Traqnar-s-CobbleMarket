@@ -1,0 +1,35 @@
+@if (open) {
+  <div class="create-showcase-overlay" (mousedown)="onOverlayMouseDown($event)">
+    <div class="create-showcase-modal">
+      <header class="create-showcase-header">
+        <h2>Create Showcase</h2>
+        <button type="button" class="close-btn" (click)="cancel.emit()" [disabled]="busy">×</button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="create-showcase-form">
+        <label for="showcase-name">Name *</label>
+        <input id="showcase-name" type="text" formControlName="name" placeholder="Ex: PvP Shinies" />
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+          <p class="field-error">Name is required (max 100 chars).</p>
+        }
+
+        <label for="showcase-description">Description</label>
+        <textarea
+          id="showcase-description"
+          rows="3"
+          formControlName="description"
+          placeholder="Optional"
+        ></textarea>
+
+        <div class="create-showcase-actions">
+          <button type="button" class="btn-secondary" (click)="cancel.emit()" [disabled]="busy">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="busy">
+            {{ busy ? 'Creating...' : 'Create' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
