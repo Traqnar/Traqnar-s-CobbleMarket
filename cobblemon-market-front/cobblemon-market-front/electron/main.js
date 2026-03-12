@@ -1,13 +1,16 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
 const { spawn } = require('child_process');
+const log = require('electron-log');
+const { autoUpdater } = require('electron-updater');
 
 const API_BASE_URL = 'http://127.0.0.1:5148';
 const API_HEALTH_PATH = '/api/showcases';
 
 let backendProcess = null;
+let updateDialogOpen = false;
 
 function isPackaged() {
   return app.isPackaged;
@@ -111,9 +114,59 @@ function stopBackendIfNeeded() {
   }
 }
 
+function setupAutoUpdater() {
+  if (!isPackaged()) {
+    return;
+  }
+
+  autoUpdater.logger = log;
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('error', (err) => {
+    log.error('AutoUpdater error:', err);
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    log.info('Update available:', info?.version ?? 'unknown');
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    log.info('No update available.');
+  });
+
+  autoUpdater.on('update-downloaded', async (info) => {
+    if (updateDialogOpen) {
+      return;
+    }
+
+    updateDialogOpen = true;
+    const result = await dialog.showMessageBox({
+      type: 'info',
+      title: 'Mise a jour disponible',
+      message: `Version ${info?.version ?? ''} telechargee.`,
+      detail: 'Redemarrer maintenant pour appliquer la mise a jour ?',
+      buttons: ['Redemarrer maintenant', 'Plus tard'],
+      defaultId: 0,
+      cancelId: 1,
+      noLink: true,
+    });
+    updateDialogOpen = false;
+
+    if (result.response === 0) {
+      autoUpdater.quitAndInstall();
+    }
+  });
+
+  autoUpdater.checkForUpdatesAndNotify().catch((err) => {
+    log.error('Unable to check for updates:', err);
+  });
+}
+
 app.whenReady().then(async () => {
   await ensureBackendStarted();
   createWindow();
+  setupAutoUpdater();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
