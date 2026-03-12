@@ -30,6 +30,7 @@ export class Showcase implements OnInit, OnDestroy {
   addPokemonNameFilter = '';
   addPokemonNameFilterSearch = '';
   addPokemonAbilityFilter = '';
+  addPokemonShinyFilter = '';
   addPokemonIvSort: 'desc' | 'asc' = 'desc';
   showAddPokemonNameDropdown = false;
   showDeleteShowcaseConfirm = false;
@@ -222,7 +223,8 @@ export class Showcase implements OnInit, OnDestroy {
     const filtered = this.getAvailableInventoryPokemons().filter((pokemon) => {
       const matchName = !this.addPokemonNameFilter || this.getPokemonDisplayName(pokemon) === this.addPokemonNameFilter;
       const matchAbility = !this.addPokemonAbilityFilter || (pokemon.ability ?? '') === this.addPokemonAbilityFilter;
-      return matchName && matchAbility;
+      const matchShiny = this.matchesAddPokemonShinyFilter(pokemon.isShiny);
+      return matchName && matchAbility && matchShiny;
     });
 
     filtered.sort((a, b) =>
@@ -238,7 +240,7 @@ export class Showcase implements OnInit, OnDestroy {
     return Array.from(
       new Set(
         this.getAvailableInventoryPokemons()
-          .filter((p) => !this.addPokemonAbilityFilter || (p.ability ?? '') === this.addPokemonAbilityFilter)
+          .filter((p) => (!this.addPokemonAbilityFilter || (p.ability ?? '') === this.addPokemonAbilityFilter) && this.matchesAddPokemonShinyFilter(p.isShiny))
           .map((p) => this.getPokemonDisplayName(p))
           .filter((v) => !!v),
       ),
@@ -250,6 +252,7 @@ export class Showcase implements OnInit, OnDestroy {
     const byName = new Map<string, string>();
     for (const p of this.getAvailableInventoryPokemons()) {
       if (this.addPokemonAbilityFilter && (p.ability ?? '') !== this.addPokemonAbilityFilter) continue;
+      if (!this.matchesAddPokemonShinyFilter(p.isShiny)) continue;
       if (!p.pokemonName) continue;
       const displayName = this.getPokemonDisplayName(p);
       if (search && !this.normalizeName(displayName).includes(search)) continue;
@@ -295,11 +298,17 @@ export class Showcase implements OnInit, OnDestroy {
     return Array.from(
       new Set(
         this.getAvailableInventoryPokemons()
-          .filter((p) => !this.addPokemonNameFilter || this.getPokemonDisplayName(p) === this.addPokemonNameFilter)
+          .filter((p) => (!this.addPokemonNameFilter || this.getPokemonDisplayName(p) === this.addPokemonNameFilter) && this.matchesAddPokemonShinyFilter(p.isShiny))
           .map((p) => p.ability)
           .filter((v) => !!v),
       ),
     ).sort((a, b) => a.localeCompare(b));
+  }
+
+  private matchesAddPokemonShinyFilter(isShiny: boolean): boolean {
+    if (this.addPokemonShinyFilter === 'shiny') return isShiny;
+    if (this.addPokemonShinyFilter === 'nonshiny') return !isShiny;
+    return true;
   }
 
   addExistingPokemonToActiveShowcase(source: PokemonListing): void {

@@ -425,7 +425,7 @@
 
 .modal-filters {
   display: grid;
-  grid-template-columns: 1fr 1fr 180px;
+  grid-template-columns: 1fr 1fr 180px 170px;
   gap: 8px;
   margin: 0 0 10px;
 }

@@ -50,6 +50,14 @@
       <option value="desc">IV% du plus haut au plus bas</option>
       <option value="asc">IV% du plus bas au plus haut</option>
     </select>
+    <select
+      class="list-filter-select"
+      [value]="pokemonShinyFilter"
+      (change)="pokemonShinyFilter = $any($event.target).value">
+      <option value="">Tous (Shiny + non-shiny)</option>
+      <option value="shiny">Shiny uniquement</option>
+      <option value="nonshiny">Non-shiny uniquement</option>
+    </select>
   </div>
 
   <div class="perfect-iv-filter-bar">

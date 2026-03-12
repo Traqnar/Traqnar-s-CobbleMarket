@@ -181,6 +181,11 @@
           <option value="desc">IV% High to low</option>
           <option value="asc">IV% Low to high</option>
         </select>
+        <select class="modal-filter-select" [(ngModel)]="addPokemonShinyFilter">
+          <option value="">All shiny states</option>
+          <option value="shiny">Shiny only</option>
+          <option value="nonshiny">Non-shiny only</option>
+        </select>
       </div>
 
       @if (isLoadingAllPokemons) {

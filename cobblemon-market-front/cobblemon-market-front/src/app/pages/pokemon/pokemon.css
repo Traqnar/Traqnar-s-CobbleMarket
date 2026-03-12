@@ -28,7 +28,7 @@
 
 .list-filters {
   display: grid;
-  grid-template-columns: 1fr 1fr 220px;
+  grid-template-columns: 1fr 1fr 220px 210px;
 }
 
 .perfect-iv-filter-bar {

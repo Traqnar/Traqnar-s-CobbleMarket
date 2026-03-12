@@ -43,6 +43,7 @@ export class Pokemon implements OnInit {
   pokemonNameFilterSearch = '';
   private pokemonNameFilterSearchResetTimer: ReturnType<typeof setTimeout> | null = null;
   pokemonAbilityFilter = '';
+  pokemonShinyFilter = '';
   pokemonPerfectIvCountFilter = '';
   pokemonIvSort: 'desc' | 'asc' = 'desc';
   readonly perfectIvCountFilterOptions: Array<{ value: string; label: string; count: number | null }> = [
@@ -881,12 +882,13 @@ export class Pokemon implements OnInit {
     const filtered = this.pokemonListings.filter((pokemon) => {
       const matchName = !this.pokemonNameFilter || this.getPokemonDisplayName(pokemon) === this.pokemonNameFilter;
       const matchAbility = !this.pokemonAbilityFilter || (pokemon.ability ?? '') === this.pokemonAbilityFilter;
+      const matchShiny = this.matchesShinyFilter(pokemon.isShiny);
       const requiredPerfectIvCount = this.pokemonPerfectIvCountFilter === '' ? null : Number(this.pokemonPerfectIvCountFilter);
       const matchPerfectIvCount =
         requiredPerfectIvCount === null || Number.isNaN(requiredPerfectIvCount)
           ? true
           : this.getPerfectIvCount(pokemon) === requiredPerfectIvCount;
-      return matchName && matchAbility && matchPerfectIvCount;
+      return matchName && matchAbility && matchShiny && matchPerfectIvCount;
     });
 
     filtered.sort((a, b) =>
@@ -902,7 +904,7 @@ export class Pokemon implements OnInit {
     return Array.from(
       new Set(
         this.pokemonListings
-          .filter((p) => !this.pokemonAbilityFilter || (p.ability ?? '') === this.pokemonAbilityFilter)
+          .filter((p) => (!this.pokemonAbilityFilter || (p.ability ?? '') === this.pokemonAbilityFilter) && this.matchesShinyFilter(p.isShiny))
           .map((p) => this.getPokemonDisplayName(p))
           .filter((v) => !!v),
       ),
@@ -914,6 +916,7 @@ export class Pokemon implements OnInit {
     const byName = new Map<string, string>();
     for (const p of this.pokemonListings) {
       if (this.pokemonAbilityFilter && (p.ability ?? '') !== this.pokemonAbilityFilter) continue;
+      if (!this.matchesShinyFilter(p.isShiny)) continue;
       if (!p.pokemonName) continue;
       const displayName = this.getPokemonDisplayName(p);
       if (search && !this.normalizeName(displayName).includes(search)) continue;
@@ -992,11 +995,17 @@ export class Pokemon implements OnInit {
     return Array.from(
       new Set(
         this.pokemonListings
-          .filter((p) => !this.pokemonNameFilter || this.getPokemonDisplayName(p) === this.pokemonNameFilter)
+          .filter((p) => (!this.pokemonNameFilter || this.getPokemonDisplayName(p) === this.pokemonNameFilter) && this.matchesShinyFilter(p.isShiny))
           .map((p) => p.ability)
           .filter((v) => !!v),
       ),
     ).sort((a, b) => a.localeCompare(b));
+  }
+
+  private matchesShinyFilter(isShiny: boolean): boolean {
+    if (this.pokemonShinyFilter === 'shiny') return isShiny;
+    if (this.pokemonShinyFilter === 'nonshiny') return !isShiny;
+    return true;
   }
 
   getPerfectIvCount(listing: PokemonListing): number {
