@@ -134,6 +134,7 @@ public class ShowcasesController : ControllerBase
             Level = x.Level,
             Nature = x.Nature,
             Ability = x.Ability,
+            IsHiddenAbility = x.IsHiddenAbility,
             Gender = x.Gender,
             IsShiny = x.IsShiny,
             DefaultImageUrl = x.DefaultImageUrl,

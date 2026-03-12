@@ -35,6 +35,8 @@ namespace CobblemonMarketApi.Dtos.PokemonListings
         [MaxLength(50)]
         public string Ability { get; set; } = "";
 
+        public bool IsHiddenAbility { get; set; }
+
         [Required]
         [MaxLength(20)]
         public string Gender { get; set; } = "";

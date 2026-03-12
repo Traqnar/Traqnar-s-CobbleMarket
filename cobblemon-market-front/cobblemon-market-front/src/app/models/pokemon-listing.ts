@@ -11,6 +11,7 @@ export interface PokemonListing {
   level: number;
   nature: string;
   ability: string;
+  isHiddenAbility: boolean;
   gender: string;
   isShiny: boolean;
   defaultImageUrl: string;
@@ -35,6 +36,7 @@ export interface CreatePokemonListing {
   level: number;
   nature: string;
   ability: string;
+  isHiddenAbility?: boolean;
   gender: string;
   isShiny: boolean;
   customImageUrl?: string | null;

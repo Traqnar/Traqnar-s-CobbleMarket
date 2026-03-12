@@ -67,6 +67,7 @@ public class PokemonListingService : IPokemonListingService
             Level = dto.Level,
             Nature = dto.Nature,
             Ability = dto.Ability,
+            IsHiddenAbility = dto.IsHiddenAbility,
             Gender = dto.Gender,
             IsShiny = dto.IsShiny,
             DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, NormalizeForm(dto.Form), dto.IsShiny),
@@ -168,6 +169,7 @@ public class PokemonListingService : IPokemonListingService
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         var seenUuidsInPayload = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var abilityLookupCache = new Dictionary<int, List<AbilityLookupEntry>>();
 
         foreach (var importItem in pokemonToImport)
         {
@@ -206,6 +208,8 @@ public class PokemonListingService : IPokemonListingService
             var specialAttackIv = ResolveSpecialAttackIv(pokemon);
             var specialDefenseIv = ResolveSpecialDefenseIv(pokemon);
             var speedIv = ResolveSpeedIv(pokemon);
+            var ability = NormalizeAbilityFromImport(pokemon);
+            var isHiddenAbility = await ResolveIsHiddenAbilityAsync(catalogEntry.PokedexNumber, ability, abilityLookupCache);
 
             var listing = new PokemonListing
             {
@@ -218,7 +222,8 @@ public class PokemonListingService : IPokemonListingService
                 PokemonName = englishName,
                 Level = level,
                 Nature = NormalizeNatureFromImport(pokemon),
-                Ability = NormalizeAbilityFromImport(pokemon),
+                Ability = ability,
+                IsHiddenAbility = isHiddenAbility,
                 Gender = NormalizeGender(pokemon.Gender),
                 IsShiny = isShiny,
                 DefaultImageUrl = await ResolvePokemonImageUrlAsync(catalogEntry.PokedexNumber, form, isShiny),
@@ -323,6 +328,7 @@ public class PokemonListingService : IPokemonListingService
         listing.Level = dto.Level;
         listing.Nature = dto.Nature;
         listing.Ability = dto.Ability;
+        listing.IsHiddenAbility = dto.IsHiddenAbility;
         listing.Gender = dto.Gender;
         listing.IsShiny = dto.IsShiny;
         listing.DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, listing.Form, dto.IsShiny);
@@ -389,6 +395,7 @@ public class PokemonListingService : IPokemonListingService
             Level = listing.Level,
             Nature = listing.Nature,
             Ability = listing.Ability,
+            IsHiddenAbility = listing.IsHiddenAbility,
             Gender = listing.Gender,
             IsShiny = listing.IsShiny,
             DefaultImageUrl = listing.DefaultImageUrl,
@@ -999,6 +1006,49 @@ public class PokemonListingService : IPokemonListingService
         return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(cleaned);
     }
 
+    private async Task<bool> ResolveIsHiddenAbilityAsync(
+        int pokedexNumber,
+        string abilityName,
+        Dictionary<int, List<AbilityLookupEntry>> cache)
+    {
+        if (string.IsNullOrWhiteSpace(abilityName) || abilityName.Equals("Unknown", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (!cache.TryGetValue(pokedexNumber, out var entries))
+        {
+            entries = await _context.PokemonAbilities
+                .AsNoTracking()
+                .Include(x => x.AbilityCatalog)
+                .Where(x => x.PokedexNumber == pokedexNumber)
+                .Select(x => new AbilityLookupEntry
+                {
+                    AbilityName = x.AbilityCatalog.Name,
+                    IsHidden = x.IsHidden
+                })
+                .ToListAsync();
+
+            cache[pokedexNumber] = entries;
+        }
+
+        var normalizedIncoming = NormalizeAbilityForComparison(abilityName);
+        var match = entries.FirstOrDefault(x => NormalizeAbilityForComparison(x.AbilityName) == normalizedIncoming);
+        return match?.IsHidden ?? false;
+    }
+
+    private static string NormalizeAbilityForComparison(string abilityName)
+    {
+        if (string.IsNullOrWhiteSpace(abilityName))
+        {
+            return string.Empty;
+        }
+
+        var lowered = abilityName.Trim().ToLowerInvariant();
+        var chars = lowered.Where(char.IsLetterOrDigit).ToArray();
+        return new string(chars);
+    }
+
     private static string? TryReadStringFromExtra(ImportPcPokemonDto pokemon, params string[] keys)
     {
         var element = pokemon.TryGetExtraElement(keys);
@@ -1148,5 +1198,11 @@ public class PokemonListingService : IPokemonListingService
         public int? BoxIndex { get; set; }
         public string? BoxName { get; set; }
         public int? SlotIndex { get; set; }
+    }
+
+    private sealed class AbilityLookupEntry
+    {
+        public string AbilityName { get; set; } = string.Empty;
+        public bool IsHidden { get; set; }
     }
 }

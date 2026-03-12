@@ -82,7 +82,12 @@
               <div class="tags">
                 <span>{{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV</span>
                 <span>{{ pokemon.nature }}</span>
-                <span>{{ pokemon.ability }}</span>
+                <span class="ability-badge" [class.ha-ability-badge]="pokemon.isHiddenAbility">
+                  {{ pokemon.ability }}
+                  @if (pokemon.isHiddenAbility) {
+                    <small class="ha-indicator">(HA)</small>
+                  }
+                </span>
                 <span>Lv {{ pokemon.level }}</span>
               </div>
 
@@ -173,8 +178,8 @@
         </div>
         <select class="modal-filter-select" [(ngModel)]="addPokemonAbilityFilter">
           <option value="">All abilities</option>
-          @for (ability of getAvailableAbilityOptions(); track ability) {
-            <option [value]="ability">{{ ability }}</option>
+          @for (ability of getAvailableAbilityOptions(); track ability.value) {
+            <option [value]="ability.value">{{ ability.label }}</option>
           }
         </select>
         <select class="modal-filter-select" [(ngModel)]="addPokemonIvSort">
@@ -198,7 +203,7 @@
               <div class="modal-pokemon-text">
                 <div class="modal-pokemon-title">{{ pokemon.title }}</div>
                 <div class="modal-pokemon-meta">
-                  {{ getPokemonDisplayName(pokemon) }} - {{ pokemon.isShiny ? 'Shiny' : 'Not shiny' }} - {{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV
+                  {{ getPokemonDisplayName(pokemon) }} - {{ pokemon.isShiny ? 'Shiny' : 'Not shiny' }} - {{ pokemon.ability }}{{ pokemon.isHiddenAbility ? ' (HA)' : '' }} - {{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV
                 </div>
               </div>
               <button

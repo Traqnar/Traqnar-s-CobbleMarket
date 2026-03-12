@@ -39,8 +39,8 @@
       [value]="pokemonAbilityFilter"
       (change)="pokemonAbilityFilter = $any($event.target).value">
       <option value="">Tous les talents</option>
-      @for (ability of getPokemonAbilityFilterOptions(); track ability) {
-        <option [value]="ability">{{ ability }}</option>
+      @for (ability of getPokemonAbilityFilterOptions(); track ability.value) {
+        <option [value]="ability.value">{{ ability.label }}</option>
       }
     </select>
     <select
@@ -258,13 +258,13 @@
 
                 @if (showAbilityDropdown && abilitySuggestions.length) {
                   <ul class="autocomplete-dropdown" role="listbox">
-                    @for (ability of abilitySuggestions; track ability) {
+                    @for (ability of abilitySuggestions; track ability.name) {
                       <li
                         role="option"
                         class="autocomplete-item"
-                        (mousedown)="selectAbilitySuggestion(ability); $event.preventDefault()"
+                        (mousedown)="selectAbilitySuggestion(ability.name); $event.preventDefault()"
                       >
-                        <span class="autocomplete-item-text">{{ ability }}</span>
+                        <span class="autocomplete-item-text">{{ ability.label }}</span>
                       </li>
                     }
                   </ul>
@@ -376,7 +376,12 @@
 
         <div class="tags">
           <span>{{ pokemon.nature }}</span>
-          <span>{{ pokemon.ability }}</span>
+          <span class="ability-badge" [class.ha-ability-badge]="pokemon.isHiddenAbility">
+            {{ pokemon.ability }}
+            @if (pokemon.isHiddenAbility) {
+              <small class="ha-indicator">(HA)</small>
+            }
+          </span>
           <span>{{ pokemon.gender }}</span>
           <span>{{ getIvPercentageDisplay(pokemon.totalIvPercentage) }}% IV</span>
           <span

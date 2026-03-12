@@ -9,6 +9,7 @@ public class PokemonListing : BaseListing
     public int Level { get; set; }
     public string Nature { get; set; } = "";
     public string Ability { get; set; } = "";
+    public bool IsHiddenAbility { get; set; }
     public string Gender { get; set; } = "";
     public bool IsShiny { get; set; }
 

@@ -222,7 +222,7 @@ export class Showcase implements OnInit, OnDestroy {
   getFilteredAvailablePokemons(): PokemonListing[] {
     const filtered = this.getAvailableInventoryPokemons().filter((pokemon) => {
       const matchName = !this.addPokemonNameFilter || this.getPokemonDisplayName(pokemon) === this.addPokemonNameFilter;
-      const matchAbility = !this.addPokemonAbilityFilter || (pokemon.ability ?? '') === this.addPokemonAbilityFilter;
+      const matchAbility = this.matchesAbilityFilter(pokemon, this.addPokemonAbilityFilter);
       const matchShiny = this.matchesAddPokemonShinyFilter(pokemon.isShiny);
       return matchName && matchAbility && matchShiny;
     });
@@ -240,7 +240,7 @@ export class Showcase implements OnInit, OnDestroy {
     return Array.from(
       new Set(
         this.getAvailableInventoryPokemons()
-          .filter((p) => (!this.addPokemonAbilityFilter || (p.ability ?? '') === this.addPokemonAbilityFilter) && this.matchesAddPokemonShinyFilter(p.isShiny))
+          .filter((p) => this.matchesAbilityFilter(p, this.addPokemonAbilityFilter) && this.matchesAddPokemonShinyFilter(p.isShiny))
           .map((p) => this.getPokemonDisplayName(p))
           .filter((v) => !!v),
       ),
@@ -251,7 +251,7 @@ export class Showcase implements OnInit, OnDestroy {
     const search = this.normalizeName(this.addPokemonNameFilterSearch);
     const byName = new Map<string, string>();
     for (const p of this.getAvailableInventoryPokemons()) {
-      if (this.addPokemonAbilityFilter && (p.ability ?? '') !== this.addPokemonAbilityFilter) continue;
+      if (!this.matchesAbilityFilter(p, this.addPokemonAbilityFilter)) continue;
       if (!this.matchesAddPokemonShinyFilter(p.isShiny)) continue;
       if (!p.pokemonName) continue;
       const displayName = this.getPokemonDisplayName(p);
@@ -294,21 +294,46 @@ export class Showcase implements OnInit, OnDestroy {
     return match?.imageUrl ?? null;
   }
 
-  getAvailableAbilityOptions(): string[] {
-    return Array.from(
-      new Set(
-        this.getAvailableInventoryPokemons()
-          .filter((p) => (!this.addPokemonNameFilter || this.getPokemonDisplayName(p) === this.addPokemonNameFilter) && this.matchesAddPokemonShinyFilter(p.isShiny))
-          .map((p) => p.ability)
-          .filter((v) => !!v),
-      ),
-    ).sort((a, b) => a.localeCompare(b));
+  getAvailableAbilityOptions(): Array<{ value: string; label: string }> {
+    const byValue = new Map<string, { value: string; label: string }>();
+
+    for (const p of this.getAvailableInventoryPokemons()) {
+      if (this.addPokemonNameFilter && this.getPokemonDisplayName(p) !== this.addPokemonNameFilter) continue;
+      if (!this.matchesAddPokemonShinyFilter(p.isShiny)) continue;
+
+      const ability = (p.ability ?? '').trim();
+      if (!ability) continue;
+
+      const value = this.buildAbilityFilterValue(ability, Boolean(p.isHiddenAbility));
+      if (!byValue.has(value)) {
+        byValue.set(value, {
+          value,
+          label: p.isHiddenAbility ? `${ability} (HA)` : ability,
+        });
+      }
+    }
+
+    return Array.from(byValue.values()).sort((a, b) => a.label.localeCompare(b.label));
   }
 
   private matchesAddPokemonShinyFilter(isShiny: boolean): boolean {
     if (this.addPokemonShinyFilter === 'shiny') return isShiny;
     if (this.addPokemonShinyFilter === 'nonshiny') return !isShiny;
     return true;
+  }
+
+  private buildAbilityFilterValue(ability: string, isHiddenAbility: boolean): string {
+    return `${ability}::${isHiddenAbility ? 'ha' : 'normal'}`;
+  }
+
+  private matchesAbilityFilter(
+    listing: Pick<PokemonListing, 'ability' | 'isHiddenAbility'>,
+    selectedValue: string,
+  ): boolean {
+    if (!selectedValue) return true;
+    const ability = (listing.ability ?? '').trim();
+    if (!ability) return false;
+    return this.buildAbilityFilterValue(ability, Boolean(listing.isHiddenAbility)) === selectedValue;
   }
 
   addExistingPokemonToActiveShowcase(source: PokemonListing): void {

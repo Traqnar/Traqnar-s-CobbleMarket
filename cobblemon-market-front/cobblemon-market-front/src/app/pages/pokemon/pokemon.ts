@@ -71,7 +71,7 @@ export class Pokemon implements OnInit {
   showNatureDropdown = false;
   private natureSearch$ = new Subject<string>();
 
-  abilitySuggestions: string[] = [];
+  abilitySuggestions: Array<{ name: string; label: string }> = [];
   showAbilityDropdown = false;
   private abilitySearch$ = new Subject<string>();
   availableForms: string[] = [];
@@ -197,9 +197,19 @@ export class Pokemon implements OnInit {
         }
 
         if (Array.isArray(results) && results.length > 0 && typeof results[0] === 'object') {
-          this.abilitySuggestions = results.map((x: any) => x.name);
+          this.abilitySuggestions = results.map((x: any) => {
+            const name = String(x?.name ?? '').trim();
+            const isHidden = Boolean(x?.isHidden);
+            return {
+              name,
+              label: isHidden ? `${name} (HA)` : name,
+            };
+          });
         } else {
-          this.abilitySuggestions = results as string[];
+          this.abilitySuggestions = (results as string[]).map((name) => ({
+            name,
+            label: name,
+          }));
         }
 
         this.showAbilityDropdown = this.abilitySuggestions.length > 0;
@@ -881,7 +891,7 @@ export class Pokemon implements OnInit {
   getFilteredPokemonListings(): PokemonListing[] {
     const filtered = this.pokemonListings.filter((pokemon) => {
       const matchName = !this.pokemonNameFilter || this.getPokemonDisplayName(pokemon) === this.pokemonNameFilter;
-      const matchAbility = !this.pokemonAbilityFilter || (pokemon.ability ?? '') === this.pokemonAbilityFilter;
+      const matchAbility = this.matchesAbilityFilter(pokemon, this.pokemonAbilityFilter);
       const matchShiny = this.matchesShinyFilter(pokemon.isShiny);
       const requiredPerfectIvCount = this.pokemonPerfectIvCountFilter === '' ? null : Number(this.pokemonPerfectIvCountFilter);
       const matchPerfectIvCount =
@@ -904,7 +914,7 @@ export class Pokemon implements OnInit {
     return Array.from(
       new Set(
         this.pokemonListings
-          .filter((p) => (!this.pokemonAbilityFilter || (p.ability ?? '') === this.pokemonAbilityFilter) && this.matchesShinyFilter(p.isShiny))
+          .filter((p) => this.matchesAbilityFilter(p, this.pokemonAbilityFilter) && this.matchesShinyFilter(p.isShiny))
           .map((p) => this.getPokemonDisplayName(p))
           .filter((v) => !!v),
       ),
@@ -915,7 +925,7 @@ export class Pokemon implements OnInit {
     const search = this.normalizeName(this.pokemonNameFilterSearch);
     const byName = new Map<string, string>();
     for (const p of this.pokemonListings) {
-      if (this.pokemonAbilityFilter && (p.ability ?? '') !== this.pokemonAbilityFilter) continue;
+      if (!this.matchesAbilityFilter(p, this.pokemonAbilityFilter)) continue;
       if (!this.matchesShinyFilter(p.isShiny)) continue;
       if (!p.pokemonName) continue;
       const displayName = this.getPokemonDisplayName(p);
@@ -991,21 +1001,46 @@ export class Pokemon implements OnInit {
     return match?.imageUrl ?? null;
   }
 
-  getPokemonAbilityFilterOptions(): string[] {
-    return Array.from(
-      new Set(
-        this.pokemonListings
-          .filter((p) => (!this.pokemonNameFilter || this.getPokemonDisplayName(p) === this.pokemonNameFilter) && this.matchesShinyFilter(p.isShiny))
-          .map((p) => p.ability)
-          .filter((v) => !!v),
-      ),
-    ).sort((a, b) => a.localeCompare(b));
+  getPokemonAbilityFilterOptions(): Array<{ value: string; label: string }> {
+    const byValue = new Map<string, { value: string; label: string }>();
+
+    for (const p of this.pokemonListings) {
+      if (this.pokemonNameFilter && this.getPokemonDisplayName(p) !== this.pokemonNameFilter) continue;
+      if (!this.matchesShinyFilter(p.isShiny)) continue;
+
+      const ability = (p.ability ?? '').trim();
+      if (!ability) continue;
+
+      const value = this.buildAbilityFilterValue(ability, Boolean(p.isHiddenAbility));
+      if (!byValue.has(value)) {
+        byValue.set(value, {
+          value,
+          label: p.isHiddenAbility ? `${ability} (HA)` : ability,
+        });
+      }
+    }
+
+    return Array.from(byValue.values()).sort((a, b) => a.label.localeCompare(b.label));
   }
 
   private matchesShinyFilter(isShiny: boolean): boolean {
     if (this.pokemonShinyFilter === 'shiny') return isShiny;
     if (this.pokemonShinyFilter === 'nonshiny') return !isShiny;
     return true;
+  }
+
+  private buildAbilityFilterValue(ability: string, isHiddenAbility: boolean): string {
+    return `${ability}::${isHiddenAbility ? 'ha' : 'normal'}`;
+  }
+
+  private matchesAbilityFilter(
+    listing: Pick<PokemonListing, 'ability' | 'isHiddenAbility'>,
+    selectedValue: string,
+  ): boolean {
+    if (!selectedValue) return true;
+    const ability = (listing.ability ?? '').trim();
+    if (!ability) return false;
+    return this.buildAbilityFilterValue(ability, Boolean(listing.isHiddenAbility)) === selectedValue;
   }
 
   getPerfectIvCount(listing: PokemonListing): number {

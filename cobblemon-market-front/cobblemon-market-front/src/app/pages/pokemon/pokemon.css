@@ -710,6 +710,24 @@
   font-size: 12px;
 }
 
+.tags .ability-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.tags .ha-ability-badge {
+  background: linear-gradient(135deg, #312e81, #1d4ed8);
+  border: 1px solid #60a5fa;
+  color: #dbeafe;
+}
+
+.tags .ha-indicator {
+  font-size: 10px;
+  font-weight: 800;
+  opacity: 0.9;
+}
+
 .tags .perfect-iv-badge {
   border: 1px solid #475569;
 }
