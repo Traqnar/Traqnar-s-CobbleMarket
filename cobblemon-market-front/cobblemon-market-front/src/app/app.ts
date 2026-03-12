@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -17,24 +17,35 @@ export class App implements OnInit, OnDestroy {
   private refusedUpdateVersion = '';
   private detachUpdateListener: (() => void) | null = null;
 
+  constructor(private ngZone: NgZone) {}
+
   ngOnInit(): void {
     if (!window.electronUpdates?.onStatus) {
       return;
     }
 
-    window.electronUpdates.getVersion?.().then((version) => {
-      this.appVersion = version ?? '';
-    }).catch(() => {
-      this.appVersion = '';
-    });
+    window.electronUpdates
+      .getVersion?.()
+      .then((version) => {
+        this.ngZone.run(() => {
+          this.appVersion = version ?? '';
+        });
+      })
+      .catch(() => {
+        this.ngZone.run(() => {
+          this.appVersion = '';
+        });
+      });
 
     this.detachUpdateListener = window.electronUpdates.onStatus((status) => {
-      this.updateState = (status?.state as typeof this.updateState) || 'idle';
-      this.updateMessage = status?.message ?? '';
-      this.updateProgress = Math.max(0, Math.min(100, Number(status?.progress ?? 0)));
-      if (typeof status?.version === 'string' && status.version.trim()) {
-        this.currentAvailableVersion = status.version.trim();
-      }
+      this.ngZone.run(() => {
+        this.updateState = (status?.state as typeof this.updateState) || 'idle';
+        this.updateMessage = status?.message ?? '';
+        this.updateProgress = Math.max(0, Math.min(100, Number(status?.progress ?? 0)));
+        if (typeof status?.version === 'string' && status.version.trim()) {
+          this.currentAvailableVersion = status.version.trim();
+        }
+      });
     });
   }
 
