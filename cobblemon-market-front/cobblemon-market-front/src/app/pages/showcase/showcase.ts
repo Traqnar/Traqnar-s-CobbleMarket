@@ -316,10 +316,21 @@ export class Showcase implements OnInit, OnDestroy {
     return Array.from(byValue.values()).sort((a, b) => a.label.localeCompare(b.label));
   }
 
-  private matchesAddPokemonShinyFilter(isShiny: boolean): boolean {
-    if (this.addPokemonShinyFilter === 'shiny') return isShiny;
-    if (this.addPokemonShinyFilter === 'nonshiny') return !isShiny;
+  private matchesAddPokemonShinyFilter(isShiny: boolean | string | number | null | undefined): boolean {
+    const shiny = this.normalizeBoolean(isShiny);
+    if (this.addPokemonShinyFilter === 'shiny') return shiny;
+    if (this.addPokemonShinyFilter === 'nonshiny') return !shiny;
     return true;
+  }
+
+  private normalizeBoolean(value: boolean | string | number | null | undefined): boolean {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'number') return value !== 0;
+    if (typeof value === 'string') {
+      const normalized = value.trim().toLowerCase();
+      return normalized === 'true' || normalized === '1' || normalized === 'yes';
+    }
+    return false;
   }
 
   private buildAbilityFilterValue(ability: string, isHiddenAbility: boolean): string {

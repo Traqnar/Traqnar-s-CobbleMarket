@@ -14,6 +14,9 @@ let backendProcess = null;
 let mainWindow = null;
 let updateWindow = null;
 let updateWindowStatus = null;
+let updaterState = 'idle';
+let isDownloadingUpdate = false;
+let isInstallingUpdate = false;
 
 function isPackaged() {
   return app.isPackaged;
@@ -369,12 +372,15 @@ function setupAutoUpdater() {
   autoUpdater.logger = log;
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
+  updaterState = 'checking';
   const checkingStatus = { state: 'checking', message: 'Verification des mises a jour...' };
   sendUpdateStatus(checkingStatus);
   sendUpdateWindowStatus(checkingStatus);
 
   autoUpdater.on('error', (err) => {
     log.error('AutoUpdater error:', err);
+    updaterState = 'error';
+    isDownloadingUpdate = false;
     const errorStatus = {
       state: 'error',
       message: "Echec de la verification des mises a jour.",
@@ -382,44 +388,24 @@ function setupAutoUpdater() {
     };
     sendUpdateStatus(errorStatus);
     sendUpdateWindowStatus(errorStatus);
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.show();
-      mainWindow.focus();
-    }
   });
 
   autoUpdater.on('update-available', (info) => {
     log.info('Update available:', info?.version ?? 'unknown');
+    updaterState = 'available';
     const availableStatus = {
       state: 'available',
       version: info?.version ?? '',
-      message: `Nouvelle version ${info?.version ?? ''} detectee. Telechargement...`,
+      message: `Nouvelle version ${info?.version ?? ''} disponible.`,
     };
     sendUpdateStatus(availableStatus);
-    ensureUpdateWindow();
     sendUpdateWindowStatus(availableStatus);
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.hide();
-    }
-
-    autoUpdater.downloadUpdate().catch((err) => {
-      log.error('Unable to download update:', err);
-      const downloadErrorStatus = {
-        state: 'error',
-        message: "Impossible de telecharger la mise a jour.",
-        details: err?.message ?? String(err),
-      };
-      sendUpdateStatus(downloadErrorStatus);
-      sendUpdateWindowStatus(downloadErrorStatus);
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.show();
-        mainWindow.focus();
-      }
-    });
   });
 
   autoUpdater.on('update-not-available', () => {
     log.info('No update available.');
+    updaterState = 'idle';
+    isDownloadingUpdate = false;
     const idleStatus = { state: 'idle', message: 'Application a jour.' };
     sendUpdateStatus(idleStatus);
     sendUpdateWindowStatus(idleStatus);
@@ -427,6 +413,8 @@ function setupAutoUpdater() {
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
+    updaterState = 'downloading';
+    isDownloadingUpdate = true;
     const percent = Number(progressObj?.percent ?? 0);
     const progressStatus = {
       state: 'downloading',
@@ -442,21 +430,20 @@ function setupAutoUpdater() {
 
   autoUpdater.on('update-downloaded', (info) => {
     log.info('Update downloaded:', info?.version ?? 'unknown');
+    updaterState = 'downloaded';
+    isDownloadingUpdate = false;
     const downloadedStatus = {
       state: 'downloaded',
       version: info?.version ?? '',
-      message: `Version ${info?.version ?? ''} prete. Installation...`,
+      message: `Version ${info?.version ?? ''} prete a installer.`,
     };
     sendUpdateStatus(downloadedStatus);
     sendUpdateWindowStatus(downloadedStatus);
-
-    setTimeout(() => {
-      autoUpdater.quitAndInstall(true, true);
-    }, 1400);
   });
 
   autoUpdater.checkForUpdatesAndNotify().catch((err) => {
     log.error('Unable to check for updates:', err);
+    updaterState = 'error';
     const checkErrorStatus = {
       state: 'error',
       message: "Impossible de verifier les mises a jour.",
@@ -464,15 +451,68 @@ function setupAutoUpdater() {
     };
     sendUpdateStatus(checkErrorStatus);
     sendUpdateWindowStatus(checkErrorStatus);
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.show();
-      mainWindow.focus();
-    }
   });
 }
 
 app.whenReady().then(async () => {
   ipcMain.handle('app:get-version', () => app.getVersion());
+  ipcMain.handle('app:perform-update-action', async () => {
+    if (!isPackaged()) {
+      return { ok: false, message: 'Not packaged' };
+    }
+
+    if (updaterState === 'downloaded') {
+      if (isInstallingUpdate) {
+        return { ok: false, message: 'Install already in progress' };
+      }
+      isInstallingUpdate = true;
+      autoUpdater.quitAndInstall(true, true);
+      return { ok: true, action: 'install' };
+    }
+
+    if (isDownloadingUpdate) {
+      return { ok: false, message: 'Download already in progress' };
+    }
+
+    if (updaterState === 'available' || updaterState === 'error' || updaterState === 'idle' || updaterState === 'checking') {
+      if (updaterState !== 'available') {
+        updaterState = 'checking';
+        sendUpdateStatus({ state: 'checking', message: 'Verification des mises a jour...' });
+        try {
+          await autoUpdater.checkForUpdates();
+        } catch (err) {
+          log.error('Manual check failed:', err);
+          updaterState = 'error';
+          sendUpdateStatus({
+            state: 'error',
+            message: "Impossible de verifier les mises a jour.",
+            details: err?.message ?? String(err),
+          });
+          return { ok: false, message: 'check-failed' };
+        }
+      }
+
+      if (updaterState === 'available') {
+        try {
+          isDownloadingUpdate = true;
+          await autoUpdater.downloadUpdate();
+          return { ok: true, action: 'download' };
+        } catch (err) {
+          isDownloadingUpdate = false;
+          updaterState = 'error';
+          log.error('Manual download failed:', err);
+          sendUpdateStatus({
+            state: 'error',
+            message: "Impossible de telecharger la mise a jour.",
+            details: err?.message ?? String(err),
+          });
+          return { ok: false, message: 'download-failed' };
+        }
+      }
+    }
+
+    return { ok: false, message: 'no-action' };
+  });
   await ensureBackendStarted();
   createWindow();
   setupAutoUpdater();

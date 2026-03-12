@@ -20,7 +20,7 @@
   <section class="update-overlay">
     <div class="update-overlay-head">
       <span class="update-spinner"></span>
-      <span class="update-overlay-title">Mise a jour en cours</span>
+      <span class="update-overlay-title">Mise a jour</span>
     </div>
     <div class="update-overlay-text">{{ updateMessage }}</div>
     @if (updateState === 'downloading') {
@@ -28,6 +28,16 @@
         <div class="update-progress-fill" [style.width.%]="updateProgress"></div>
       </div>
       <div class="update-progress-label">{{ updateProgress.toFixed(1) }}%</div>
+    } @else if (updateState === 'available' || updateState === 'downloaded' || updateState === 'error') {
+      <div class="update-actions">
+        <button
+          type="button"
+          class="update-action-btn"
+          [disabled]="!canRunUpdateAction()"
+          (click)="runUpdateAction()">
+          {{ getUpdateActionLabel() }}
+        </button>
+      </div>
     } @else {
       <div class="update-progress-track is-indeterminate" aria-hidden="true">
         <div class="update-progress-fill"></div>

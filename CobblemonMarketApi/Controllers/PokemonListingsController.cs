@@ -27,6 +27,13 @@ public class PokemonListingsController : ControllerBase
         return Ok(listings);
     }
 
+    [HttpPost("/api/pokemon-listings")]
+    public async Task<ActionResult<PokemonListingDto>> CreateGlobal(CreatePokemonListingDto dto)
+    {
+        var createdListing = await _service.CreateGlobalAsync(dto);
+        return Ok(createdListing);
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PokemonListingDto>>> GetAll(int showcaseId)
     {
@@ -128,6 +135,19 @@ public class PokemonListingsController : ControllerBase
     public async Task<IActionResult> Update(int showcaseId, int id, UpdatePokemonListingDto dto)
     {
         var updated = await _service.UpdateAsync(showcaseId, id, dto);
+
+        if (!updated)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
+
+    [HttpPut("/api/pokemon-listings/{id:int}")]
+    public async Task<IActionResult> UpdateGlobal(int id, UpdatePokemonListingDto dto)
+    {
+        var updated = await _service.UpdateGlobalAsync(id, dto);
 
         if (!updated)
         {

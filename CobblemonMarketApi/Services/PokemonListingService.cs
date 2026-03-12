@@ -100,6 +100,44 @@ public class PokemonListingService : IPokemonListingService
         return MapToDto(listing);
     }
 
+    public async Task<PokemonListingDto> CreateGlobalAsync(CreatePokemonListingDto dto)
+    {
+        var listing = new PokemonListing
+        {
+            Title = dto.Title,
+            Price = dto.Price,
+            Description = dto.Description,
+            Form = NormalizeForm(dto.Form),
+            PokedexNumber = dto.PokedexNumber,
+            PokemonName = dto.PokemonName,
+            Level = dto.Level,
+            Nature = dto.Nature,
+            Ability = dto.Ability,
+            IsHiddenAbility = dto.IsHiddenAbility,
+            Gender = dto.Gender,
+            IsShiny = dto.IsShiny,
+            DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, NormalizeForm(dto.Form), dto.IsShiny),
+            CustomImageUrl = dto.CustomImageUrl,
+            HpIv = dto.HpIv,
+            AttackIv = dto.AttackIv,
+            DefenseIv = dto.DefenseIv,
+            SpecialAttackIv = dto.SpecialAttackIv,
+            SpecialDefenseIv = dto.SpecialDefenseIv,
+            SpeedIv = dto.SpeedIv,
+            TotalIvPercentage = CalculateTotalIvPercentage(
+                dto.HpIv,
+                dto.AttackIv,
+                dto.DefenseIv,
+                dto.SpecialAttackIv,
+                dto.SpecialDefenseIv,
+                dto.SpeedIv)
+        };
+
+        _context.PokemonListings.Add(listing);
+        await _context.SaveChangesAsync();
+        return MapToDto(listing);
+    }
+
     public async Task<ImportPcPokemonListingsResultDto> ImportFromPcExportAsync(ImportPcExportDto dto)
     {
         var skippedCount = 0;
@@ -314,6 +352,47 @@ public class PokemonListingService : IPokemonListingService
 
         var listing = await _context.PokemonListings.FindAsync(id);
 
+        if (listing == null)
+        {
+            return false;
+        }
+
+        listing.Title = dto.Title;
+        listing.Price = dto.Price;
+        listing.Description = dto.Description;
+        listing.Form = NormalizeForm(dto.Form);
+        listing.PokedexNumber = dto.PokedexNumber;
+        listing.PokemonName = dto.PokemonName;
+        listing.Level = dto.Level;
+        listing.Nature = dto.Nature;
+        listing.Ability = dto.Ability;
+        listing.IsHiddenAbility = dto.IsHiddenAbility;
+        listing.Gender = dto.Gender;
+        listing.IsShiny = dto.IsShiny;
+        listing.DefaultImageUrl = await ResolvePokemonImageUrlAsync(dto.PokedexNumber, listing.Form, dto.IsShiny);
+        listing.CustomImageUrl = dto.CustomImageUrl;
+        listing.HpIv = dto.HpIv;
+        listing.AttackIv = dto.AttackIv;
+        listing.DefenseIv = dto.DefenseIv;
+        listing.SpecialAttackIv = dto.SpecialAttackIv;
+        listing.SpecialDefenseIv = dto.SpecialDefenseIv;
+        listing.SpeedIv = dto.SpeedIv;
+        listing.TotalIvPercentage = CalculateTotalIvPercentage(
+            dto.HpIv,
+            dto.AttackIv,
+            dto.DefenseIv,
+            dto.SpecialAttackIv,
+            dto.SpecialDefenseIv,
+            dto.SpeedIv
+        );
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateGlobalAsync(int id, UpdatePokemonListingDto dto)
+    {
+        var listing = await _context.PokemonListings.FindAsync(id);
         if (listing == null)
         {
             return false;

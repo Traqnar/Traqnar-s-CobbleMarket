@@ -12,6 +12,7 @@ export class App implements OnInit, OnDestroy {
   updateState: 'idle' | 'checking' | 'available' | 'downloading' | 'downloaded' | 'error' = 'idle';
   updateMessage = '';
   updateProgress = 0;
+  updateActionBusy = false;
   private detachUpdateListener: (() => void) | null = null;
 
   ngOnInit(): void {
@@ -38,7 +39,32 @@ export class App implements OnInit, OnDestroy {
   }
 
   shouldShowUpdateBanner(): boolean {
-    return ['checking', 'available', 'downloading', 'downloaded'].includes(this.updateState) && !!this.updateMessage;
+    return ['available', 'downloading', 'downloaded', 'error'].includes(this.updateState) && !!this.updateMessage;
+  }
+
+  canRunUpdateAction(): boolean {
+    return !this.updateActionBusy && ['available', 'downloaded', 'error'].includes(this.updateState);
+  }
+
+  getUpdateActionLabel(): string {
+    if (this.updateActionBusy) return 'Patiente...';
+    if (this.updateState === 'available') return 'Mettre a jour';
+    if (this.updateState === 'downloaded') return 'Redemarrer';
+    if (this.updateState === 'error') return 'Reessayer';
+    return 'Mettre a jour';
+  }
+
+  runUpdateAction(): void {
+    if (!window.electronUpdates?.performUpdateAction || !this.canRunUpdateAction()) {
+      return;
+    }
+
+    this.updateActionBusy = true;
+    window.electronUpdates.performUpdateAction()
+      .catch(() => undefined)
+      .finally(() => {
+        this.updateActionBusy = false;
+      });
   }
 }
 

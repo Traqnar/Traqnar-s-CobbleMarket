@@ -25,12 +25,20 @@ export class PokemonListingService {
     return this.http.get<PokemonListing[]>(this.globalApiUrl);
   }
 
+  createGlobal(dto: CreatePokemonListing): Observable<PokemonListing> {
+    return this.http.post<PokemonListing>(this.globalApiUrl, dto);
+  }
+
   create(showcaseId: number, dto: CreatePokemonListing): Observable<PokemonListing> {
     return this.http.post<PokemonListing>(this.getApiUrl(showcaseId), dto);
   }
 
   update(showcaseId: number, id: number, dto: UpdatePokemonListing): Observable<PokemonListing> {
     return this.http.put<PokemonListing>(`${this.getApiUrl(showcaseId)}/${id}`, dto);
+  }
+
+  updateGlobal(id: number, dto: UpdatePokemonListing): Observable<PokemonListing> {
+    return this.http.put<PokemonListing>(`${this.globalApiUrl}/${id}`, dto);
   }
 
   delete(showcaseId: number, id: number): Observable<void> {

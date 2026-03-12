@@ -75,6 +75,27 @@
   animation: update-spin 0.9s linear infinite;
 }
 
+.update-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.update-action-btn {
+  border: 1px solid #3b82f6;
+  background: #1d4ed8;
+  color: #eff6ff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 11px;
+  cursor: pointer;
+}
+
+.update-action-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .update-progress-track {
   margin-top: 8px;
   width: 100%;

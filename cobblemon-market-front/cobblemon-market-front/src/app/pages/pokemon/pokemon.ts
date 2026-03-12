@@ -71,8 +71,9 @@ export class Pokemon implements OnInit {
   showNatureDropdown = false;
   private natureSearch$ = new Subject<string>();
 
-  abilitySuggestions: Array<{ name: string; label: string }> = [];
+  abilitySuggestions: Array<{ name: string; label: string; isHidden: boolean }> = [];
   showAbilityDropdown = false;
+  selectedAbilityIsHidden = false;
   private abilitySearch$ = new Subject<string>();
   availableForms: string[] = [];
   private importEventsSubscription?: Subscription;
@@ -203,12 +204,14 @@ export class Pokemon implements OnInit {
             return {
               name,
               label: isHidden ? `${name} (HA)` : name,
+              isHidden,
             };
           });
         } else {
           this.abilitySuggestions = (results as string[]).map((name) => ({
             name,
             label: name,
+            isHidden: false,
           }));
         }
 
@@ -220,6 +223,7 @@ export class Pokemon implements OnInit {
     this.selectedPokemonPreview = null;
     this.availableForms = [];
     this.addForm.patchValue({ form: '' }, { emitEvent: false });
+    this.selectedAbilityIsHidden = false;
     this.pokemonSearch$.next(value);
 
     if (!value.trim()) {
@@ -254,6 +258,7 @@ export class Pokemon implements OnInit {
 
     this.abilitySuggestions = [];
     this.showAbilityDropdown = false;
+    this.selectedAbilityIsHidden = false;
   }
 
   selectForm(form: string): void {
@@ -290,6 +295,12 @@ export class Pokemon implements OnInit {
   }
 
   onAbilityInput(value: string): void {
+    this.selectedAbilityIsHidden = false;
+    const normalized = value.trim().toLowerCase();
+    const match = this.abilitySuggestions.find((x) => x.name.trim().toLowerCase() === normalized);
+    if (match) {
+      this.selectedAbilityIsHidden = match.isHidden;
+    }
     this.abilitySearch$.next(value);
   }
 
@@ -307,10 +318,11 @@ export class Pokemon implements OnInit {
     setTimeout(() => (this.showAbilityDropdown = false), 150);
   }
 
-  selectAbilitySuggestion(ability: string): void {
+  selectAbilitySuggestion(ability: { name: string; label: string; isHidden: boolean }): void {
     this.addForm.patchValue({
-      ability,
+      ability: ability.name,
     });
+    this.selectedAbilityIsHidden = ability.isHidden;
 
     this.abilitySuggestions = [];
     this.showAbilityDropdown = false;
@@ -385,6 +397,7 @@ export class Pokemon implements OnInit {
       forms: this.normalizeForms([pokemon.form ?? '']),
       imageUrl: this.getPokemonImage(pokemon),
     };
+    this.selectedAbilityIsHidden = Boolean(pokemon.isHiddenAbility);
     this.loadAvailableForms(pokemon.pokemonName, pokemon.form ?? '');
   }
 
@@ -415,6 +428,7 @@ export class Pokemon implements OnInit {
 
     this.abilitySuggestions = [];
     this.showAbilityDropdown = false;
+    this.selectedAbilityIsHidden = false;
 
     this.addForm.reset({
       title: '',
@@ -442,12 +456,6 @@ export class Pokemon implements OnInit {
   }
 
   submitAddForm(): void {
-    if (!this.getDefaultTargetShowcaseId() && !this.editingPokemonShowcaseId) {
-      this.formError = "Aucune showcase disponible. Cree d'abord une showcase.";
-      this.toastService.error(this.formError);
-      return;
-    }
-
     if (this.addForm.invalid) {
       this.addForm.markAllAsTouched();
       this.toastService.info('Formulaire invalide: verifie les champs.');
@@ -467,6 +475,7 @@ export class Pokemon implements OnInit {
       level: Number(value.level),
       nature: value.nature,
       ability: value.ability,
+      isHiddenAbility: this.selectedAbilityIsHidden,
       gender: value.gender,
       isShiny: Boolean(value.isShiny),
       customImageUrl: value.customImageUrl?.trim() || undefined,
@@ -481,16 +490,15 @@ export class Pokemon implements OnInit {
     const targetShowcaseId = this.editingPokemonId
       ? this.editingPokemonShowcaseId
       : this.getDefaultTargetShowcaseId();
-
-    if (!targetShowcaseId) {
-      this.formError = 'Showcase cible introuvable.';
-      this.toastService.error(this.formError);
-      return;
-    }
+    const hasShowcaseTarget = Number(targetShowcaseId) > 0;
 
     const request$ = this.editingPokemonId
-      ? this.pokemonListingService.update(targetShowcaseId, this.editingPokemonId, dto as UpdatePokemonListing)
-      : this.pokemonListingService.create(targetShowcaseId, dto);
+      ? hasShowcaseTarget
+        ? this.pokemonListingService.update(targetShowcaseId!, this.editingPokemonId, dto as UpdatePokemonListing)
+        : this.pokemonListingService.updateGlobal(this.editingPokemonId, dto as UpdatePokemonListing)
+      : hasShowcaseTarget
+        ? this.pokemonListingService.create(targetShowcaseId!, dto)
+        : this.pokemonListingService.createGlobal(dto);
 
     request$.subscribe({
       next: () => {
@@ -525,7 +533,7 @@ export class Pokemon implements OnInit {
     this.pokemonListingService.getAllGlobal().subscribe({
       next: (listings) => {
         const pcLinkedIds = (listings ?? [])
-          .filter((x) => !!(x.uuid ?? '').trim())
+          .filter((x) => this.hasImportUuid(x.uuid))
           .map((x) => x.id);
 
         const cleanup$ = pcLinkedIds.length
@@ -570,6 +578,13 @@ export class Pokemon implements OnInit {
         this.toastService.error(message);
       },
     });
+  }
+
+  private hasImportUuid(uuid: string | null | undefined): boolean {
+    const normalized = (uuid ?? '').trim().toLowerCase();
+    if (!normalized) return false;
+    if (normalized === '00000000-0000-0000-0000-000000000000') return false;
+    return true;
   }
 
   closeDeleteConfirmModal(): void {
@@ -1023,10 +1038,21 @@ export class Pokemon implements OnInit {
     return Array.from(byValue.values()).sort((a, b) => a.label.localeCompare(b.label));
   }
 
-  private matchesShinyFilter(isShiny: boolean): boolean {
-    if (this.pokemonShinyFilter === 'shiny') return isShiny;
-    if (this.pokemonShinyFilter === 'nonshiny') return !isShiny;
+  private matchesShinyFilter(isShiny: boolean | string | number | null | undefined): boolean {
+    const shiny = this.normalizeBoolean(isShiny);
+    if (this.pokemonShinyFilter === 'shiny') return shiny;
+    if (this.pokemonShinyFilter === 'nonshiny') return !shiny;
     return true;
+  }
+
+  private normalizeBoolean(value: boolean | string | number | null | undefined): boolean {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'number') return value !== 0;
+    if (typeof value === 'string') {
+      const normalized = value.trim().toLowerCase();
+      return normalized === 'true' || normalized === '1' || normalized === 'yes';
+    }
+    return false;
   }
 
   private buildAbilityFilterValue(ability: string, isHiddenAbility: boolean): string {
