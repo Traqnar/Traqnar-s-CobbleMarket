@@ -16,6 +16,16 @@ import { PokemonListingService } from '../../services/pokemon-listing.service';
 import { PokemonSearchService } from '../../services/pokemon-search.service';
 import { ShowcaseService } from '../../services/showcase.service';
 import { ToastService } from '../../services/toast.service';
+import { UiStateStorageService } from '../../services/ui-state-storage.service';
+
+type PokemonFilterState = {
+  pokemonNameFilter: string;
+  pokemonAbilityFilter: string;
+  pokemonGenderFilter: string;
+  pokemonShinyFilter: string;
+  pokemonPerfectIvCountFilter: string;
+  pokemonIvSort: 'desc' | 'asc';
+};
 
 @Component({
   selector: 'app-pokemon',
@@ -23,7 +33,7 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './pokemon.html',
   styleUrl: './pokemon.css',
 })
-export class Pokemon implements OnInit {
+export class Pokemon implements OnInit, OnDestroy {
   pokemonListings: PokemonListing[] = [];
   showcases: ShowcaseModel[] = [];
   activeShowcaseId: number | null = null;
@@ -43,6 +53,7 @@ export class Pokemon implements OnInit {
   pokemonNameFilterSearch = '';
   private pokemonNameFilterSearchResetTimer: ReturnType<typeof setTimeout> | null = null;
   pokemonAbilityFilter = '';
+  pokemonGenderFilter = '';
   pokemonShinyFilter = '';
   pokemonPerfectIvCountFilter = '';
   pokemonIvSort: 'desc' | 'asc' = 'desc';
@@ -57,6 +68,7 @@ export class Pokemon implements OnInit {
     { value: '6', label: '6x31', count: 6 },
   ];
   showPokemonNameFilterDropdown = false;
+  showFiltersModal = false;
   showDeleteConfirmModal = false;
   deleteConfirmMessage = '';
   pokemonPendingDelete: PokemonListing | null = null;
@@ -82,6 +94,8 @@ export class Pokemon implements OnInit {
   private importRefreshFallbackSubscription?: Subscription;
   private importRefreshFallbackTimeout: ReturnType<typeof setTimeout> | null = null;
   private awaitingPcImportCompletion = false;
+  private pendingPcShowcaseRelinks = new Map<string, number[]>();
+  private readonly filterStateStorageKey = 'ui:filters:pokemon';
 
   constructor(
     private pokemonListingService: PokemonListingService,
@@ -91,9 +105,12 @@ export class Pokemon implements OnInit {
     private showcaseService: ShowcaseService,
     private toastService: ToastService,
     private fb: FormBuilder,
+    private uiStateStorage: UiStateStorageService,
   ) {}
 
   ngOnInit(): void {
+    this.restoreFilterState();
+
     this.showcaseService.showcases$.subscribe((showcases) => {
       this.showcases = showcases;
 
@@ -122,8 +139,11 @@ export class Pokemon implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.persistFilterState();
     this.importEventsSubscription?.unsubscribe();
     this.stopImportRefreshFallback();
+    this.showFiltersModal = false;
+    this.showPokemonNameFilterDropdown = false;
     if (this.pokemonNameFilterSearchResetTimer) {
       clearTimeout(this.pokemonNameFilterSearchResetTimer);
       this.pokemonNameFilterSearchResetTimer = null;
@@ -137,6 +157,7 @@ export class Pokemon implements OnInit {
       this.stopImportRefreshFallback();
       this.refreshListings();
       this.showcaseService.loadShowcases().subscribe();
+      this.restorePcShowcaseLinksAfterImport();
 
       const details = [
         `${event.importedCount ?? 0} importes`,
@@ -555,14 +576,13 @@ export class Pokemon implements OnInit {
 
     this.pokemonListingService.getAllGlobal().subscribe({
       next: (listings) => {
-        const pcLinkedIds = (listings ?? [])
-          .filter((x) => this.hasImportUuid(x.uuid))
-          .map((x) => x.id);
+        const pcLinkedListings = (listings ?? []).filter((x) => this.hasImportUuid(x.uuid));
+        this.pendingPcShowcaseRelinks = this.buildPcShowcaseRelinkMap(pcLinkedListings);
 
-        const cleanup$ = pcLinkedIds.length
+        const cleanup$ = pcLinkedListings.length
           ? forkJoin(
-              pcLinkedIds.map((id) =>
-                this.pokemonListingService.deleteGlobal(id).pipe(catchError(() => of(void 0))),
+              pcLinkedListings.map((listing) =>
+                this.pokemonListingService.deleteGlobal(listing.id).pipe(catchError(() => of(void 0))),
               ),
             )
           : of([]);
@@ -574,12 +594,14 @@ export class Pokemon implements OnInit {
             this.launchPcExport();
           },
           error: () => {
+            this.pendingPcShowcaseRelinks.clear();
             this.isExportingPc = false;
             this.toastService.error("Impossible de preparer la synchronisation du PC.");
           },
         });
       },
       error: () => {
+        this.pendingPcShowcaseRelinks.clear();
         this.isExportingPc = false;
         this.toastService.error("Impossible de charger la liste Pokemon avant export.");
       },
@@ -598,6 +620,7 @@ export class Pokemon implements OnInit {
         this.isExportingPc = false;
         this.awaitingPcImportCompletion = false;
         this.stopImportRefreshFallback();
+        this.pendingPcShowcaseRelinks.clear();
         const message =
           err?.error?.message ??
           err?.message ??
@@ -640,6 +663,93 @@ export class Pokemon implements OnInit {
     if (!normalized) return false;
     if (normalized === '00000000-0000-0000-0000-000000000000') return false;
     return true;
+  }
+
+  private buildPcShowcaseRelinkMap(pcLinkedListings: PokemonListing[]): Map<string, number[]> {
+    const byId = new Map<number, string>();
+    for (const listing of pcLinkedListings) {
+      const uuid = (listing.uuid ?? '').trim().toLowerCase();
+      if (!this.hasImportUuid(uuid)) {
+        continue;
+      }
+      byId.set(listing.id, uuid);
+    }
+
+    const map = new Map<string, number[]>();
+    for (const showcase of this.showcases ?? []) {
+      const showcaseId = Number(showcase?.id ?? 0);
+      if (!showcaseId) {
+        continue;
+      }
+
+      for (const linkedListing of showcase?.pokemonListings ?? []) {
+        const uuid = byId.get(Number(linkedListing?.id ?? 0));
+        if (!uuid) {
+          continue;
+        }
+
+        const current = map.get(uuid) ?? [];
+        if (!current.includes(showcaseId)) {
+          current.push(showcaseId);
+        }
+        map.set(uuid, current);
+      }
+    }
+
+    return map;
+  }
+
+  private restorePcShowcaseLinksAfterImport(): void {
+    if (!this.pendingPcShowcaseRelinks.size) {
+      return;
+    }
+
+    const relinkPlan = this.pendingPcShowcaseRelinks;
+    this.pendingPcShowcaseRelinks = new Map<string, number[]>();
+
+    this.pokemonListingService.getAllGlobal().subscribe({
+      next: (listings) => {
+        const importedByUuid = new Map<string, number>();
+        for (const listing of listings ?? []) {
+          const uuid = (listing.uuid ?? '').trim().toLowerCase();
+          if (!this.hasImportUuid(uuid)) {
+            continue;
+          }
+          importedByUuid.set(uuid, listing.id);
+        }
+
+        const relinkOps: Array<ReturnType<typeof this.showcaseService.linkPokemonListing>> = [];
+        for (const [uuid, showcaseIds] of relinkPlan.entries()) {
+          const listingId = importedByUuid.get(uuid);
+          if (!listingId) {
+            continue;
+          }
+
+          for (const showcaseId of showcaseIds) {
+            relinkOps.push(
+              this.showcaseService.linkPokemonListing(showcaseId, listingId).pipe(catchError(() => of(void 0))),
+            );
+          }
+        }
+
+        if (!relinkOps.length) {
+          this.showcaseService.loadShowcases().subscribe();
+          return;
+        }
+
+        forkJoin(relinkOps).subscribe({
+          next: () => {
+            this.showcaseService.loadShowcases().subscribe();
+          },
+          error: () => {
+            this.showcaseService.loadShowcases().subscribe();
+          },
+        });
+      },
+      error: () => {
+        this.showcaseService.loadShowcases().subscribe();
+      },
+    });
   }
 
   closeDeleteConfirmModal(): void {
@@ -985,13 +1095,14 @@ export class Pokemon implements OnInit {
     const filtered = this.pokemonListings.filter((pokemon) => {
       const matchName = !this.pokemonNameFilter || this.getPokemonDisplayName(pokemon) === this.pokemonNameFilter;
       const matchAbility = this.matchesAbilityFilter(pokemon, this.pokemonAbilityFilter);
+      const matchGender = this.matchesGenderFilter(pokemon.gender, this.pokemonGenderFilter);
       const matchShiny = this.matchesShinyFilter(pokemon.isShiny);
       const requiredPerfectIvCount = this.pokemonPerfectIvCountFilter === '' ? null : Number(this.pokemonPerfectIvCountFilter);
       const matchPerfectIvCount =
         requiredPerfectIvCount === null || Number.isNaN(requiredPerfectIvCount)
           ? true
           : this.getPerfectIvCount(pokemon) === requiredPerfectIvCount;
-      return matchName && matchAbility && matchShiny && matchPerfectIvCount;
+      return matchName && matchAbility && matchGender && matchShiny && matchPerfectIvCount;
     });
 
     filtered.sort((a, b) =>
@@ -1007,7 +1118,12 @@ export class Pokemon implements OnInit {
     return Array.from(
       new Set(
         this.pokemonListings
-          .filter((p) => this.matchesAbilityFilter(p, this.pokemonAbilityFilter) && this.matchesShinyFilter(p.isShiny))
+          .filter(
+            (p) =>
+              this.matchesAbilityFilter(p, this.pokemonAbilityFilter) &&
+              this.matchesGenderFilter(p.gender, this.pokemonGenderFilter) &&
+              this.matchesShinyFilter(p.isShiny),
+          )
           .map((p) => this.getPokemonDisplayName(p))
           .filter((v) => !!v),
       ),
@@ -1019,6 +1135,7 @@ export class Pokemon implements OnInit {
     const byName = new Map<string, string>();
     for (const p of this.pokemonListings) {
       if (!this.matchesAbilityFilter(p, this.pokemonAbilityFilter)) continue;
+      if (!this.matchesGenderFilter(p.gender, this.pokemonGenderFilter)) continue;
       if (!this.matchesShinyFilter(p.isShiny)) continue;
       if (!p.pokemonName) continue;
       const displayName = this.getPokemonDisplayName(p);
@@ -1039,6 +1156,40 @@ export class Pokemon implements OnInit {
     this.showPokemonNameFilterDropdown = !this.showPokemonNameFilterDropdown;
   }
 
+  openFiltersModal(): void {
+    this.showFiltersModal = true;
+  }
+
+  closeFiltersModal(): void {
+    this.showFiltersModal = false;
+    this.showPokemonNameFilterDropdown = false;
+  }
+
+  onFiltersOverlayMouseDown(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeFiltersModal();
+    }
+  }
+
+  getActiveNonIvFilterCount(): number {
+    let count = 0;
+    if (this.pokemonNameFilter) count += 1;
+    if (this.pokemonAbilityFilter) count += 1;
+    if (this.pokemonShinyFilter) count += 1;
+    if (this.pokemonGenderFilter) count += 1;
+    return count;
+  }
+
+  clearNonIvFilters(): void {
+    this.pokemonNameFilter = '';
+    this.pokemonNameFilterSearch = '';
+    this.pokemonAbilityFilter = '';
+    this.pokemonShinyFilter = '';
+    this.pokemonGenderFilter = '';
+    this.showPokemonNameFilterDropdown = false;
+    this.persistFilterState();
+  }
+
   closePokemonNameFilterDropdown(): void {
     setTimeout(() => {
       this.showPokemonNameFilterDropdown = false;
@@ -1049,6 +1200,7 @@ export class Pokemon implements OnInit {
     this.pokemonNameFilter = name;
     this.pokemonNameFilterSearch = name;
     this.showPokemonNameFilterDropdown = false;
+    this.persistFilterState();
   }
 
   onPokemonNameFilterDropdownKeydown(event: KeyboardEvent): void {
@@ -1099,6 +1251,7 @@ export class Pokemon implements OnInit {
 
     for (const p of this.pokemonListings) {
       if (this.pokemonNameFilter && this.getPokemonDisplayName(p) !== this.pokemonNameFilter) continue;
+      if (!this.matchesGenderFilter(p.gender, this.pokemonGenderFilter)) continue;
       if (!this.matchesShinyFilter(p.isShiny)) continue;
 
       const ability = (p.ability ?? '').trim();
@@ -1121,6 +1274,14 @@ export class Pokemon implements OnInit {
     if (this.pokemonShinyFilter === 'shiny') return shiny;
     if (this.pokemonShinyFilter === 'nonshiny') return !shiny;
     return true;
+  }
+
+  private matchesGenderFilter(gender: string | null | undefined, selectedGender: string): boolean {
+    const selected = String(selectedGender ?? '').trim().toLowerCase();
+    if (!selected) {
+      return true;
+    }
+    return String(gender ?? '').trim().toLowerCase() === selected;
   }
 
   private normalizeBoolean(value: boolean | string | number | null | undefined): boolean {
@@ -1154,6 +1315,48 @@ export class Pokemon implements OnInit {
 
   setPokemonPerfectIvCountFilter(value: string): void {
     this.pokemonPerfectIvCountFilter = value;
+    this.persistFilterState();
+  }
+
+  onPokemonAbilityFilterChange(value: string): void {
+    this.pokemonAbilityFilter = value ?? '';
+    this.persistFilterState();
+  }
+
+  onPokemonIvSortChange(value: string): void {
+    this.pokemonIvSort = value === 'asc' ? 'asc' : 'desc';
+    this.persistFilterState();
+  }
+
+  togglePokemonIvSort(): void {
+    this.pokemonIvSort = this.pokemonIvSort === 'asc' ? 'desc' : 'asc';
+    this.persistFilterState();
+  }
+
+  onPokemonShinyFilterChange(value: string): void {
+    this.pokemonShinyFilter = value ?? '';
+    this.persistFilterState();
+  }
+
+  onPokemonGenderFilterChange(value: string): void {
+    this.pokemonGenderFilter = value ?? '';
+    this.persistFilterState();
+  }
+
+  getPokemonGenderFilterOptions(): string[] {
+    const unique = new Map<string, string>();
+    for (const p of this.pokemonListings) {
+      if (this.pokemonNameFilter && this.getPokemonDisplayName(p) !== this.pokemonNameFilter) continue;
+      if (!this.matchesAbilityFilter(p, this.pokemonAbilityFilter)) continue;
+      if (!this.matchesShinyFilter(p.isShiny)) continue;
+      const gender = String(p.gender ?? '').trim();
+      if (!gender) continue;
+      const key = gender.toLowerCase();
+      if (!unique.has(key)) {
+        unique.set(key, gender);
+      }
+    }
+    return Array.from(unique.values()).sort((a, b) => a.localeCompare(b));
   }
 
   isPokemonPerfectIvFilterSelected(value: string): boolean {
@@ -1229,6 +1432,33 @@ export class Pokemon implements OnInit {
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .replace(/[^a-z0-9]/g, '');
+  }
+
+  private restoreFilterState(): void {
+    const state = this.uiStateStorage.getObject<PokemonFilterState | null>(this.filterStateStorageKey, null);
+    if (!state) {
+      return;
+    }
+
+    this.pokemonNameFilter = state.pokemonNameFilter ?? '';
+    this.pokemonAbilityFilter = state.pokemonAbilityFilter ?? '';
+    this.pokemonGenderFilter = state.pokemonGenderFilter ?? '';
+    this.pokemonShinyFilter = state.pokemonShinyFilter ?? '';
+    this.pokemonPerfectIvCountFilter = state.pokemonPerfectIvCountFilter ?? '';
+    this.pokemonIvSort = state.pokemonIvSort === 'asc' ? 'asc' : 'desc';
+    this.pokemonNameFilterSearch = this.pokemonNameFilter;
+  }
+
+  private persistFilterState(): void {
+    const state: PokemonFilterState = {
+      pokemonNameFilter: this.pokemonNameFilter ?? '',
+      pokemonAbilityFilter: this.pokemonAbilityFilter ?? '',
+      pokemonGenderFilter: this.pokemonGenderFilter ?? '',
+      pokemonShinyFilter: this.pokemonShinyFilter ?? '',
+      pokemonPerfectIvCountFilter: this.pokemonPerfectIvCountFilter ?? '',
+      pokemonIvSort: this.pokemonIvSort === 'asc' ? 'asc' : 'desc',
+    };
+    this.uiStateStorage.setObject(this.filterStateStorageKey, state);
   }
 
 }

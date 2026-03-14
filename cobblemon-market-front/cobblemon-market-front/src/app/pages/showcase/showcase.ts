@@ -12,6 +12,15 @@ import { PokemonImportEventsService } from '../../services/pokemon-import-events
 import { PokemonListingService } from '../../services/pokemon-listing.service';
 import { ShowcaseService } from '../../services/showcase.service';
 import { ToastService } from '../../services/toast.service';
+import { UiStateStorageService } from '../../services/ui-state-storage.service';
+
+type ShowcaseAddPokemonFilterState = {
+  addPokemonNameFilter: string;
+  addPokemonAbilityFilter: string;
+  addPokemonGenderFilter: string;
+  addPokemonShinyFilter: string;
+  addPokemonIvSort: 'desc' | 'asc';
+};
 
 @Component({
   selector: 'app-showcase',
@@ -30,12 +39,17 @@ export class Showcase implements OnInit, OnDestroy {
   addPokemonNameFilter = '';
   addPokemonNameFilterSearch = '';
   addPokemonAbilityFilter = '';
+  addPokemonGenderFilter = '';
   addPokemonShinyFilter = '';
   addPokemonIvSort: 'desc' | 'asc' = 'desc';
   showAddPokemonNameDropdown = false;
   showDeleteShowcaseConfirm = false;
   deleteShowcaseMessage = '';
   pendingShowcaseDeleteId: number | null = null;
+  showRenameShowcaseModal = false;
+  isRenamingShowcase = false;
+  renameShowcaseName = '';
+  renameShowcaseDescription = '';
 
   isGeneratingImage = false;
   generateError: string | null = null;
@@ -53,6 +67,7 @@ export class Showcase implements OnInit, OnDestroy {
   private ivHexagonLabelPositions: { x: number; y: number }[] | null = null;
   private readonly landscapeThreshold = 7;
   private importEventsSubscription?: Subscription;
+  private readonly addPokemonFilterStateStorageKey = 'ui:filters:showcase-add-pokemon';
 
   constructor(
     private showcaseService: ShowcaseService,
@@ -60,9 +75,12 @@ export class Showcase implements OnInit, OnDestroy {
     private pokemonImportEventsService: PokemonImportEventsService,
     private itemListingService: ItemListingService,
     private toastService: ToastService,
+    private uiStateStorage: UiStateStorageService,
   ) {}
 
   ngOnInit(): void {
+    this.restoreAddPokemonFilterState();
+
     this.showcaseService.showcases$.subscribe((list) => {
       this.showcases = list;
     });
@@ -77,6 +95,7 @@ export class Showcase implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.persistAddPokemonFilterState();
     this.importEventsSubscription?.unsubscribe();
   }
 
@@ -134,27 +153,62 @@ export class Showcase implements OnInit, OnDestroy {
     });
   }
 
+  openRenameShowcaseModal(): void {
+    if (!this.activeShowcase) {
+      return;
+    }
+
+    this.renameShowcaseName = this.activeShowcase.name ?? '';
+    this.renameShowcaseDescription = this.activeShowcase.description ?? '';
+    this.showRenameShowcaseModal = true;
+  }
+
+  closeRenameShowcaseModal(): void {
+    if (this.isRenamingShowcase) {
+      return;
+    }
+    this.showRenameShowcaseModal = false;
+    this.renameShowcaseName = '';
+    this.renameShowcaseDescription = '';
+  }
+
   renameActiveShowcase(): void {
     if (!this.activeShowcase) {
       return;
     }
 
-    const nextName = window.prompt('Nouveau nom de la showcase', this.activeShowcase.name)?.trim();
-    if (!nextName || nextName === this.activeShowcase.name) {
+    const nextName = String(this.renameShowcaseName ?? '').trim();
+    const nextDescription = String(this.renameShowcaseDescription ?? '').trim();
+    const currentName = String(this.activeShowcase.name ?? '').trim();
+    const currentDescription = String(this.activeShowcase.description ?? '').trim();
+
+    if (!nextName) {
+      this.toastService.info('Le nom de la showcase est requis.');
       return;
     }
 
+    if (nextName === currentName && nextDescription === currentDescription) {
+      this.closeRenameShowcaseModal();
+      return;
+    }
+
+    this.isRenamingShowcase = true;
     this.showcaseService
       .updateShowcase(this.activeShowcase.id, {
         name: nextName,
-        description: this.activeShowcase.description ?? undefined,
+        description: nextDescription || undefined,
       })
       .subscribe({
         next: () => {
+          this.isRenamingShowcase = false;
+          this.closeRenameShowcaseModal();
           this.toastService.success('Showcase renommee.');
           this.reloadShowcases();
         },
-        error: () => this.toastService.error('Erreur lors du renommage de la showcase.'),
+        error: () => {
+          this.isRenamingShowcase = false;
+          this.toastService.error('Erreur lors du renommage de la showcase.');
+        },
       });
   }
 
@@ -223,8 +277,9 @@ export class Showcase implements OnInit, OnDestroy {
     const filtered = this.getAvailableInventoryPokemons().filter((pokemon) => {
       const matchName = !this.addPokemonNameFilter || this.getPokemonDisplayName(pokemon) === this.addPokemonNameFilter;
       const matchAbility = this.matchesAbilityFilter(pokemon, this.addPokemonAbilityFilter);
+      const matchGender = this.matchesGenderFilter(pokemon.gender, this.addPokemonGenderFilter);
       const matchShiny = this.matchesAddPokemonShinyFilter(pokemon.isShiny);
-      return matchName && matchAbility && matchShiny;
+      return matchName && matchAbility && matchGender && matchShiny;
     });
 
     filtered.sort((a, b) =>
@@ -240,7 +295,12 @@ export class Showcase implements OnInit, OnDestroy {
     return Array.from(
       new Set(
         this.getAvailableInventoryPokemons()
-          .filter((p) => this.matchesAbilityFilter(p, this.addPokemonAbilityFilter) && this.matchesAddPokemonShinyFilter(p.isShiny))
+          .filter(
+            (p) =>
+              this.matchesAbilityFilter(p, this.addPokemonAbilityFilter) &&
+              this.matchesGenderFilter(p.gender, this.addPokemonGenderFilter) &&
+              this.matchesAddPokemonShinyFilter(p.isShiny),
+          )
           .map((p) => this.getPokemonDisplayName(p))
           .filter((v) => !!v),
       ),
@@ -252,6 +312,7 @@ export class Showcase implements OnInit, OnDestroy {
     const byName = new Map<string, string>();
     for (const p of this.getAvailableInventoryPokemons()) {
       if (!this.matchesAbilityFilter(p, this.addPokemonAbilityFilter)) continue;
+      if (!this.matchesGenderFilter(p.gender, this.addPokemonGenderFilter)) continue;
       if (!this.matchesAddPokemonShinyFilter(p.isShiny)) continue;
       if (!p.pokemonName) continue;
       const displayName = this.getPokemonDisplayName(p);
@@ -282,10 +343,47 @@ export class Showcase implements OnInit, OnDestroy {
     this.addPokemonNameFilter = name;
     this.addPokemonNameFilterSearch = name;
     this.showAddPokemonNameDropdown = false;
+    this.persistAddPokemonFilterState();
   }
 
   onAddPokemonNameFilterSearchInput(value: string): void {
     this.addPokemonNameFilterSearch = value;
+  }
+
+  onAddPokemonAbilityFilterChange(value: string): void {
+    this.addPokemonAbilityFilter = value ?? '';
+    this.persistAddPokemonFilterState();
+  }
+
+  onAddPokemonGenderFilterChange(value: string): void {
+    this.addPokemonGenderFilter = value ?? '';
+    this.persistAddPokemonFilterState();
+  }
+
+  onAddPokemonIvSortChange(value: string): void {
+    this.addPokemonIvSort = value === 'asc' ? 'asc' : 'desc';
+    this.persistAddPokemonFilterState();
+  }
+
+  onAddPokemonShinyFilterChange(value: string): void {
+    this.addPokemonShinyFilter = value ?? '';
+    this.persistAddPokemonFilterState();
+  }
+
+  getAvailableGenderOptions(): string[] {
+    const unique = new Map<string, string>();
+    for (const p of this.getAvailableInventoryPokemons()) {
+      if (this.addPokemonNameFilter && this.getPokemonDisplayName(p) !== this.addPokemonNameFilter) continue;
+      if (!this.matchesAbilityFilter(p, this.addPokemonAbilityFilter)) continue;
+      if (!this.matchesAddPokemonShinyFilter(p.isShiny)) continue;
+      const gender = String(p.gender ?? '').trim();
+      if (!gender) continue;
+      const key = gender.toLowerCase();
+      if (!unique.has(key)) {
+        unique.set(key, gender);
+      }
+    }
+    return Array.from(unique.values()).sort((a, b) => a.localeCompare(b));
   }
 
   getSelectedAddPokemonNameImage(): string | null {
@@ -299,6 +397,7 @@ export class Showcase implements OnInit, OnDestroy {
 
     for (const p of this.getAvailableInventoryPokemons()) {
       if (this.addPokemonNameFilter && this.getPokemonDisplayName(p) !== this.addPokemonNameFilter) continue;
+      if (!this.matchesGenderFilter(p.gender, this.addPokemonGenderFilter)) continue;
       if (!this.matchesAddPokemonShinyFilter(p.isShiny)) continue;
 
       const ability = (p.ability ?? '').trim();
@@ -321,6 +420,14 @@ export class Showcase implements OnInit, OnDestroy {
     if (this.addPokemonShinyFilter === 'shiny') return shiny;
     if (this.addPokemonShinyFilter === 'nonshiny') return !shiny;
     return true;
+  }
+
+  private matchesGenderFilter(gender: string | null | undefined, selectedGender: string): boolean {
+    const selected = String(selectedGender ?? '').trim().toLowerCase();
+    if (!selected) {
+      return true;
+    }
+    return String(gender ?? '').trim().toLowerCase() === selected;
   }
 
   private normalizeBoolean(value: boolean | string | number | null | undefined): boolean {
@@ -928,6 +1035,34 @@ export class Showcase implements OnInit, OnDestroy {
     } catch {
       return false;
     }
+  }
+
+  private restoreAddPokemonFilterState(): void {
+    const state = this.uiStateStorage.getObject<ShowcaseAddPokemonFilterState | null>(
+      this.addPokemonFilterStateStorageKey,
+      null,
+    );
+    if (!state) {
+      return;
+    }
+
+    this.addPokemonNameFilter = state.addPokemonNameFilter ?? '';
+    this.addPokemonNameFilterSearch = this.addPokemonNameFilter;
+    this.addPokemonAbilityFilter = state.addPokemonAbilityFilter ?? '';
+    this.addPokemonGenderFilter = state.addPokemonGenderFilter ?? '';
+    this.addPokemonShinyFilter = state.addPokemonShinyFilter ?? '';
+    this.addPokemonIvSort = state.addPokemonIvSort === 'asc' ? 'asc' : 'desc';
+  }
+
+  private persistAddPokemonFilterState(): void {
+    const state: ShowcaseAddPokemonFilterState = {
+      addPokemonNameFilter: this.addPokemonNameFilter ?? '',
+      addPokemonAbilityFilter: this.addPokemonAbilityFilter ?? '',
+      addPokemonGenderFilter: this.addPokemonGenderFilter ?? '',
+      addPokemonShinyFilter: this.addPokemonShinyFilter ?? '',
+      addPokemonIvSort: this.addPokemonIvSort === 'asc' ? 'asc' : 'desc',
+    };
+    this.uiStateStorage.setObject(this.addPokemonFilterStateStorageKey, state);
   }
 
 }

@@ -10,6 +10,7 @@ import { apiUrl } from './api-base';
 })
 export class ShowcaseService {
   private readonly apiUrl = apiUrl('/api/showcases');
+  private readonly hiddenShowcaseNames = new Set(['legacy showcase', 'nos pokemons', 'nos pokemon']);
 
   private readonly showcasesSubject = new BehaviorSubject<Showcase[]>([]);
   private readonly activeShowcaseIdSubject = new BehaviorSubject<number | null>(null);
@@ -26,16 +27,17 @@ export class ShowcaseService {
   loadShowcases(): Observable<Showcase[]> {
     return this.http.get<Showcase[]>(this.apiUrl).pipe(
       tap((showcases) => {
-        this.showcasesSubject.next(showcases);
+        const visibleShowcases = (showcases ?? []).filter((x) => !this.isHiddenSystemShowcase(x));
+        this.showcasesSubject.next(visibleShowcases);
 
         const activeId = this.activeShowcaseIdSubject.value;
-        const stillExists = activeId !== null && showcases.some((x) => x.id === activeId);
+        const stillExists = activeId !== null && visibleShowcases.some((x) => x.id === activeId);
 
         if (stillExists) {
           return;
         }
 
-        this.activeShowcaseIdSubject.next(showcases.length ? showcases[0].id : null);
+        this.activeShowcaseIdSubject.next(visibleShowcases.length ? visibleShowcases[0].id : null);
       }),
     );
   }
@@ -100,5 +102,10 @@ export class ShowcaseService {
 
   getActiveShowcaseIdSnapshot(): number | null {
     return this.activeShowcaseIdSubject.value;
+  }
+
+  private isHiddenSystemShowcase(showcase: Showcase | null | undefined): boolean {
+    const normalizedName = String(showcase?.name ?? '').trim().toLowerCase();
+    return !!normalizedName && this.hiddenShowcaseNames.has(normalizedName);
   }
 }

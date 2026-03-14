@@ -1,5 +1,7 @@
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { UiStateStorageService } from './services/ui-state-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -16,10 +18,32 @@ export class App implements OnInit, OnDestroy {
   private currentAvailableVersion = '';
   private refusedUpdateVersion = '';
   private detachUpdateListener: (() => void) | null = null;
+  private currentRouteUrl = '/';
+  private routerEventsSubscription?: Subscription;
+  private restoreScrollRetryTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(private ngZone: NgZone) {}
+  constructor(
+    private ngZone: NgZone,
+    private router: Router,
+    private uiStateStorage: UiStateStorageService,
+  ) {}
 
   ngOnInit(): void {
+    this.currentRouteUrl = this.router.url || '/';
+    this.restoreScrollForRoute(this.currentRouteUrl);
+
+    this.routerEventsSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.saveScrollForRoute(this.currentRouteUrl);
+        return;
+      }
+
+      if (event instanceof NavigationEnd) {
+        this.currentRouteUrl = event.urlAfterRedirects || event.url;
+        this.restoreScrollForRoute(this.currentRouteUrl);
+      }
+    });
+
     if (!window.electronUpdates?.onStatus) {
       return;
     }
@@ -50,6 +74,12 @@ export class App implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.saveScrollForRoute(this.currentRouteUrl);
+    if (this.restoreScrollRetryTimer) {
+      clearTimeout(this.restoreScrollRetryTimer);
+      this.restoreScrollRetryTimer = null;
+    }
+    this.routerEventsSubscription?.unsubscribe();
     this.detachUpdateListener?.();
     this.detachUpdateListener = null;
   }
@@ -96,6 +126,52 @@ export class App implements OnInit, OnDestroy {
 
   private isCurrentVersionRefused(): boolean {
     return !!this.currentAvailableVersion && this.currentAvailableVersion === this.refusedUpdateVersion;
+  }
+
+  private buildScrollStateKey(url: string): string {
+    return `ui:scroll:${url}`;
+  }
+
+  private saveScrollForRoute(url: string): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    this.uiStateStorage.setNumber(this.buildScrollStateKey(url), Math.max(0, Number(window.scrollY) || 0));
+  }
+
+  private restoreScrollForRoute(url: string): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (this.restoreScrollRetryTimer) {
+      clearTimeout(this.restoreScrollRetryTimer);
+      this.restoreScrollRetryTimer = null;
+    }
+
+    const targetY = this.uiStateStorage.getNumber(this.buildScrollStateKey(url), 0);
+    if (targetY <= 0) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      return;
+    }
+
+    let attempts = 0;
+    const maxAttempts = 30;
+    const tick = () => {
+      const maxReachableY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const canReachTarget = maxReachableY >= targetY || attempts >= maxAttempts;
+      window.scrollTo({ top: Math.min(targetY, maxReachableY), left: 0, behavior: 'auto' });
+
+      if (canReachTarget) {
+        this.restoreScrollRetryTimer = null;
+        return;
+      }
+
+      attempts += 1;
+      this.restoreScrollRetryTimer = setTimeout(tick, 100);
+    };
+
+    this.restoreScrollRetryTimer = setTimeout(tick, 0);
   }
 }
 

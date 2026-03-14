@@ -19,9 +19,304 @@ let isDownloadingUpdate = false;
 let isInstallingUpdate = false;
 let isCheckingForUpdates = false;
 let updateCheckInterval = null;
+const BACKEND_DATA_FILE_EXTENSIONS = new Set(['.db', '.sqlite', '.sqlite3', '.db-wal', '.db-shm']);
+let backendLogStream = null;
+let backendDetectedCorruption = false;
+let backendRecoveryAttempted = false;
 
 function isPackaged() {
   return app.isPackaged;
+}
+
+function getBackendDir() {
+  return isPackaged()
+    ? path.join(process.resourcesPath, 'backend')
+    : path.join(__dirname, 'backend-publish');
+}
+
+function getPersistentBackendDataDir() {
+  return path.join(app.getPath('userData'), 'backend-data');
+}
+
+function isBackendDataFile(fileName) {
+  const lower = String(fileName || '').toLowerCase();
+  for (const extension of BACKEND_DATA_FILE_EXTENSIONS) {
+    if (lower.endsWith(extension)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function looksLikeCorruptedSqliteMessage(text) {
+  const lower = String(text || '').toLowerCase();
+  return lower.includes('database disk image is malformed') || (lower.includes('sqlite error 11') && lower.includes('malformed'));
+}
+
+function ensureDirectory(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+function getBackendLogFilePath() {
+  return path.join(app.getPath('userData'), 'backend.log');
+}
+
+function ensureBackendLogStream() {
+  if (backendLogStream) {
+    return backendLogStream;
+  }
+
+  try {
+    const userDataDir = app.getPath('userData');
+    ensureDirectory(userDataDir);
+    backendLogStream = fs.createWriteStream(getBackendLogFilePath(), { flags: 'a' });
+    backendLogStream.on('error', (err) => {
+      log.error('backend log stream error:', err);
+    });
+  } catch (err) {
+    log.error('Unable to initialize backend log stream:', err);
+  }
+
+  return backendLogStream;
+}
+
+function writeBackendLogLine(line) {
+  const stream = ensureBackendLogStream();
+  if (!stream) {
+    return;
+  }
+
+  try {
+    const prefix = new Date().toISOString();
+    stream.write(`[${prefix}] ${line}\n`);
+  } catch (err) {
+    log.error('Unable to write backend log line:', err);
+  }
+}
+
+function closeBackendLogStream() {
+  if (!backendLogStream) {
+    return;
+  }
+
+  try {
+    backendLogStream.end();
+  } catch {
+    // ignore
+  } finally {
+    backendLogStream = null;
+  }
+}
+
+function moveFileToDirectory(srcPath, targetDir) {
+  try {
+    ensureDirectory(targetDir);
+    const fileName = path.basename(srcPath);
+    const destPath = path.join(targetDir, fileName);
+    fs.renameSync(srcPath, destPath);
+    return destPath;
+  } catch {
+    try {
+      ensureDirectory(targetDir);
+      const fileName = path.basename(srcPath);
+      const destPath = path.join(targetDir, fileName);
+      fs.copyFileSync(srcPath, destPath);
+      fs.unlinkSync(srcPath);
+      return destPath;
+    } catch {
+      return null;
+    }
+  }
+}
+
+function copyBackendDataFilesToDirectory(sourceDir, targetDir) {
+  if (!fs.existsSync(sourceDir)) {
+    return 0;
+  }
+
+  ensureDirectory(targetDir);
+  const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
+  let copied = 0;
+  for (const entry of entries) {
+    if (!entry.isFile()) {
+      continue;
+    }
+    if (!isBackendDataFile(entry.name)) {
+      continue;
+    }
+
+    const src = path.join(sourceDir, entry.name);
+    const dest = path.join(targetDir, entry.name);
+    fs.copyFileSync(src, dest);
+    copied += 1;
+  }
+
+  return copied;
+}
+
+function countBackendDataFilesInDirectory(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    return 0;
+  }
+
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  let count = 0;
+  for (const entry of entries) {
+    if (!entry.isFile()) {
+      continue;
+    }
+    if (!isBackendDataFile(entry.name)) {
+      continue;
+    }
+    count += 1;
+  }
+  return count;
+}
+
+function rotateVersionedBackups(backupRootDir, maxBackups = 2) {
+  if (!fs.existsSync(backupRootDir)) {
+    return;
+  }
+
+  const dirs = fs.readdirSync(backupRootDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(backupRootDir, entry.name))
+    .map((fullPath) => {
+      let mtimeMs = 0;
+      try {
+        mtimeMs = fs.statSync(fullPath).mtimeMs;
+      } catch {
+        mtimeMs = 0;
+      }
+      return { fullPath, mtimeMs };
+    })
+    .sort((a, b) => b.mtimeMs - a.mtimeMs);
+
+  for (let i = maxBackups; i < dirs.length; i += 1) {
+    try {
+      fs.rmSync(dirs[i].fullPath, { recursive: true, force: true });
+      writeBackendLogLine(`Pruned old backup directory: ${dirs[i].fullPath}`);
+    } catch (err) {
+      log.warn('Unable to prune old backend backup:', err);
+    }
+  }
+}
+
+function quarantineCorruptedBackendDataFiles() {
+  const now = new Date();
+  const stamp = now.toISOString().replace(/[:.]/g, '-');
+  const quarantineRoot = path.join(getPersistentBackendDataDir(), 'recovery', stamp);
+  const sourceDirs = [getBackendDir(), getPersistentBackendDataDir()];
+
+  let movedCount = 0;
+  for (const sourceDir of sourceDirs) {
+    if (!fs.existsSync(sourceDir)) {
+      continue;
+    }
+
+    const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isFile()) {
+        continue;
+      }
+      if (!isBackendDataFile(entry.name)) {
+        continue;
+      }
+
+      const src = path.join(sourceDir, entry.name);
+      const targetDir = path.join(quarantineRoot, sourceDir === getBackendDir() ? 'backend-dir' : 'persistent-dir');
+      const movedPath = moveFileToDirectory(src, targetDir);
+      if (movedPath) {
+        movedCount += 1;
+        writeBackendLogLine(`Quarantined corrupted DB file: ${src} -> ${movedPath}`);
+      }
+    }
+  }
+
+  writeBackendLogLine(`Corruption recovery moved files count=${movedCount}`);
+}
+
+function backupBackendDataFiles() {
+  try {
+    const backendDir = getBackendDir();
+    if (!fs.existsSync(backendDir)) {
+      return;
+    }
+
+    const persistentDir = getPersistentBackendDataDir();
+    ensureDirectory(persistentDir);
+    const copiedCurrent = copyBackendDataFilesToDirectory(backendDir, persistentDir);
+    writeBackendLogLine(`Backup current snapshot copied files count=${copiedCurrent}`);
+
+    const backupRoot = path.join(persistentDir, 'backups');
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const versionedBackupDir = path.join(backupRoot, stamp);
+    const copiedVersioned = copyBackendDataFilesToDirectory(backendDir, versionedBackupDir);
+    writeBackendLogLine(`Backup versioned snapshot copied files count=${copiedVersioned} dir=${versionedBackupDir}`);
+    rotateVersionedBackups(backupRoot, 2);
+  } catch (err) {
+    log.warn('Unable to back up backend data files:', err);
+  }
+}
+
+function restoreFromLatestVersionedBackupIfNeeded() {
+  try {
+    const backendDir = getBackendDir();
+    const persistentDir = getPersistentBackendDataDir();
+    const backupRoot = path.join(persistentDir, 'backups');
+
+    if (!fs.existsSync(backendDir) || !fs.existsSync(backupRoot)) {
+      return;
+    }
+
+    const entries = fs.readdirSync(backupRoot, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => path.join(backupRoot, entry.name))
+      .map((fullPath) => {
+        let mtimeMs = 0;
+        try {
+          mtimeMs = fs.statSync(fullPath).mtimeMs;
+        } catch {
+          mtimeMs = 0;
+        }
+        return { fullPath, mtimeMs };
+      })
+      .sort((a, b) => b.mtimeMs - a.mtimeMs);
+
+    if (!entries.length) {
+      return;
+    }
+
+    // If current persistent snapshot is empty/missing, recover from latest versioned snapshot.
+    const persistentFilesCount = countBackendDataFilesInDirectory(persistentDir);
+    if (persistentFilesCount > 0) {
+      return;
+    }
+
+    const latestDir = entries[0].fullPath;
+    const copied = copyBackendDataFilesToDirectory(latestDir, persistentDir);
+    writeBackendLogLine(`Recovered persistent DB from latest versioned backup copied=${copied} source=${latestDir}`);
+  } catch (err) {
+    log.warn('Unable to restore from latest versioned backup:', err);
+  }
+}
+
+function restoreBackendDataFiles() {
+  try {
+    const backendDir = getBackendDir();
+    const persistentDir = getPersistentBackendDataDir();
+    restoreFromLatestVersionedBackupIfNeeded();
+    if (!fs.existsSync(backendDir) || !fs.existsSync(persistentDir)) {
+      return;
+    }
+
+    const copied = copyBackendDataFilesToDirectory(persistentDir, backendDir);
+    writeBackendLogLine(`Restore copied files count=${copied}`);
+  } catch (err) {
+    log.warn('Unable to restore backend data files:', err);
+  }
 }
 
 function createWindow() {
@@ -337,26 +632,73 @@ async function ensureBackendStarted() {
     }
   }
 
-  const backendDir = isPackaged()
-    ? path.join(process.resourcesPath, 'backend')
-    : path.join(__dirname, 'backend-publish');
+  const backendDir = getBackendDir();
   const backendExe = path.join(backendDir, 'CobblemonMarketApi.exe');
+  writeBackendLogLine(`Boot info userData=${app.getPath('userData')}`);
+  writeBackendLogLine(`Boot info resourcesPath=${process.resourcesPath}`);
+  writeBackendLogLine(`Boot info backendDir=${backendDir}`);
+  writeBackendLogLine(`Boot info backendExe=${backendExe}`);
 
   if (!fs.existsSync(backendExe)) {
+    writeBackendLogLine(`Backend executable missing at ${backendExe}`);
+    log.error('Backend executable missing at', backendExe);
     return;
   }
 
+  restoreBackendDataFiles();
+  backendDetectedCorruption = false;
+
   backendProcess = spawn(backendExe, ['--urls', API_BASE_URL], {
     cwd: backendDir,
-    stdio: 'ignore',
+    stdio: ['ignore', 'pipe', 'pipe'],
     windowsHide: true,
   });
 
-  backendProcess.on('exit', () => {
+  writeBackendLogLine(`Spawned backend pid=${backendProcess.pid ?? 'unknown'}`);
+
+  if (backendProcess.stdout) {
+    backendProcess.stdout.on('data', (chunk) => {
+      const text = String(chunk ?? '').trim();
+      if (!text) return;
+      writeBackendLogLine(`[stdout] ${text}`);
+    });
+  }
+
+  if (backendProcess.stderr) {
+    backendProcess.stderr.on('data', (chunk) => {
+      const text = String(chunk ?? '').trim();
+      if (!text) return;
+      writeBackendLogLine(`[stderr] ${text}`);
+      log.warn('[backend stderr]', text);
+      if (looksLikeCorruptedSqliteMessage(text)) {
+        backendDetectedCorruption = true;
+      }
+    });
+  }
+
+  backendProcess.on('error', (err) => {
+    writeBackendLogLine(`Backend process error: ${err?.message ?? String(err)}`);
+    log.error('Backend process spawn error:', err);
+  });
+
+  backendProcess.on('exit', (code, signal) => {
+    writeBackendLogLine(`Backend process exited code=${String(code)} signal=${String(signal)}`);
+    log.warn('Backend process exited', { code, signal });
     backendProcess = null;
   });
 
-  await waitForBackend(30000);
+  const started = await waitForBackend(30000);
+  writeBackendLogLine(`Backend healthcheck started=${String(started)}`);
+  if (!started) {
+    log.error('Backend healthcheck timeout on', API_BASE_URL);
+    if (backendDetectedCorruption && !backendRecoveryAttempted) {
+      backendRecoveryAttempted = true;
+      writeBackendLogLine('Detected corrupted SQLite DB. Running automatic recovery and retrying backend startup once.');
+      quarantineCorruptedBackendDataFiles();
+      await ensureBackendStarted();
+      return;
+    }
+  }
 }
 
 function stopBackendIfNeeded() {
@@ -475,6 +817,7 @@ function setupAutoUpdater() {
 }
 
 app.whenReady().then(async () => {
+  writeBackendLogLine('Electron app ready.');
   ipcMain.handle('app:get-version', () => app.getVersion());
   ipcMain.handle('app:perform-update-action', async () => {
     if (!isPackaged()) {
@@ -486,6 +829,7 @@ app.whenReady().then(async () => {
         return { ok: false, message: 'Install already in progress' };
       }
       isInstallingUpdate = true;
+      backupBackendDataFiles();
       autoUpdater.quitAndInstall(true, true);
       return { ok: true, action: 'install' };
     }
@@ -545,11 +889,14 @@ app.whenReady().then(async () => {
 });
 
 app.on('before-quit', () => {
+  writeBackendLogLine('Electron before-quit.');
   if (updateCheckInterval) {
     clearInterval(updateCheckInterval);
     updateCheckInterval = null;
   }
+  backupBackendDataFiles();
   stopBackendIfNeeded();
+  closeBackendLogStream();
 });
 
 app.on('window-all-closed', () => {

@@ -8,60 +8,20 @@
     </div>
   </header>
 
-  <div class="list-filters">
-    <div
-      class="filter-dropdown"
-      tabindex="0"
-      (blur)="closePokemonNameFilterDropdown()"
-      (keydown)="onPokemonNameFilterDropdownKeydown($event)">
-      <button type="button" class="filter-dropdown-trigger" (click)="togglePokemonNameFilterDropdown()">
-        @if (getSelectedPokemonNameFilterImage()) {
-          <img [src]="getSelectedPokemonNameFilterImage()!" alt="" class="filter-dropdown-img" />
-        }
-        <span>{{ pokemonNameFilter || 'Tous les Pokemon' }}</span>
-      </button>
-      @if (showPokemonNameFilterDropdown) {
-        <div class="filter-dropdown-menu">
-          <button type="button" class="filter-dropdown-item" (click)="selectPokemonNameFilter('')">
-            <span>Tous les Pokemon</span>
-          </button>
-          @for (opt of getPokemonNameFilterOptionDetails(); track opt.name) {
-            <button type="button" class="filter-dropdown-item" (click)="selectPokemonNameFilter(opt.name)">
-              <img [src]="opt.imageUrl" [alt]="opt.name" class="filter-dropdown-img" />
-              <span>{{ opt.name }}</span>
-            </button>
-          }
-        </div>
-      }
-    </div>
-    <select
-      class="list-filter-select"
-      [value]="pokemonAbilityFilter"
-      (change)="pokemonAbilityFilter = $any($event.target).value">
-      <option value="">Tous les talents</option>
-      @for (ability of getPokemonAbilityFilterOptions(); track ability.value) {
-        <option [value]="ability.value">{{ ability.label }}</option>
-      }
-    </select>
-    <select
-      class="list-filter-select"
-      [value]="pokemonIvSort"
-      (change)="pokemonIvSort = $any($event.target).value">
-      <option value="desc">IV% du plus haut au plus bas</option>
-      <option value="asc">IV% du plus bas au plus haut</option>
-    </select>
-    <select
-      class="list-filter-select"
-      [value]="pokemonShinyFilter"
-      (change)="pokemonShinyFilter = $any($event.target).value">
-      <option value="">Tous (Shiny + non-shiny)</option>
-      <option value="shiny">Shiny uniquement</option>
-      <option value="nonshiny">Non-shiny uniquement</option>
-    </select>
-  </div>
-
   <div class="perfect-iv-filter-bar">
-    <span class="perfect-iv-filter-title">Filtre 31 IV</span>
+    <button type="button" class="filters-open-btn" (click)="openFiltersModal()">
+      Filtres
+      @if (getActiveNonIvFilterCount() > 0) {
+        <span class="filters-open-count">{{ getActiveNonIvFilterCount() }}</span>
+      }
+    </button>
+    <button type="button" class="iv-sort-toggle-btn" (click)="togglePokemonIvSort()">
+      <span class="iv-sort-toggle-label">Tri IV%</span>
+      <span class="iv-sort-toggle-value">
+        {{ pokemonIvSort === 'desc' ? 'Desc' : 'Asc' }}
+        {{ pokemonIvSort === 'desc' ? '↓' : '↑' }}
+      </span>
+    </button>
     <div class="perfect-iv-chip-list">
       @for (option of perfectIvCountFilterOptions; track option.value) {
         <button
@@ -79,6 +39,77 @@
       }
     </div>
   </div>
+
+  @if (showFiltersModal) {
+    <div class="filters-modal-overlay" (mousedown)="onFiltersOverlayMouseDown($event)">
+      <section class="filters-modal-card" (mousedown)="$event.stopPropagation()">
+        <header class="filters-modal-header">
+          <h3>Filtres Pokemon</h3>
+          <div class="filters-modal-header-actions">
+            <button type="button" class="clear-filters-btn" (click)="clearNonIvFilters()">Reset</button>
+            <button type="button" class="close-filters-btn" (click)="closeFiltersModal()">Fermer</button>
+          </div>
+        </header>
+
+        <div class="filters-modal-grid">
+          <div
+            class="filter-dropdown"
+            tabindex="0"
+            (blur)="closePokemonNameFilterDropdown()"
+            (keydown)="onPokemonNameFilterDropdownKeydown($event)">
+            <button type="button" class="filter-dropdown-trigger" (click)="togglePokemonNameFilterDropdown()">
+              @if (getSelectedPokemonNameFilterImage()) {
+                <img [src]="getSelectedPokemonNameFilterImage()!" alt="" class="filter-dropdown-img" />
+              }
+              <span>{{ pokemonNameFilter || 'Tous les Pokemon' }}</span>
+            </button>
+            @if (showPokemonNameFilterDropdown) {
+              <div class="filter-dropdown-menu">
+                <button type="button" class="filter-dropdown-item" (click)="selectPokemonNameFilter('')">
+                  <span>Tous les Pokemon</span>
+                </button>
+                @for (opt of getPokemonNameFilterOptionDetails(); track opt.name) {
+                  <button type="button" class="filter-dropdown-item" (click)="selectPokemonNameFilter(opt.name)">
+                    <img [src]="opt.imageUrl" [alt]="opt.name" class="filter-dropdown-img" />
+                    <span>{{ opt.name }}</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          <select
+            class="list-filter-select"
+            [value]="pokemonAbilityFilter"
+            (change)="onPokemonAbilityFilterChange($any($event.target).value)">
+            <option value="">Tous les talents</option>
+            @for (ability of getPokemonAbilityFilterOptions(); track ability.value) {
+              <option [value]="ability.value">{{ ability.label }}</option>
+            }
+          </select>
+
+          <select
+            class="list-filter-select"
+            [value]="pokemonShinyFilter"
+            (change)="onPokemonShinyFilterChange($any($event.target).value)">
+            <option value="">Tous (Shiny + non-shiny)</option>
+            <option value="shiny">Shiny uniquement</option>
+            <option value="nonshiny">Non-shiny uniquement</option>
+          </select>
+
+          <select
+            class="list-filter-select"
+            [value]="pokemonGenderFilter"
+            (change)="onPokemonGenderFilterChange($any($event.target).value)">
+            <option value="">Tous les genres</option>
+            @for (gender of getPokemonGenderFilterOptions(); track gender) {
+              <option [value]="gender.toLowerCase()">{{ gender }}</option>
+            }
+          </select>
+        </div>
+      </section>
+    </div>
+  }
 
   <div class="page-actions">
     <button

@@ -37,23 +37,25 @@
 
         <div class="header-actions">
           @if (canManageActiveShowcase()) {
-            <button class="clear-button" (click)="openAddPokemonModal()">Add Pokemon</button>
-            <button class="clear-button" (click)="renameActiveShowcase()">Rename</button>
-            <button class="danger-button" (click)="deleteActiveShowcase()">Delete showcase</button>
+            <button type="button" class="clear-button" (click)="openAddPokemonModal()">Add Pokemon</button>
+            <button type="button" class="clear-button" (click)="openRenameShowcaseModal()">Rename</button>
+            <button type="button" class="danger-button" (click)="deleteActiveShowcase()">Delete showcase</button>
           }
           <button
-            class="export-button"
+            type="button"
+            class="clear-button"
             (click)="downloadShowcasePng()"
             [disabled]="isGeneratingImage || !activeShowcase.pokemonListings.length">
             {{ isGeneratingImage ? 'Generating...' : 'Download PNG' }}
           </button>
           <button
-            class="clear-button"
+            type="button"
+            class="export-button"
             (click)="copyShowcaseToClipboard()"
             [disabled]="isGeneratingImage || !activeShowcase.pokemonListings.length">
-            Copy showcase
+            Copier dans le presse-papier
           </button>
-          <button class="clear-button" (click)="clearAll()">Clear all</button>
+          <button type="button" class="clear-button" (click)="clearAll()">Clear all</button>
         </div>
       </header>
 
@@ -70,13 +72,14 @@
             <div class="content">
               <div class="title-row">
                 <h4>{{ pokemon.title }}</h4>
-                <button class="remove remove-inline" (click)="removePokemon(pokemon.id)">
+                <button type="button" class="remove remove-inline" (click)="removePokemon(pokemon.id)">
                   Remove
                 </button>
               </div>
 
               <div class="subline">
                 {{ getPokemonDisplayName(pokemon) }}
+                <span *ngIf="pokemon.gender">- {{ pokemon.gender }}</span>
                 <span *ngIf="pokemon.isShiny">- Shiny</span>
                 <span *ngIf="pokemon.isRadiant">- Radiant</span>
               </div>
@@ -122,7 +125,7 @@
 
               <div class="price">{{ item.price }}</div>
 
-              <button class="remove" (click)="removeItem(item.id)">Remove</button>
+              <button type="button" class="remove" (click)="removeItem(item.id)">Remove</button>
             </div>
           </article>
         </div>
@@ -178,17 +181,23 @@
             </div>
           }
         </div>
-        <select class="modal-filter-select" [(ngModel)]="addPokemonAbilityFilter">
+        <select class="modal-filter-select" [(ngModel)]="addPokemonAbilityFilter" (ngModelChange)="onAddPokemonAbilityFilterChange($event)">
           <option value="">All abilities</option>
           @for (ability of getAvailableAbilityOptions(); track ability.value) {
             <option [value]="ability.value">{{ ability.label }}</option>
           }
         </select>
-        <select class="modal-filter-select" [(ngModel)]="addPokemonIvSort">
+        <select class="modal-filter-select" [(ngModel)]="addPokemonGenderFilter" (ngModelChange)="onAddPokemonGenderFilterChange($event)">
+          <option value="">All genders</option>
+          @for (gender of getAvailableGenderOptions(); track gender) {
+            <option [value]="gender.toLowerCase()">{{ gender }}</option>
+          }
+        </select>
+        <select class="modal-filter-select" [(ngModel)]="addPokemonIvSort" (ngModelChange)="onAddPokemonIvSortChange($event)">
           <option value="desc">IV% High to low</option>
           <option value="asc">IV% Low to high</option>
         </select>
-        <select class="modal-filter-select" [(ngModel)]="addPokemonShinyFilter">
+        <select class="modal-filter-select" [(ngModel)]="addPokemonShinyFilter" (ngModelChange)="onAddPokemonShinyFilterChange($event)">
           <option value="">All shiny states</option>
           <option value="shiny">Shiny only</option>
           <option value="nonshiny">Non-shiny only</option>
@@ -230,6 +239,49 @@
   (cancel)="closeCreateShowcaseModal()"
   (submitCreate)="createShowcase($event)">
 </app-showcase-create-modal>
+
+@if (showRenameShowcaseModal) {
+  <div class="modal-overlay" (mousedown)="closeRenameShowcaseModal()">
+    <section class="modal-card rename-showcase-card" (mousedown)="$event.stopPropagation()">
+      <header class="modal-header">
+        <h3>Renommer la showcase</h3>
+        <button type="button" class="clear-button" [disabled]="isRenamingShowcase" (click)="closeRenameShowcaseModal()">
+          Fermer
+        </button>
+      </header>
+
+      <form class="rename-showcase-form" (ngSubmit)="renameActiveShowcase()">
+        <label for="rename-showcase-name">Nom</label>
+        <input
+          id="rename-showcase-name"
+          type="text"
+          class="modal-filter-input"
+          [(ngModel)]="renameShowcaseName"
+          [ngModelOptions]="{ standalone: true }"
+          [disabled]="isRenamingShowcase"
+          maxlength="100" />
+
+        <label for="rename-showcase-description">Description</label>
+        <textarea
+          id="rename-showcase-description"
+          class="modal-filter-input rename-showcase-description"
+          [(ngModel)]="renameShowcaseDescription"
+          [ngModelOptions]="{ standalone: true }"
+          [disabled]="isRenamingShowcase"
+          maxlength="500"></textarea>
+
+        <div class="rename-showcase-actions">
+          <button type="button" class="clear-button" [disabled]="isRenamingShowcase" (click)="closeRenameShowcaseModal()">
+            Annuler
+          </button>
+          <button type="submit" class="export-button" [disabled]="isRenamingShowcase">
+            {{ isRenamingShowcase ? 'Renommage...' : 'Enregistrer' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+}
 
 <app-confirm-modal
   [open]="showDeleteShowcaseConfirm"
