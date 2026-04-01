@@ -8,6 +8,22 @@ const distBrowser = path.join(frontRoot, 'dist', 'cobblemon-market-front', 'brow
 const backendWwwroot = path.join(backendRoot, 'wwwroot');
 const backendPublishOut = path.join(frontRoot, 'electron', 'backend-publish');
 
+function getRuntimeIdentifier() {
+  if (process.platform === 'win32') {
+    return 'win-x64';
+  }
+
+  if (process.platform === 'darwin') {
+    return process.arch === 'arm64' ? 'osx-arm64' : 'osx-x64';
+  }
+
+  if (process.platform === 'linux') {
+    return process.arch === 'arm64' ? 'linux-arm64' : 'linux-x64';
+  }
+
+  throw new Error(`Unsupported platform for backend publish: ${process.platform}/${process.arch}`);
+}
+
 if (!fs.existsSync(distBrowser)) {
   throw new Error(`Frontend build not found: ${distBrowser}`);
 }
@@ -26,7 +42,7 @@ const publishCmd = [
   'dotnet publish',
   `"${path.join(backendRoot, 'CobblemonMarketApi.csproj')}"`,
   '-c Release',
-  '-r win-x64',
+  `-r ${getRuntimeIdentifier()}`,
   '--self-contained true',
   '-p:PublishSingleFile=true',
   '-p:IncludeNativeLibrariesForSelfExtract=true',

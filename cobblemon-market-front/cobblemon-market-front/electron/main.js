@@ -2,8 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
-const { spawn } = require('child_process');
-const { execSync } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
 const { syncTransferAndTpAccept } = require('./mc-sync-bridge');
@@ -37,6 +36,33 @@ function getBackendDir() {
   return isPackaged()
     ? path.join(process.resourcesPath, 'backend')
     : path.join(__dirname, 'backend-publish');
+}
+
+function getBackendExecutableName() {
+  return process.platform === 'win32' ? 'CobblemonMarketApi.exe' : 'CobblemonMarketApi';
+}
+
+function getBackendExecutablePath() {
+  return path.join(getBackendDir(), getBackendExecutableName());
+}
+
+function killBundledBackendProcess() {
+  const backendExecutableName = getBackendExecutableName();
+
+  if (process.platform === 'win32') {
+    try {
+      spawnSync('taskkill', ['/F', '/T', '/IM', backendExecutableName], { stdio: 'ignore' });
+    } catch {
+      // ignore: process may not be running
+    }
+    return;
+  }
+
+  try {
+    spawnSync('pkill', ['-f', backendExecutableName], { stdio: 'ignore' });
+  } catch {
+    // ignore: process may not be running
+  }
 }
 
 function getPersistentBackendDataDir() {
@@ -738,15 +764,11 @@ async function ensureBackendStarted() {
       return;
     }
   } else {
-    try {
-      execSync('taskkill /F /T /IM "CobblemonMarketApi.exe"', { stdio: 'ignore' });
-    } catch {
-      // ignore: process may not be running
-    }
+    killBundledBackendProcess();
   }
 
   const backendDir = getBackendDir();
-  const backendExe = path.join(backendDir, 'CobblemonMarketApi.exe');
+  const backendExe = getBackendExecutablePath();
   writeBackendLogLine(`Boot info userData=${app.getPath('userData')}`);
   writeBackendLogLine(`Boot info resourcesPath=${process.resourcesPath}`);
   writeBackendLogLine(`Boot info backendDir=${backendDir}`);

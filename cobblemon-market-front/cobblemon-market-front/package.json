@@ -11,11 +11,12 @@
     "electron": "electron .",
     "test:mc-sync": "vitest run electron/mc-sync-bridge.spec.mjs",
     "build:backend": "node scripts/prepare-electron-backend.cjs",
-    "pack:prepare": "cmd /c npm run build && npm run build:backend",
-    "dist:portable": "cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win portable\"",
-    "dist:folder": "cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win dir\"",
-    "dist:setup": "cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win nsis\"",
-    "dist:setup:publish": "node scripts/publish-version-gate.cjs && cmd /c node scripts/clean-electron-output.cjs && npm run pack:prepare && cmd /c \"set CSC_IDENTITY_AUTO_DISCOVERY=false&& set WIN_CSC_LINK=&& set CSC_LINK=&& electron-builder --win nsis --publish always\"",
+    "pack:prepare": "node scripts/pack-prepare.cjs",
+    "dist:portable": "node scripts/build-electron-dist.cjs win-portable",
+    "dist:folder": "node scripts/build-electron-dist.cjs win-dir",
+    "dist:setup": "node scripts/build-electron-dist.cjs win-nsis",
+    "dist:setup:publish": "node scripts/publish-version-gate.cjs && node scripts/build-electron-dist.cjs win-nsis-publish",
+    "dist:mac": "node scripts/build-electron-dist.cjs mac",
     "test": "ng test"
   },
   "private": true,
@@ -58,6 +59,13 @@
       "icon": "build/icon.ico",
       "target": [
         "nsis"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.business",
+      "target": [
+        "dir",
+        "zip"
       ]
     },
     "artifactName": "${productName}-Setup-${version}.${ext}",
