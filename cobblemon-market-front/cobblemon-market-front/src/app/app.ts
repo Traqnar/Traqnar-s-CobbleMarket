@@ -108,6 +108,17 @@ export class App implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.updateState === 'available' && this.shouldAskBigVersionConfirmation()) {
+      const fromVersion = this.appVersion || 'version actuelle';
+      const toVersion = this.currentAvailableVersion || 'nouvelle version';
+      const shouldContinue = window.confirm(
+        `Cette mise a jour passe de ${fromVersion} a ${toVersion}. Voulez-vous continuer ?`,
+      );
+      if (!shouldContinue) {
+        return;
+      }
+    }
+
     this.updateActionBusy = true;
     this.refusedUpdateVersion = '';
     window.electronUpdates.performUpdateAction()
@@ -126,6 +137,32 @@ export class App implements OnInit, OnDestroy {
 
   private isCurrentVersionRefused(): boolean {
     return !!this.currentAvailableVersion && this.currentAvailableVersion === this.refusedUpdateVersion;
+  }
+
+  private shouldAskBigVersionConfirmation(): boolean {
+    const current = this.parseMajorMinor(this.appVersion);
+    const next = this.parseMajorMinor(this.currentAvailableVersion);
+    if (!current || !next) {
+      return false;
+    }
+
+    return current.major !== next.major || current.minor !== next.minor;
+  }
+
+  private parseMajorMinor(version: string): { major: number; minor: number } | null {
+    const normalized = String(version || '').trim().replace(/^v/i, '');
+    if (!normalized) {
+      return null;
+    }
+
+    const [majorRaw, minorRaw] = normalized.split('.');
+    const major = Number.parseInt(majorRaw, 10);
+    const minor = Number.parseInt(minorRaw, 10);
+    if (!Number.isFinite(major) || !Number.isFinite(minor)) {
+      return null;
+    }
+
+    return { major, minor };
   }
 
   private buildScrollStateKey(url: string): string {
