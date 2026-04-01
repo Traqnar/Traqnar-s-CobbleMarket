@@ -6,12 +6,17 @@ const { spawn } = require('child_process');
 const { execSync } = require('child_process');
 const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
+const { syncTransferAndTpAccept } = require('./mc-sync-bridge');
 
 const API_BASE_URL = 'http://127.0.0.1:5148';
 const API_HEALTH_PATH = '/api/showcases';
+const MC_INTERNAL_API_HOST = '127.0.0.1';
+const MC_INTERNAL_API_PORT = 5151;
+const MC_INTERNAL_API_PATH = '/api/mc/sync-transfer-and-tpaccept';
 
 let backendProcess = null;
 let mainWindow = null;
+let mcInternalApiServer = null;
 let updateWindow = null;
 let updateWindowStatus = null;
 let updaterState = 'idle';
@@ -599,6 +604,114 @@ function httpPing(url) {
   });
 }
 
+function sendJson(res, statusCode, payload) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  });
+  res.end(JSON.stringify(payload));
+}
+
+function parseRequestJson(req) {
+  return new Promise((resolve, reject) => {
+    let raw = '';
+    req.on('data', (chunk) => {
+      raw += String(chunk ?? '');
+      if (raw.length > 1024 * 64) {
+        reject(new Error('Request body too large'));
+        req.destroy();
+      }
+    });
+    req.on('end', () => {
+      if (!raw.trim()) {
+        resolve({});
+        return;
+      }
+      try {
+        resolve(JSON.parse(raw));
+      } catch {
+        reject(new Error('Invalid JSON body'));
+      }
+    });
+    req.on('error', reject);
+  });
+}
+
+function startMcInternalApiServer() {
+  if (mcInternalApiServer) {
+    return;
+  }
+
+  mcInternalApiServer = http.createServer(async (req, res) => {
+    const method = req.method || 'GET';
+    const pathname = (req.url || '').split('?')[0];
+
+    if (method === 'OPTIONS' && pathname === MC_INTERNAL_API_PATH) {
+      sendJson(res, 204, {});
+      return;
+    }
+
+    if (method !== 'POST' || pathname !== MC_INTERNAL_API_PATH) {
+      sendJson(res, 404, { ok: false, error: 'NOT_FOUND' });
+      return;
+    }
+
+    try {
+      const body = await parseRequestJson(req);
+      const result = await syncTransferAndTpAccept({
+        partySlotId: Number(body?.partySlotId),
+        leadDelayMs: body?.leadDelayMs == null ? undefined : Number(body.leadDelayMs),
+        requestId: typeof body?.requestId === 'string' ? body.requestId : undefined,
+      }, log);
+
+      const statusCode = result.ok ? 200 : (result.error ? 400 : 502);
+      sendJson(res, statusCode, result);
+    } catch (error) {
+      log.error('[mc-sync]', JSON.stringify({
+        event: 'sync.internal-api.error',
+        error: String(error?.message ?? error ?? 'unknown_error'),
+      }));
+      sendJson(res, 400, {
+        ok: false,
+        error: 'BAD_REQUEST',
+        details: String(error?.message ?? error ?? 'Invalid request'),
+      });
+    }
+  });
+
+  mcInternalApiServer.listen(MC_INTERNAL_API_PORT, MC_INTERNAL_API_HOST, () => {
+    log.info('[mc-sync]', JSON.stringify({
+      event: 'sync.internal-api.started',
+      host: MC_INTERNAL_API_HOST,
+      port: MC_INTERNAL_API_PORT,
+      path: MC_INTERNAL_API_PATH,
+    }));
+  });
+
+  mcInternalApiServer.on('error', (error) => {
+    log.error('[mc-sync]', JSON.stringify({
+      event: 'sync.internal-api.listen-error',
+      error: String(error?.message ?? error ?? 'unknown_error'),
+    }));
+  });
+}
+
+function stopMcInternalApiServer() {
+  if (!mcInternalApiServer) {
+    return;
+  }
+
+  try {
+    mcInternalApiServer.close();
+  } catch {
+    // ignore close errors
+  } finally {
+    mcInternalApiServer = null;
+  }
+}
+
 async function waitForBackend(timeoutMs = 25000) {
   const deadline = Date.now() + timeoutMs;
 
@@ -818,6 +931,7 @@ function setupAutoUpdater() {
 
 app.whenReady().then(async () => {
   writeBackendLogLine('Electron app ready.');
+  startMcInternalApiServer();
   ipcMain.handle('app:get-version', () => app.getVersion());
   ipcMain.handle('app:perform-update-action', async () => {
     if (!isPackaged()) {
@@ -890,6 +1004,7 @@ app.whenReady().then(async () => {
 
 app.on('before-quit', () => {
   writeBackendLogLine('Electron before-quit.');
+  stopMcInternalApiServer();
   if (updateCheckInterval) {
     clearInterval(updateCheckInterval);
     updateCheckInterval = null;

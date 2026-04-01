@@ -57,3 +57,35 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Sync Bridge A/B (local)
+
+The Electron main process now exposes an internal endpoint:
+
+- `POST http://127.0.0.1:5151/api/mc/sync-transfer-and-tpaccept`
+
+Expected request body:
+
+```json
+{
+  "partySlotId": 0,
+  "leadDelayMs": 1200,
+  "requestId": "optional-string"
+}
+```
+
+What it does:
+
+- Builds one shared payload (`action`, `requestId`, `executeAtEpochMs`, `partySlotId`).
+- Sends in parallel to:
+  - `http://127.0.0.1:5149/api/bridge/sync-party-pc-and-tpaccept`
+  - `http://127.0.0.1:5150/api/bridge/sync-party-pc-and-tpaccept`
+- Uses strict timeout (~3.5s) and max 1 retry.
+
+The Pokémon page includes a panel to trigger this action and inspect A/B response details.
+
+Minimal unit test for payload builder:
+
+```bash
+npm run test:mc-sync
+```
