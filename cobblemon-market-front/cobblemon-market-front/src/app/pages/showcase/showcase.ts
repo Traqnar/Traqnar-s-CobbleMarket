@@ -61,9 +61,9 @@ export class Showcase implements OnInit, OnDestroy {
     specialAttackIv: number;
     specialDefenseIv: number;
     speedIv: number;
-  })[] = ['hpIv', 'defenseIv', 'attackIv', 'speedIv', 'specialDefenseIv', 'specialAttackIv'];
+  })[] = ['hpIv', 'attackIv', 'defenseIv', 'speedIv', 'specialDefenseIv', 'specialAttackIv'];
 
-  readonly ivHexagonLabels = ['HP', 'Def', 'Atk', 'Speed', 'SpDef', 'SpAtk'] as const;
+  readonly ivHexagonLabels = ['HP', 'Atk', 'Def', 'Speed', 'SpDef', 'SpAtk'] as const;
   private ivHexagonLabelPositions: { x: number; y: number }[] | null = null;
   private readonly landscapeThreshold = 7;
   private importEventsSubscription?: Subscription;

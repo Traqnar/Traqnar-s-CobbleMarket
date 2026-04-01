@@ -1,1 +1,173 @@
-<p>items works!</p>
+<div class="sync-page">
+  <header class="page-header">
+    <h1>Sync</h1>
+    <p>Centralise les actions de synchronisation A/B et les exports par instance.</p>
+  </header>
+
+  <div class="sync-top-actions">
+    <button
+      type="button"
+      class="export-pc-btn"
+      [disabled]="isExportingPcA || isExportingPcB"
+      (click)="exportPcA()">
+      {{ isExportingPcA ? 'Export A en cours...' : 'Export PC A' }}
+    </button>
+
+    <button
+      type="button"
+      class="export-pc-btn"
+      [disabled]="isExportingPcA || isExportingPcB"
+      (click)="exportPcB()">
+      {{ isExportingPcB ? 'Export B en cours...' : 'Export PC B' }}
+    </button>
+  </div>
+
+  <section class="sync-bridge-panel">
+    <h3>MC Sync Test</h3>
+    <p>Envoi direct du meme payload vers A (5149) et B (5150).</p>
+
+    <div class="sync-bridge-form-row">
+      <label for="sync-party-slot-id">partySlotId</label>
+      <input
+        id="sync-party-slot-id"
+        type="number"
+        min="0"
+        step="1"
+        [value]="mcTestPartySlotId"
+        (input)="mcTestPartySlotId = +$any($event.target).value"
+      />
+    </div>
+
+    <div class="sync-bridge-form-row">
+      <label for="sync-lead-delay-ms">leadDelayMs</label>
+      <input
+        id="sync-lead-delay-ms"
+        type="number"
+        min="0"
+        step="1"
+        [value]="mcTestLeadDelayMs"
+        (input)="mcTestLeadDelayMs = +$any($event.target).value"
+      />
+    </div>
+
+    <div class="sync-bridge-form-row">
+      <label for="sync-request-id">requestId</label>
+      <input
+        id="sync-request-id"
+        type="text"
+        [value]="mcTestRequestId"
+        placeholder="auto-genere si vide"
+        (input)="mcTestRequestId = $any($event.target).value"
+      />
+    </div>
+
+    <div class="sync-bridge-actions">
+      <button
+        type="button"
+        class="sync-bridge-btn"
+        [disabled]="isMcSyncTestLoading"
+        (click)="runMcSyncTest()">
+        {{ isMcSyncTestLoading ? 'Test en cours...' : 'Test Sync A+B' }}
+      </button>
+    </div>
+
+    @if (mcSyncTestError) {
+      <div class="sync-bridge-error">
+        Erreur reseau: {{ mcSyncTestError }}
+      </div>
+    }
+
+    @if (mcSyncTestResult) {
+      <div class="sync-bridge-result">
+        <div><strong>requestId:</strong> {{ mcSyncTestResult.requestId }}</div>
+        <div><strong>executeAtEpochMs:</strong> {{ mcSyncTestResult.executeAtEpochMs }}</div>
+        <div><strong>executeAt (local):</strong> {{ getMcExecuteAtHuman() }}</div>
+        <div><strong>payload:</strong></div>
+        <pre>{{ mcSyncTestResult.payload | json }}</pre>
+
+        <div class="sync-bridge-target">
+          <h4>Instance A</h4>
+          <div>status: {{ mcSyncTestResult.a.status ?? '-' }}</div>
+          <div>latencyMs: {{ mcSyncTestResult.a.latencyMs }}</div>
+          <div>error: {{ mcSyncTestResult.a.error || '-' }}</div>
+          <pre>{{ mcSyncTestResult.a.body | json }}</pre>
+        </div>
+
+        <div class="sync-bridge-target">
+          <h4>Instance B</h4>
+          <div>status: {{ mcSyncTestResult.b.status ?? '-' }}</div>
+          <div>latencyMs: {{ mcSyncTestResult.b.latencyMs }}</div>
+          <div>error: {{ mcSyncTestResult.b.error || '-' }}</div>
+          <pre>{{ mcSyncTestResult.b.body | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="uuid-compare-panel">
+    <div class="uuid-compare-head">
+      <div>
+        <h3>Comparaison UUID (meme Pokemon)</h3>
+        <p>
+          Groupement des listings identiques (stats + infos) pour reperer les UUID qui changent.
+          Analyse: {{ uuidComparisonTotalListings }} listing(s).
+          Derniere maj: {{ getUuidComparisonLastUpdatedHuman() }}.
+        </p>
+      </div>
+      <button
+        type="button"
+        class="sync-bridge-btn"
+        [disabled]="isLoadingUuidComparison"
+        (click)="refreshUuidComparison()">
+        {{ isLoadingUuidComparison ? 'Chargement...' : 'Rafraichir' }}
+      </button>
+    </div>
+
+    @if (uuidComparisonError) {
+      <div class="sync-bridge-error">{{ uuidComparisonError }}</div>
+    }
+
+    @if (!isLoadingUuidComparison && !uuidComparisonError && !uuidComparisonGroups.length) {
+      <p class="uuid-empty-state">Aucun changement d'UUID detecte pour des Pokemon consideres identiques.</p>
+    }
+
+    @for (group of uuidComparisonGroups; track trackByUuidGroupKey($index, group)) {
+      <article class="uuid-group-card">
+        <div class="uuid-group-title">{{ group.label }}</div>
+        <div class="uuid-group-meta">
+          <span>{{ group.listings.length }} listing(s)</span>
+          <span>{{ group.uniqueUuidCount }} UUID differents</span>
+        </div>
+
+        <div class="uuid-chip-row">
+          @for (uuidEntry of group.uuids; track trackByUuidValue($index, uuidEntry)) {
+            <span class="uuid-chip">{{ uuidEntry.value }} (x{{ uuidEntry.count }})</span>
+          }
+        </div>
+
+        <div class="uuid-listings-table-wrap">
+          <table class="uuid-listings-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Showcase</th>
+                <th>Titre</th>
+                <th>UUID</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (listing of group.listings; track trackByUuidListingId($index, listing)) {
+                <tr>
+                  <td>{{ listing.id }}</td>
+                  <td>{{ listing.showcaseId }}</td>
+                  <td>{{ listing.title }}</td>
+                  <td class="uuid-cell">{{ listing.uuid }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </article>
+    }
+  </section>
+</div>

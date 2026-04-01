@@ -18,7 +18,12 @@ export const routes: Routes = [
     component: Pokemon,
   },
   {
-    path: 'items',
+    path: 'sync',
     component: Items,
+  },
+  {
+    path: 'items',
+    redirectTo: 'sync',
+    pathMatch: 'full',
   },
 ];

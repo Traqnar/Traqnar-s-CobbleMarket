@@ -277,6 +277,121 @@
   margin: 16px 0 20px 0;
 }
 
+.sync-bridge-panel {
+  margin: 0 0 22px 0;
+  padding: 14px;
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.13), transparent 45%),
+    rgba(15, 23, 42, 0.85);
+}
+
+.sync-bridge-panel h3 {
+  margin: 0 0 6px 0;
+  font-size: 17px;
+}
+
+.sync-bridge-panel p {
+  margin: 0 0 12px 0;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.sync-bridge-form-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.sync-bridge-form-row label {
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.sync-bridge-form-row input {
+  width: 100%;
+  max-width: 220px;
+  padding: 8px 10px;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.sync-bridge-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sync-bridge-btn,
+.sync-bridge-retry-btn {
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #f8fafc;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sync-bridge-btn {
+  background: linear-gradient(135deg, #0369a1, #1d4ed8);
+  border-color: rgba(56, 189, 248, 0.6);
+}
+
+.sync-bridge-retry-btn {
+  background: #1e293b;
+}
+
+.sync-bridge-btn:disabled,
+.sync-bridge-retry-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.sync-bridge-error {
+  margin-top: 10px;
+  color: #fecaca;
+  font-size: 13px;
+}
+
+.sync-bridge-result {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(51, 65, 85, 0.8);
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.sync-bridge-target {
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(71, 85, 105, 0.7);
+  border-radius: 10px;
+  background: rgba(2, 6, 23, 0.4);
+}
+
+.sync-bridge-target h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  color: #dbeafe;
+}
+
+.sync-bridge-target pre {
+  margin: 8px 0 0 0;
+  padding: 8px;
+  border-radius: 8px;
+  background: #020617;
+  color: #d1d5db;
+  overflow-x: auto;
+  font-size: 12px;
+}
+
 .export-pc-btn {
   border: none;
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
@@ -1118,6 +1233,10 @@
 
   .page-actions {
     justify-content: stretch;
+  }
+
+  .sync-bridge-form-row {
+    grid-template-columns: 1fr;
   }
 
   .export-pc-btn {
