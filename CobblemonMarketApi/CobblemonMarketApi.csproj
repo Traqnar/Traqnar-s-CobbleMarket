@@ -4,6 +4,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +16,18 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="obj\**\*.cs" />
+    <Compile Remove="build-check\**\*.cs" />
+    <Compile Remove="build-check-form\**\*.cs" />
+    <Compile Remove="build-check-ivfix\**\*.cs" />
+    <Compile Remove="artifacts\**\*.cs" />
+    <Compile Remove="CobblemonMarketApi.Tests\**\*.cs" />
+    <Content Remove="CobblemonMarketApi.Tests\**\*" />
+    <EmbeddedResource Remove="CobblemonMarketApi.Tests\**\*" />
+    <None Remove="CobblemonMarketApi.Tests\**\*" />
   </ItemGroup>
 
 </Project>
