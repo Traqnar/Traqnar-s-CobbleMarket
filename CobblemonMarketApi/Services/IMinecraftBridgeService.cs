@@ -4,5 +4,11 @@ namespace CobblemonMarketApi.Services;
 
 public interface IMinecraftBridgeService
 {
-    Task<MinecraftCommandResultDto> ExportAllPcAsync(string requestedBy, CancellationToken cancellationToken = default);
+    Task<MinecraftCommandResultDto> ExportAllPcAsync(
+        string requestedBy,
+        string? instance = null,
+        CancellationToken cancellationToken = default);
+    Task<SyncTransferAndTpacceptResponseDto> SyncTransferAndTpacceptAsync(
+        SyncTransferAndTpacceptRequestDto input,
+        CancellationToken cancellationToken = default);
 }
